@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import Image from 'next/image'
 
 interface SEOData {
@@ -78,11 +78,11 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     return '#EF4444' // red for F
   }
 
-  const getScoreFromGrade = (grade: string | number | undefined): number => {
+  const getScoreFromGrade = useCallback((grade: string | number | undefined): number => {
     if (typeof grade === 'number') return grade
     if (typeof grade === 'string') return parseGradeToScore(grade)
     return 0
-  }
+  }, [])
 
   const getStatusMessage = (score: number): string => {
     if (score >= 80) return 'Your page is performing well'
@@ -90,10 +90,10 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     return 'Your page needs improvement'
   }
 
-  // Get overall grade
-  const overallGrade = scores.overall?.grade || data.score || 'N/A'
-  const overallScore = typeof overallGrade === 'number' ? overallGrade : 
-    (typeof overallGrade === 'string' ? parseGradeToScore(overallGrade) : 0)
+      // Get overall grade - API now returns numeric grades (0-100) directly
+      const overallGrade = scores.overall?.grade ?? data.score ?? 0
+      const overallScore = typeof overallGrade === 'number' ? overallGrade : 
+        (typeof overallGrade === 'string' ? parseGradeToScore(overallGrade) : 0)
 
   // Category label mapping
   const categoryLabelMap: { [key: string]: string } = {
@@ -190,7 +190,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
       const y = centerY + Math.sin(angle) * labelRadius
       ctx.fillText(cat.label, x, y)
     })
-  }, [categories])
+  }, [categories, getScoreFromGrade])
 
   // Calculate circular progress
   const circumference = 2 * Math.PI * 90

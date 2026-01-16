@@ -5,17 +5,22 @@ interface OnPageSEOSectionProps {
 }
 
 export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
-  const seoScore = data.scores?.seo?.grade || 0
-  const seoTitle = data.scores?.seo?.title || ''
-  const seoDescription = data.scores?.seo?.description || ''
-  const titleTag = data.title
-  const metaDescription = data.description
-  const headers = data.headers
-  const hasHreflang = data.hasHreflang
-  const langCheck = data.langCheck
-  const hasH1Header = data.hasH1Header
-  const googleSearchPreview = data.googleSearchPreview
-  const finalUrl = data.finalUrl || data.url || ''
+      const seoScore = data.scores?.seo?.grade || 0
+      const seoTitle = data.scores?.seo?.title || ''
+      const seoDescription = data.scores?.seo?.description || ''
+      // Handle false values - these fields can be false instead of objects
+      const titleTag = data.title && data.title !== false ? data.title : null
+      const metaDescription = data.description && data.description !== false ? data.description : null
+      const hasHreflang = data.hasHreflang !== false ? data.hasHreflang : false
+      const langCheck = data.langCheck !== false ? data.langCheck : false
+      const langAttribute = data.langAttribute
+      const hasH1Header = data.hasH1Header !== false ? data.hasH1Header : false
+      const headers = data.headers && data.headers !== false ? data.headers : null
+      const contentLength = data.contentLength && data.contentLength !== false ? data.contentLength : null
+      const imageAlt = data.imageAlt && data.imageAlt !== false ? data.imageAlt : null
+      const keywords = data.keywords && data.keywords !== false ? data.keywords : null
+      const googleSearchPreview = data.googleSearchPreview
+      const finalUrl = data.finalUrl || data.url || ''
 
   // Helper functions
   const formatGrade = (grade: number | string | undefined): string => {
@@ -478,21 +483,21 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
       )}
 
       {/* Keyword Consistency */}
-      {data.keywords && data.keywords.data && data.keywords.data.keywords && (
+      {keywords && keywords !== false && keywords.data && keywords.data.keywords && (
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
           <div className="flex items-start justify-between gap-4 mb-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Keyword Consistency</h4>
               <p className="text-gray-300 mb-2">
-                {data.keywords.shortAnswer || "Your page's main keywords distribution across important HTML Tags."}
+                {keywords.shortAnswer || "Your page's main keywords distribution across important HTML Tags."}
               </p>
-              {!data.keywords.passed && (
+              {keywords.passed === false && (
                 <p className="text-gray-400 text-sm">
                   Your page content should be focused around particular keywords you would like to rank for. Ideally these keywords should also be distributed across tags such as the title, meta and header tags.
                 </p>
               )}
             </div>
-            {!data.keywords.passed && (
+            {keywords.passed === false && (
               <div className="flex-shrink-0">
                 <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -516,8 +521,8 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
                 </tr>
               </thead>
               <tbody>
-                {data.keywords.data.keywords.map((keyword: any, index: number) => {
-                  const maxFrequency = Math.max(...data.keywords.data.keywords.map((k: any) => k.count || 0))
+                {keywords.data.keywords.map((keyword: any, index: number) => {
+                  const maxFrequency = Math.max(...keywords.data.keywords.map((k: any) => k.count || 0))
                   const frequencyPercentage = keyword.count ? (keyword.count / maxFrequency) * 100 : 0
                   
                   return (
@@ -575,7 +580,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
           </div>
 
           {/* Phrases Section (if available) */}
-          {data.keywords.data.phrases && data.keywords.data.phrases.length > 0 && (
+          {keywords.data.phrases && Array.isArray(keywords.data.phrases) && keywords.data.phrases.length > 0 && (
             <div className="mt-6 pt-6 border-t border-gray-700">
               <h5 className="text-lg font-bold text-white mb-4">Phrases</h5>
               <div className="overflow-x-auto">
@@ -590,8 +595,9 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.keywords.data.phrases.slice(0, 10).map((phrase: any, index: number) => {
-                      const maxPhraseFreq = Math.max(...data.keywords.data.phrases.map((p: any) => p.count || 0))
+                    {keywords.data.phrases.filter((p: any) => p && typeof p === 'object' && p.word).slice(0, 10).map((phrase: any, index: number) => {
+                      const validPhrases = keywords.data.phrases.filter((p: any) => p && typeof p === 'object' && p.count)
+                      const maxPhraseFreq = validPhrases.length > 0 ? Math.max(...validPhrases.map((p: any) => p.count || 0)) : 1
                       const phraseFreqPercentage = phrase.count ? (phrase.count / maxPhraseFreq) * 100 : 0
                       
                       return (

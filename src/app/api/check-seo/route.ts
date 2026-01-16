@@ -196,7 +196,8 @@ export async function POST(request: NextRequest) {
     }
 
     // Extract and return only the selected parameters
-    // This will be customized based on the parameters you want to display
+    // The API response structure is: { success: true, data: { output: {...} } }
+    // We return the output data directly, preserving all fields
     const selectedData = {
       ...outputData, // Include all output data first
       url: reportData.data?.input?.url || url,
@@ -204,8 +205,10 @@ export async function POST(request: NextRequest) {
       // Extract specific fields for display compatibility
       title: outputData?.title?.data || null,
       description: outputData?.description?.data || null,
-      // Convert grade to numeric score for display (handles both numeric and string grades)
-      score: gradeToScore(outputData?.scores?.overall?.grade),
+      // Grade is already numeric (0-100), no conversion needed
+      score: typeof outputData?.scores?.overall?.grade === 'number' 
+        ? outputData.scores.overall.grade 
+        : gradeToScore(outputData?.scores?.overall?.grade),
     }
 
     return NextResponse.json(selectedData)

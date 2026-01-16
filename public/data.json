@@ -1,531 +1,293 @@
 {
   "success": true,
   "data": {
-    "id": 45,
+    "id": 620570,
     "input": {
-      "url": "slatools.com",
-      "pdf": 1,
-      "callback": "http://website.com/callback.php"
+      "url": "bisonbusiness.com",
+      "pdf": false,
+      "callback": false,
+      "template": false
     },
     "output": {
       "success": true,
-      "callback": "Sent at 2019-02-15 11:26:56 to http://website.com/callback.php",
-      "pdf": "http://seoptimer.test/download-pdf.inc/dfjdfghkdfjhg",
-      "recommendation_count": 5,
-      "screenshot": "http://seoptimer.test/screenshots/M3LYBq82IEwbeDdTCncZysQXqXow5lRY-desktop.jpg",
-      "report_generation_time": "40 second(s)",
-      "request_completion_time": "50 second(s)",
+      "callback": false,
+      "pdf": false,
+      "screenshot": "https://seoptimer.com/screenshots/e5BFxvl4gaBJEX97AEV79YaWjtIBeAHd-desktop.jpg",
+      "finalUrl": "https://www.dealonomy.com/bison-business",
+      "report_generation_time": "16 second(s)",
+      "request_completion_time": "1 minute(s) 17 second(s)",
       "scores": {
         "overall": {
-          "grade": "C+",
-          "title": "Ваша страница могла бы быть лучше",
+          "grade": 28,
+          "title": "Your page could be better",
           "description": ""
         },
         "seo": {
-          "grade": "C",
-          "title": "Ваше СЕО могло бы быть лучше",
-          "description": "Оптимизация СЕО важна, чтобы обеспечить движение трафика на ваш сайт с помощью поисковых систем. Мы рекомендуем использовать оптимизацию страниц, целевой контент и стратегию усиления внешними ссылками для повышения производительности."
+          "grade": 0,
+          "title": "Your On-Page SEO needs improvement",
+          "description": "Your page is not well optimized from an On-Page SEO perspective. On-Page SEO is important to ensure Search Engines can understand your content appropriately and help it rank for relevant keywords. You should ensure that HTML Tag Content is completed correctly and align text content to target keywords."
+        },
+        "links": {
+          "grade": 0,
+          "title": "Your links needs improvement",
+          "description": "You appear to have a weak site structure or links to your site. Ensuring strong linking on and off your site is important for search engines to recognise the authority of your site, in order for it to rank. We recommend fixing the link structure of your site and starting to build strong backlinks."
         },
         "performance": {
-          "grade": "B+",
-          "title": "У вас неплохая производительность",
-          "description": "Ваша производительность в порядке, но, вероятно, можно улучшить кое-что. Скорость загрузки и производительность страницы важны для обеспечения положительного пользовательского опыта. Сосредоточьтесь на уменьшении размера страницы и изображений и оптимизации других рекомендуемых факторов."
+          "grade": 100,
+          "title": "Your performance is very good!",
+          "description": "Congratulations, your page has performed very well in our testing meaning it should be reasonably fast and responsive for users. Performance is important to ensure a good user experience, and reduced bounce rates (which can also indirectly affect your search engine rankings). Continue to monitor your performance over time to ensure there are no periodic fluctuations."
         },
         "ui": {
-          "grade": "A+",
-          "title": "Ваше удобство на высоте!",
-          "description": "Удобство использования вашего веб-сайта на настольных и мобильных устройствах важно для максимального увеличения времени пользователя на странице. Поисковые системы используют это как ранжирующий сигнал, а сайты с более удобными коэффициентами удобства использования обычно конвертируются выше."
+          "grade": 57,
+          "title": "Your usability could be better",
+          "description": "Your page is OK but could be more usable across devices. Usability is important to maximize your available audience and minimize user bounce rates (which can indirectly affect your search engine rankings)."
         },
         "security": {
-          "grade": "B-",
-          "title": "Ваша безопасность в порядке",
-          "description": "Безопасность важна для обеспечения того, чтобы ваш сайт не попадал под угрозу и не терял данных или простаивал. Основываясь на наших проверках, похоже, что ваш профиль безопасности хорош, но всё еще может быть улучшен."
+          "grade": "",
+          "title": "",
+          "description": ""
         }
       },
       "title": {
         "section": "seo",
-        "passed": true,
-        "shortAnswer": "У вас есть тэг заголовка оптимальной длины (от 10 до 70 символов).",
-        "recommendation": null,
-        "value": "48",
-        "data": "SLA Tools - SLA, Uptime &amp; Credit Calculators"
+        "passed": false,
+        "shortAnswer": "Title Tag Text Too Short",
+        "recommendation": false,
+        "value": "43",
+        "data": "Bison Business is now Dealonomy | Dealonomy"
       },
       "description": {
         "section": "seo",
-        "passed": true,
-        "shortAnswer": "На вашей странице есть мета-описание оптимальной длины (от 70 до 320 символов).",
-        "recommendation": null,
-        "value": "118",
-        "data": "SLA Tools provides various tools to help manage your Service or Product SLA such as SLA, Uptime and Credit Calculators"
-      },
-      "headers": {
-        "section": "seo",
-        "passed": true,
-        "shortAnswer": "Ваш сайт хорошо использует теги заголовков.",
-        "recommendation": null,
-        "data": {
-          "h1": [
-            "SLA Tools"
-          ],
-          "h4": [
-            "About SLA Tools",
-            "The Tools",
-            "What is Uptime?",
-            "What is a SLA?",
-            "What is a Service Credit?"
-          ],
-          "h6": [
-            "SLA Uptime Calculator",
-            "Incident & SLA Breach Calculator",
-            "SLA Credit Calculator"
-          ]
-        }
-      },
-      "keywords": {
-        "section": "seo",
-        "passed": true,
-        "shortAnswer": "Основные ключевые слова вашего сайта хорошо распределены между важными HTML-тегами вашего сайта.",
-        "recommendation": null,
-        "data": {
-          "keywords": [
-            {
-              "word": "sla",
-              "count": 25,
-              "title": true,
-              "description": true,
-              "headers": true
-            },
-            {
-              "word": "uptime",
-              "count": 14,
-              "title": true,
-              "description": true,
-              "headers": true
-            },
-            {
-              "word": "calculator",
-              "count": 12,
-              "title": true,
-              "description": true,
-              "headers": true
-            },
-            {
-              "word": "service",
-              "count": 9,
-              "title": false,
-              "description": true,
-              "headers": true
-            },
-            {
-              "word": "credit",
-              "count": 9,
-              "title": true,
-              "description": true,
-              "headers": true
-            },
-            {
-              "word": "breach",
-              "count": 6,
-              "title": false,
-              "description": false,
-              "headers": true
-            },
-            {
-              "word": "downtime",
-              "count": 5,
-              "title": false,
-              "description": false,
-              "headers": false
-            },
-            {
-              "word": "incident",
-              "count": 5,
-              "title": false,
-              "description": false,
-              "headers": true
-            }
-          ],
-          "phrases": [
-            {
-              "word": "a service",
-              "count": 5,
-              "title": false,
-              "description": false,
-              "headers": true
-            },
-            {
-              "word": "the sla",
-              "count": 5,
-              "title": false,
-              "description": false,
-              "headers": false
-            },
-            {
-              "word": "sla credit",
-              "count": 5,
-              "title": false,
-              "description": false,
-              "headers": true
-            },
-            {
-              "word": "sla credit calculator",
-              "count": 4,
-              "title": false,
-              "description": false,
-              "headers": true
-            },
-            {
-              "word": "sla breach calculator",
-              "count": 4,
-              "title": false,
-              "description": false,
-              "headers": true
-            },
-            {
-              "word": "incident sla breach",
-              "count": 4,
-              "title": false,
-              "description": false,
-              "headers": false
-            },
-            {
-              "word": "sla uptime calculator",
-              "count": 4,
-              "title": false,
-              "description": false,
-              "headers": true
-            },
-            {
-              "name": "jQuery UI",
-              "icon": "/img/icons/app/jQuery UI.svg",
-              "version": "1.11.0",
-              "website": "http://jqueryui.com"
-            }
-          ]
-        }
-      },
-      "contentLength": {
-        "section": "seo",
         "passed": false,
-        "shortAnswer": "Page Text Content Too Short",
-        "recommendation": "Увеличьте содержание текста страницы"
+        "shortAnswer": "Meta Description Missing",
+        "recommendation": false,
+        "value": "0",
+        "data": ""
       },
-      "imageAlt": {
-        "section": "seo",
-        "passed": false,
-        "shortAnswer": "Alt Attributes Missing From Images",
-        "recommendation": "Добавить атрибуты ALT для всех изображений",
-        "data": {
-          "total": 3,
-          "altCount": 0,
-          "noAltCount": 3
-        }
-      },
-      "backlinks": {
-        "section": "seo",
-        "passed": false,
-        "shortAnswer": "Low Backlink Activity",
-        "recommendation": "Выполнение стратегии построения внешних ссылок",
-        "data": {
-          "backlinks": 0,
-          "allbacklinks": 7,
-          "mozda": 17
-        }
-      },
-      "onPageLinks": {
-        "section": "seo",
+      "hasHreflang": false,
+      "langCheck": false,
+      "hasH1Header": false,
+      "headers": false,
+      "keywords": false,
+      "googleSearchPreview": false,
+      "contentLength": false,
+      "imageAlt": false,
+      "canonicalCheck": false,
+      "backlinks": false,
+      "backlinksList": false,
+      "backlinksTopPages": false,
+      "backlinksTopAnchors": false,
+      "backlinksTopGeographies": false,
+      "referringDomainsList": {
+        "section": "links",
         "passed": null,
-        "shortAnswer": "",
-        "recommendation": null,
-        "data": {
-          "total": 13,
-          "filesCount": 0,
-          "externalCount": 0,
-          "nofollowCount": 0,
-          "externalPercentage": 0,
-          "nofollowPercentage": 0
-        }
+        "shortAnswer": null,
+        "recommendation": false,
+        "data": null
       },
+      "onPageLinks": false,
       "brokenLinks": {
-        "section": "seo",
-        "passed": true,
-        "shortAnswer": "Мы не обнаружили мертвых ссылок на вашей странице.",
-        "recommendation": null,
-        "data": []
+        "section": "links",
+        "passed": null,
+        "shortAnswer": null,
+        "recommendation": false,
+        "data": null
       },
       "friendlyUrls": {
-        "section": "seo",
-        "passed": true,
-        "shortAnswer": "Ваши ссылки выглядят легко читаемыми.",
-        "recommendation": null
+        "section": "links",
+        "passed": false,
+        "shortAnswer": "URLs Not Friendly",
+        "recommendation": false
       },
-      "robotsTxt": {
-        "section": "seo",
-        "passed": true,
-        "shortAnswer": "На вашем веб-сайте есть файл robots.txt.",
-        "recommendation": null,
-        "data": "http://slatools.com/robots.txt"
-      },
-      "sitemap": {
-        "section": "seo",
-        "passed": true,
-        "shortAnswer": "На вашем веб-сайте есть XML с картой сайта.",
-        "recommendation": null,
-        "data": [
-          "http://slatools.com/sitemap.xml"
-        ]
-      },
-      "analytics": {
-        "section": "seo",
-        "passed": true,
-        "shortAnswer": "На вашей странице используется инструмент аналитики.",
-        "recommendation": null,
-        "data": [
-          {
-            "id": "googleanalytics",
-            "name": "Google Analytics"
-          }
-        ]
-      },
+      "noindexTags": false,
+      "noindexHeaders": false,
+      "robotsTxt": false,
+      "blockedByRobotsTxt": false,
+      "llmsTxt": false,
+      "sitemap": false,
+      "analytics": false,
+      "schemaOrg": false,
+      "identitySchema": false,
+      "llmReadability": false,
+      "topKeywordRankings": false,
+      "topAIOverviewRankings": false,
+      "topPaidRankings": false,
+      "totalTrafficFromSearch": false,
+      "keywordPositions": false,
       "deviceRendering": {
         "section": "ui",
         "passed": null,
-        "shortAnswer": "Эта проверка визуально демонстрирует, как ваш веб-сайт работает на разных устройствах. Важно, чтобы ваш сайт оптимизирован для мобильных и планшетов, так как сегодня большинство веб-трафика поступает из этих источников.",
-        "recommendation": null,
+        "shortAnswer": "This check visually demonstrates how your page renders on different devices. It is important that your page is optimized for mobile and tablet experiences as today the majority of web traffic comes from these sources.",
+        "recommendation": false,
         "data": {
-          "mobile": "http://seoptimer.test/screenshots/Rmwu-QZDE3Um9SBCI37R575IOT1WZc1t-mobile.jpg",
-          "tablet": "http://seoptimer.test/screenshots/Rmwu-QZDE3Um9SBCI37R575IOT1WZc1t-tablet.jpg"
+          "mobile": "https://seoptimer.com/screenshots/e5BFxvl4gaBJEX97AEV79YaWjtIBeAHd-mobile.jpg",
+          "tablet": "https://seoptimer.com/screenshots/e5BFxvl4gaBJEX97AEV79YaWjtIBeAHd-tablet.jpg"
         }
       },
+      "coreWebVitals": {
+        "section": "ui",
+        "passed": null,
+        "shortAnswer": "Google is indicating that they do not have 'sufficient real-world speed data for this page' in order to make a Core Web Vitals assessment. This can occur for smaller websites or those that are not crawl-able by Google.",
+        "recommendation": false,
+        "data": []
+      },
+      "mobilePageInsights": {
+        "section": "ui",
+        "passed": false,
+        "shortAnswer": "Mobile PageSpeed Insights Failing",
+        "recommendation": false,
+        "data": {
+          "score": 47,
+          "labdata": [
+            {
+              "name": "First Contentful Paint",
+              "value": 5
+            },
+            {
+              "name": "Speed Index",
+              "value": 5
+            },
+            {
+              "name": "Largest Contentful Paint",
+              "value": 11.5
+            },
+            {
+              "name": "Time to Interactive",
+              "value": 11.6
+            },
+            {
+              "name": "Total Blocking Time",
+              "value": 0.3
+            },
+            {
+              "name": "Cumulative Layout Shift",
+              "value": 0.06
+            }
+          ],
+          "opportunities": [
+            {
+              "name": "Reduce unused JavaScript",
+              "value": 1.77
+            },
+            {
+              "name": "Avoid multiple page redirects",
+              "value": 0.63
+            },
+            {
+              "name": "Reduce unused CSS",
+              "value": 0.43
+            }
+          ]
+        }
+      },
+      "desktopPageInsights": false,
       "mobileViewport": {
         "section": "ui",
         "passed": true,
-        "shortAnswer": "На вашей странице отображается область просмотра, соответствующая размеру устройства, что позволяет отображать ее соответствующим образом на всех устройствах.",
-        "recommendation": null
+        "shortAnswer": "Your page specifies a Viewport matching the device's size, allowing it to render appropriately across devices.",
+        "recommendation": false
       },
-      "flash": {
-        "section": "ui",
-        "passed": true,
-        "shortAnswer": "На этой странице не обнаружено Flash-контента.",
-        "recommendation": null
-      },
-      "iframe": {
-        "section": "ui",
-        "passed": true,
-        "shortAnswer": "На этой странице не обнаружено iFrame.",
-        "recommendation": null
-      },
-      "favicon": {
-        "section": "ui",
-        "passed": true,
-        "shortAnswer": "На вашей странице указана иконка.",
-        "recommendation": null
-      },
+      "flash": false,
+      "iframe": false,
+      "favicon": false,
       "legibleFonts": {
         "section": "ui",
         "passed": true,
-        "shortAnswer": "Текст на вашей странице выглядит разборчивым на всех устройствах.",
-        "recommendation": null
+        "shortAnswer": "The text on your page appears to be legible across devices.",
+        "recommendation": false
       },
       "tapTargetSizing": {
         "section": "ui",
         "passed": true,
-        "shortAnswer": "Ссылки и кнопки на вашей странице выглядят соответствующим образом, чтобы пользователь мог легко коснуться сенсорного экрана.",
-        "recommendation": null
+        "shortAnswer": "The links and buttons on your page appear to be appropriately sized for a user to easily tap on a touchscreen.",
+        "recommendation": false
       },
       "serverResponseTime": {
         "section": "performance",
         "passed": true,
-        "shortAnswer": "Время ответа сервера на ваш запрос достаточно низкое, что хорошо для скорости загрузки и пользовательского опыта.",
-        "recommendation": null,
+        "shortAnswer": "Your page loads in a reasonable amount of time.",
+        "recommendation": false,
         "data": {
-          "responseTime": 118,
-          "loadTime": 459,
-          "completeTime": 509
+          "responseTime": 21,
+          "loadTime": 1232,
+          "completeTime": 6599
         }
       },
-      "pageSize": {
-        "section": "performance",
-        "passed": true,
-        "shortAnswer": "Размер файла вашей страницы достаточно низок, что хорошо для скорости загрузки страницы и работы пользователя.",
-        "recommendation": null,
-        "data": {
-          "totalSize": 913312,
-          "htmlSize": 7226,
-          "cssSize": 369868,
-          "jsSize": 460105,
-          "imageSize": 3984,
-          "otherSize": 72129
-        }
-      },
-      "numberOfResources": {
-        "section": "performance",
-        "passed": null,
-        "shortAnswer": "Эта проверка отображает общее количество файлов, которые необходимо загрузить с веб-сервера для загрузки вашей веб-страницы. Как правило, наличие большего количества файлов для загрузки увеличивает время загрузки страницы. Рекомендуется минимизировать количество запросов, удаляя ненужные файлы или объединяя файлы, например стили и скрипты, где это возможно.",
-        "recommendation": null,
-        "data": {
-          "total": 18,
-          "images": 1,
-          "css": 6,
-          "js": 5,
-          "html": 3,
-          "other": 3
-        }
-      },
-      "javascriptErrors": {
-        "section": "performance",
-        "passed": true,
-        "shortAnswer": "На вашей странице нет сообщений об ошибках JavaScript.",
-        "recommendation": null
-      },
-      "gzip": {
-        "section": "performance",
-        "passed": false,
-        "shortAnswer": "GZIP Compression Not Used",
-        "recommendation": "Используйте сжатие GZIP",
-        "data": null
-      },
+      "pageSize": false,
+      "numberOfResources": false,
+      "hasAmp": false,
+      "javascriptErrors": false,
+      "gzip": false,
+      "http2": false,
       "optimizedImages": {
         "section": "performance",
         "passed": true,
-        "shortAnswer": "Все изображения на вашей странице выглядят оптимизированными.",
-        "recommendation": null
+        "shortAnswer": "All of the images on your page appear to be optimized.",
+        "recommendation": false
       },
-      "minified": {
-        "section": "performance",
-        "passed": true,
-        "shortAnswer": "Все ваши JavaScript и CSS файлы минимизированы.",
-        "recommendation": null
-      },
-      "deprecated": {
-        "section": "performance",
-        "passed": true,
-        "shortAnswer": "На вашей странице не найдены устаревшие HTML-теги.",
-        "recommendation": null
-      },
-      "inlineCss": {
-        "section": "performance",
-        "passed": true,
-        "shortAnswer": "В HTML-тегах вашей страницы нет встроенных стилей.",
-        "recommendation": null
-      },
+      "minified": false,
+      "deprecated": false,
+      "inlineCss": false,
       "facebookLink": false,
-      "facebookActivity": false,
+      "facebookPixel": false,
       "twitterLink": false,
-      "twitterActivity": false,
-      "googlePlusLink": false,
-      "googlePlusActivity": false,
+      "twitterTags": false,
       "instagramLink": false,
-      "instagramActivity": false,
       "youtubeLink": false,
       "youtubeActivity": false,
       "linkedInLink": false,
-      "socialActivity": false,
-      "sslEnabled": {
-        "section": "security",
-        "passed": true,
-        "shortAnswer": "На вашем сайте включено шифрование.",
-        "recommendation": null
-      },
-      "httpsRedirect": {
-        "section": "security",
-        "passed": false,
-        "shortAnswer": "No Redirect to HTTPS",
-        "recommendation": "Внедрите перенаправление на HTTPS на свой веб-сайт"
-      },
+      "openGraphTags": false,
+      "sslEnabled": false,
+      "httpsRedirect": false,
       "malware": {
         "section": "security",
+        "passed": null,
+        "shortAnswer": null,
+        "recommendation": false,
+        "data": null
+      },
+      "email": false,
+      "websitePhoneAddress": false,
+      "localBusinessSchema": false,
+      "gbpIdentified": false,
+      "gbpCompleteness": {
+        "section": "localseo",
         "passed": true,
-        "shortAnswer": "Ваш веб-сайт был отмечен как безопасный среди популярных сканеров вредоносных программ",
-        "recommendation": null,
+        "shortAnswer": "The important Business Details are present on the Google Business Profile.",
+        "recommendation": false,
         "data": {
-          "google": "unverified",
-          "mcafee": "safe",
-          "norton": "unverified",
-          "avg": "unverified"
+          "missing": [],
+          "gbpSite": "222 Sidney Baker St S Suite# 213, Kerrville, TX 78028",
+          "gbpUrl": "https://www.dealonomy.com/",
+          "gbpPhone": "+1 210 774 6800"
         }
       },
-      "outdatedApps": {
-        "section": "security",
-        "passed": true,
-        "shortAnswer": "На вашем сервере не найдено устаревших версий программного обеспечения.",
-        "recommendation": null
-      },
-      "email": {
-        "section": "security",
-        "passed": true,
-        "shortAnswer": "Адреса электронной почты не найдены в виде простого текста на этой странице.",
-        "recommendation": null
-      },
-      "technologies": {
-        "section": "technology",
-        "passed": null,
-        "shortAnswer": "Мы идентифицировали программное обеспечение или библиотеки на вашей странице",
-        "recommendation": null,
-        "data": [
-          "Google Analytics",
-          "Twitter Bootstrap",
-          "jQuery",
-          "jQuery UI"
-        ]
-      },
-      "ip": {
-        "section": "technology",
-        "passed": null,
-        "shortAnswer": "",
-        "recommendation": null,
-        "data": "45.55.16.252"
-      },
-      "dns": {
-        "section": "technology",
-        "passed": null,
-        "shortAnswer": "",
-        "recommendation": null,
-        "data": "ns3.digitalocean.com<br>ns1.digitalocean.com<br>ns2.digitalocean.com<br>"
-      },
-      "webServer": {
-        "section": "technology",
-        "passed": null,
-        "shortAnswer": "",
-        "recommendation": null,
-        "data": "Apache/2.4.16 (Unix) OpenSSL/1.0.1e-fips mod_bwlimited/1.4"
-      },
-      "charset": {
-        "section": "technology",
-        "passed": null,
-        "shortAnswer": "",
-        "recommendation": null,
-        "data": "text/html"
-      },
-      "recommendations": [
-        {
-          "priority": "high",
-          "section": "seo",
-          "recommendation": "Выполнение стратегии построения внешних ссылок"
-        },
-        {
-          "priority": "low",
-          "section": "seo",
-          "recommendation": "Увеличьте содержание текста страницы"
-        },
-        {
-          "priority": "low",
-          "section": "seo",
-          "recommendation": "Добавить атрибуты ALT для всех изображений"
-        },
-        {
-          "priority": "low",
-          "section": "performance",
-          "recommendation": "Используйте сжатие GZIP"
-        },
-        {
-          "priority": "low",
-          "section": "security",
-          "recommendation": "Внедрите перенаправление на HTTPS на свой веб-сайт"
+      "gbpReviews": {
+        "section": "localseo",
+        "passed": false,
+        "shortAnswer": "Your Google Business Profile has a low rating or low number of reviews.",
+        "recommendation": false,
+        "data": {
+          "reviewScore": 4.8,
+          "numberReviews": 48,
+          "reviewScore1Count": 2,
+          "reviewScore2Count": 0,
+          "reviewScore3Count": 0,
+          "reviewScore4Count": 0,
+          "reviewScore5Count": 46
         }
-      ]
+      },
+      "technologies": false,
+      "ip": false,
+      "dns": false,
+      "webServer": false,
+      "charset": false,
+      "dmarc": false,
+      "spf": false,
+      "recommendations": false,
+      "recommendation_count": false
     },
-    "created_at": "2019-02-15 11:26:21",
-    "completed_at": "2019-02-15 11:26:57"
+    "created_at": "2026-01-16 20:44:23",
+    "completed_at": "2026-01-16 20:45:40"
   }
 }

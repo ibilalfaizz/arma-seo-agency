@@ -28,7 +28,8 @@ function ResultsContent() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    // Check if we should use test data (via query parameter or environment variable)
+    // Check if we should use test data (via query parameter)
+    // Default to API mode - set ?test=true to use test data instead
     const useTestData = new URLSearchParams(window.location.search).get('test') === 'true'
     
     // Load test data from JSON file
@@ -95,7 +96,11 @@ function ResultsContent() {
           throw new Error(errorData.error || 'Failed to check SEO')
         }
 
-        const apiData = await response.json()
+        const apiResponse = await response.json()
+        
+        // Handle the API response structure: { success: true, data: { output: {...} } }
+        // Or direct output data if already extracted by the API route
+        const apiData = apiResponse.data?.output || apiResponse
         
         // Map section names to category names for recommendations (if recommendations exist)
         const sectionToCategory: { [key: string]: string } = {
@@ -109,13 +114,17 @@ function ResultsContent() {
           'technology': 'Technology',
         }
         
-        // Transform recommendations if they exist
+        // Transform recommendations if they exist and are an array
+        // Note: recommendations can be `false` in the new structure
         if (apiData.recommendations && Array.isArray(apiData.recommendations)) {
           apiData.recommendations = apiData.recommendations.map((rec: any) => ({
             recommendation: rec.recommendation,
             category: sectionToCategory[rec.section] || rec.section || 'Other',
             priority: rec.priority || 'low'
           }))
+        } else if (apiData.recommendations === false) {
+          // Set to empty array if recommendations is false
+          apiData.recommendations = []
         }
         
         setSeoData(apiData as SEOData)

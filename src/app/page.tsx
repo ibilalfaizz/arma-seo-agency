@@ -88,7 +88,7 @@ export default function Home() {
             {' '} AUDIT
           </h2>
           <p className="text-gray-300 text-xl md:text-2xl max-w-3xl mx-auto mb-4 font-medium">
-            Get Instant Insights Into Your Website's SEO Performance
+            Get Instant Insights Into Your Website&apos;s SEO Performance
           </p>
           <p className="text-gray-400 text-lg max-w-2xl mx-auto mb-8">
             Analyze key metrics and discover opportunities to improve your search engine visibility. No credit card required.

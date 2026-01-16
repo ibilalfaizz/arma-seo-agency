@@ -11,10 +11,10 @@ export default function StrategistSection() {
         {/* Left Side - Content (2/3 width) */}
         <div className="bg-primary-light rounded-t-lg md:rounded-l-lg md:rounded-tr-none p-6 md:p-8 relative z-10 flex flex-col justify-center">
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 leading-tight text-white uppercase">
-            LET'S BUILD A MARKETING PLAN THAT WORKS ALL YEAR LONG
+            LET&apos;S BUILD A MARKETING PLAN THAT WORKS ALL YEAR LONG
           </h3>
           <p className="text-gray-300 text-base md:text-lg mb-6 leading-relaxed">
-            Book a free strategy call and we'll review your current website, marketing, and local competition. You'll walk away with clear next steps to get more qualified leads and keep your crew busy.
+            Book a free strategy call and we&apos;ll review your current website, marketing, and local competition. You&apos;ll walk away with clear next steps to get more qualified leads and keep your crew busy.
           </p>
           
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
@@ -63,9 +63,9 @@ export default function StrategistSection() {
             
             {/* Quote Box - Overlaid on bottom right */}
             <div className="absolute bottom-6 right-6 bg-primary-dark rounded-lg p-5 max-w-[300px] shadow-2xl">
-              <div className="text-white text-5xl font-serif leading-none mb-3" style={{ lineHeight: '0.8' }}>"</div>
+              <div className="text-white text-5xl font-serif leading-none mb-3" style={{ lineHeight: '0.8' }}>&ldquo;</div>
               <p className="text-white text-sm italic mb-4 leading-relaxed">
-                I'll break down exactly what your business needs - no pressure, no sales tricks
+                I&apos;ll break down exactly what your business needs - no pressure, no sales tricks
               </p>
               <div className="pt-2">
                 <p className="text-white text-sm font-bold">Mark Stevens</p>
