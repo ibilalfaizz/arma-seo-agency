@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { SEOData } from '@/app/page'
+import { SEOData } from '@/app/results/page'
 
 interface ResultsDisplayProps {
   data: SEOData
