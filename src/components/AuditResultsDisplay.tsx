@@ -196,14 +196,30 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
   const circumference = 2 * Math.PI * 90
   const offset = circumference - (overallScore / 100) * circumference
 
+  // Extract PDF URL if available
+  const pdfUrl = (data as any).pdfUrl || null
+
   return (
     <div className="py-8">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
           <h1 className="text-3xl font-bold text-white mb-2">
             Audit Results for {url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
           </h1>
+          {pdfUrl && (
+            <a
+              href={pdfUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-accent hover:bg-accent-dark text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              Download PDF Report
+            </a>
+          )}
         </div>
 
         {/* Main Content Grid */}

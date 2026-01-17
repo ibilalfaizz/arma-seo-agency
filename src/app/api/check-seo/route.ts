@@ -37,18 +37,29 @@ async function getReportWithPolling(apiKey: string, reportId: number, maxAttempt
       
       // Check if report is ready - check multiple possible structures
       if (data.success) {
-        // Check if output exists (could be in data.data.output or data.output)
-        const output = data.data?.output || data.output
-        
-        if (output) {
-          console.log(`Report ${reportId} is ready!`)
+        // Check if report has completed_at timestamp (most reliable indicator)
+        if (data.data?.completed_at) {
+          console.log(`Report ${reportId} is ready (completed at: ${data.data.completed_at})!`)
           return data
         }
         
-        // Check if report has completed_at timestamp
-        if (data.data?.completed_at) {
-          console.log(`Report ${reportId} completed at:`, data.data.completed_at)
+        // Check if output exists (could be in data.data.output or data.output)
+        // Note: output can be false, null, or undefined when not ready
+        // Only consider it ready if it's an actual object with data
+        const output = data.data?.output || data.output
+        
+        if (output && typeof output === 'object' && Object.keys(output).length > 0) {
+          console.log(`Report ${reportId} is ready (output data present)!`)
           return data
+        }
+        
+        // If output exists but is false/null, report is still processing
+        if (output === false || output === null) {
+          if (attempt < maxAttempts - 1) {
+            console.log(`Report ${reportId} still processing (output is ${output}), waiting 3 seconds...`)
+            await sleep(3000)
+            continue
+          }
         }
       }
       
@@ -101,7 +112,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({ 
         url: url,
-        pdf: 0 // Set to 1 if you want PDF generation
+        pdf: 1 // Enable PDF generation
       }),
     })
 
@@ -195,17 +206,23 @@ export async function POST(request: NextRequest) {
       return undefined
     }
 
-    // Extract and return only the selected parameters
+    // Extract and return the output data directly
     // The API response structure is: { success: true, data: { output: {...} } }
-    // We return the output data directly, preserving all fields
+    // We return the output data directly, preserving all fields from response.data.output
+    // All fields are already in outputData, we just add a few convenience fields
     const selectedData = {
-      ...outputData, // Include all output data first
+      ...outputData, // Include all output data first (scores, title, description, etc.)
+      // Add URL and reportId for reference
       url: reportData.data?.input?.url || url,
       reportId: reportId,
-      // Extract specific fields for display compatibility
+      // Note: pdfUrl is already in outputData.pdf, but we keep it here for easy access
+      pdfUrl: outputData?.pdf || null,
+      // Note: title.data and description.data are already in outputData.title.data and outputData.description.data
+      // These are just for backward compatibility
       title: outputData?.title?.data || null,
       description: outputData?.description?.data || null,
-      // Grade is already numeric (0-100), no conversion needed
+      // Note: scores.overall.grade is already in outputData.scores.overall.grade
+      // This is just for backward compatibility
       score: typeof outputData?.scores?.overall?.grade === 'number' 
         ? outputData.scores.overall.grade 
         : gradeToScore(outputData?.scores?.overall?.grade),

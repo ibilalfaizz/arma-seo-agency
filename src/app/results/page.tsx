@@ -7,6 +7,10 @@ import ResultsDisplay from '@/components/ResultsDisplay'
 import AuditResultsDisplay from '@/components/AuditResultsDisplay'
 import OnPageSEOSection from '@/components/OnPageSEOSection'
 import RecommendationsSection from '@/components/RecommendationsSection'
+import LinksSection from '@/components/LinksSection'
+import PerformanceSection from '@/components/PerformanceSection'
+import UsabilitySection from '@/components/UsabilitySection'
+import LocalSEOSection from '@/components/LocalSEOSection'
 import StrategistSection from '@/components/StrategistSection'
 import logoImage from '@/assets/images/logo.png'
 
@@ -243,6 +247,10 @@ function ResultsContent() {
               <RecommendationsSection recommendations={seoData.recommendations} />
             )}
             <OnPageSEOSection data={seoData} />
+            <LinksSection data={seoData} />
+            <PerformanceSection data={seoData} />
+            <UsabilitySection data={seoData} />
+            <LocalSEOSection data={seoData} />
           </>
         )}
       </div>

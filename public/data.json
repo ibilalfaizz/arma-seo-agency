@@ -1,36 +1,36 @@
 {
   "success": true,
   "data": {
-    "id": 620570,
+    "id": 620748,
     "input": {
-      "url": "bisonbusiness.com",
-      "pdf": false,
+      "url": "bilalfaiz.com/",
+      "pdf": true,
       "callback": false,
       "template": false
     },
     "output": {
       "success": true,
       "callback": false,
-      "pdf": false,
-      "screenshot": "https://seoptimer.com/screenshots/e5BFxvl4gaBJEX97AEV79YaWjtIBeAHd-desktop.jpg",
-      "finalUrl": "https://www.dealonomy.com/bison-business",
-      "report_generation_time": "16 second(s)",
-      "request_completion_time": "1 minute(s) 17 second(s)",
+      "pdf": "https://seoptimer.com/download-pdf.inc/QSjiUkaeveDkeo1v",
+      "screenshot": "https://seoptimer.com/screenshots/4Sn4WLXjecKVu-ZLmA_CmD7doowsZxve-desktop.jpg",
+      "finalUrl": "https://bilalfaiz.com/",
+      "report_generation_time": "24 second(s)",
+      "request_completion_time": "56 second(s)",
       "scores": {
         "overall": {
-          "grade": 28,
+          "grade": 54,
           "title": "Your page could be better",
           "description": ""
         },
         "seo": {
-          "grade": 0,
-          "title": "Your On-Page SEO needs improvement",
-          "description": "Your page is not well optimized from an On-Page SEO perspective. On-Page SEO is important to ensure Search Engines can understand your content appropriately and help it rank for relevant keywords. You should ensure that HTML Tag Content is completed correctly and align text content to target keywords."
+          "grade": 25,
+          "title": "Your On-Page SEO could be better",
+          "description": "Your page has some level of On-Page SEO optimization but could be improved further. On-Page SEO is important to ensure Search Engines can understand your content appropriately and help it rank for relevant keywords. You should ensure that HTML Tag Content is completed correctly and align text content to target keywords."
         },
         "links": {
-          "grade": 0,
-          "title": "Your links needs improvement",
-          "description": "You appear to have a weak site structure or links to your site. Ensuring strong linking on and off your site is important for search engines to recognise the authority of your site, in order for it to rank. We recommend fixing the link structure of your site and starting to build strong backlinks."
+          "grade": 100,
+          "title": "Your links are very good!",
+          "description": "Congratulations, your have good link structuring and backlink activity. Ensuring strong linking on and off your site is important for search engines to recognise the authority of your site, and increase it's rankings. We recommend actively building links as an ongoing activity."
         },
         "performance": {
           "grade": 100,
@@ -53,16 +53,16 @@
         "passed": false,
         "shortAnswer": "Title Tag Text Too Short",
         "recommendation": false,
-        "value": "43",
-        "data": "Bison Business is now Dealonomy | Dealonomy"
+        "value": "12",
+        "data": "Home - BILAL"
       },
       "description": {
         "section": "seo",
         "passed": false,
-        "shortAnswer": "Meta Description Missing",
+        "shortAnswer": "Meta Description Too Long",
         "recommendation": false,
-        "value": "0",
-        "data": ""
+        "value": "379",
+        "data": "Introducing Hello Im Bilal Faiz Developer with a real zeal for building websites and Mobile Apps that generate results. I provide top-notch services for growing companies. Contact Me Websites Modern and responsive web applications as per requirements Mobile Apps Cross-Platform(IOS &amp; Android) Mobile Apps with React native AI Integrations Build and integrate AI Engines into []"
       },
       "hasHreflang": false,
       "langCheck": false,
@@ -95,8 +95,8 @@
       },
       "friendlyUrls": {
         "section": "links",
-        "passed": false,
-        "shortAnswer": "URLs Not Friendly",
+        "passed": true,
+        "shortAnswer": "Your link URLs appear friendly (easily human or search engine readable).",
         "recommendation": false
       },
       "noindexTags": false,
@@ -120,8 +120,8 @@
         "shortAnswer": "This check visually demonstrates how your page renders on different devices. It is important that your page is optimized for mobile and tablet experiences as today the majority of web traffic comes from these sources.",
         "recommendation": false,
         "data": {
-          "mobile": "https://seoptimer.com/screenshots/e5BFxvl4gaBJEX97AEV79YaWjtIBeAHd-mobile.jpg",
-          "tablet": "https://seoptimer.com/screenshots/e5BFxvl4gaBJEX97AEV79YaWjtIBeAHd-tablet.jpg"
+          "mobile": "https://seoptimer.com/screenshots/4Sn4WLXjecKVu-ZLmA_CmD7doowsZxve-mobile.jpg",
+          "tablet": "https://seoptimer.com/screenshots/4Sn4WLXjecKVu-ZLmA_CmD7doowsZxve-tablet.jpg"
         }
       },
       "coreWebVitals": {
@@ -137,47 +137,22 @@
         "shortAnswer": "Mobile PageSpeed Insights Failing",
         "recommendation": false,
         "data": {
-          "score": 47,
+          "score": 19,
           "labdata": [
             {
               "name": "First Contentful Paint",
-              "value": 5
+              "value": 4.7
             },
             {
               "name": "Speed Index",
-              "value": 5
-            },
-            {
-              "name": "Largest Contentful Paint",
-              "value": 11.5
-            },
-            {
-              "name": "Time to Interactive",
-              "value": 11.6
-            },
-            {
-              "name": "Total Blocking Time",
-              "value": 0.3
+              "value": 7.1
             },
             {
               "name": "Cumulative Layout Shift",
-              "value": 0.06
+              "value": 0
             }
           ],
-          "opportunities": [
-            {
-              "name": "Reduce unused JavaScript",
-              "value": 1.77
-            },
-            {
-              "name": "Avoid multiple page redirects",
-              "value": 0.63
-            },
-            {
-              "name": "Reduce unused CSS",
-              "value": 0.43
-            }
-          ]
+          "opportunities": []
         }
       },
       "desktopPageInsights": false,
@@ -208,9 +183,9 @@
         "shortAnswer": "Your page loads in a reasonable amount of time.",
         "recommendation": false,
         "data": {
-          "responseTime": 21,
-          "loadTime": 1232,
-          "completeTime": 6599
+          "responseTime": 72,
+          "loadTime": 1640,
+          "completeTime": 1521
         }
       },
       "pageSize": false,
@@ -252,30 +227,17 @@
       "gbpIdentified": false,
       "gbpCompleteness": {
         "section": "localseo",
-        "passed": true,
-        "shortAnswer": "The important Business Details are present on the Google Business Profile.",
+        "passed": null,
+        "shortAnswer": "No Google Business Profile was identified that links to this website.",
         "recommendation": false,
-        "data": {
-          "missing": [],
-          "gbpSite": "222 Sidney Baker St S Suite# 213, Kerrville, TX 78028",
-          "gbpUrl": "https://www.dealonomy.com/",
-          "gbpPhone": "+1 210 774 6800"
-        }
+        "data": []
       },
       "gbpReviews": {
         "section": "localseo",
-        "passed": false,
-        "shortAnswer": "Your Google Business Profile has a low rating or low number of reviews.",
+        "passed": null,
+        "shortAnswer": "No Google Business Profile was identified that links to this website.",
         "recommendation": false,
-        "data": {
-          "reviewScore": 4.8,
-          "numberReviews": 48,
-          "reviewScore1Count": 2,
-          "reviewScore2Count": 0,
-          "reviewScore3Count": 0,
-          "reviewScore4Count": 0,
-          "reviewScore5Count": 46
-        }
+        "data": []
       },
       "technologies": false,
       "ip": false,
@@ -287,7 +249,7 @@
       "recommendations": false,
       "recommendation_count": false
     },
-    "created_at": "2026-01-16 20:44:23",
-    "completed_at": "2026-01-16 20:45:40"
+    "created_at": "2026-01-17 08:21:49",
+    "completed_at": "2026-01-17 08:22:45"
   }
 }
