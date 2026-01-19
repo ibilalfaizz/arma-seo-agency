@@ -200,35 +200,28 @@ export async function POST(request: NextRequest) {
           'D+': 68, 'D': 65, 'D-': 62,
           'F': 50
         }
-        return gradeMap[grade] || 75
+        return gradeMap[grade]
       }
       
       return undefined
     }
 
-    // Extract and return the output data directly
-    // The API response structure is: { success: true, data: { output: {...} } }
-    // We return the output data directly, preserving all fields from response.data.output
-    // All fields are already in outputData, we just add a few convenience fields
-    const selectedData = {
-      ...outputData, // Include all output data first (scores, title, description, etc.)
-      // Add URL and reportId for reference
-      url: reportData.data?.input?.url || url,
-      reportId: reportId,
-      // Note: pdfUrl is already in outputData.pdf, but we keep it here for easy access
-      pdfUrl: outputData?.pdf || null,
-      // Note: title.data and description.data are already in outputData.title.data and outputData.description.data
-      // These are just for backward compatibility
-      title: outputData?.title?.data || null,
-      description: outputData?.description?.data || null,
-      // Note: scores.overall.grade is already in outputData.scores.overall.grade
-      // This is just for backward compatibility
+    // Return the outputData from the API response
+    // Add convenience fields ONLY if they don't exist, and ONLY from API response data
+    // All data comes directly from the SEOptimer API response - no hardcoded values
+    const responseData = {
+      ...outputData,
+      // Add url from API response (finalUrl or input.url) - all from API response
+      url: outputData.finalUrl || reportData.data?.input?.url,
+      // Add pdfUrl from API response (pdf field)
+      pdfUrl: outputData.pdf || null,
+      // Add score from API response (scores.overall.grade)
       score: typeof outputData?.scores?.overall?.grade === 'number' 
         ? outputData.scores.overall.grade 
-        : gradeToScore(outputData?.scores?.overall?.grade),
+        : (outputData?.scores?.overall?.grade ? gradeToScore(outputData.scores.overall.grade) : undefined),
     }
 
-    return NextResponse.json(selectedData)
+    return NextResponse.json(responseData)
   } catch (error) {
     console.error('Error checking SEO:', error)
     return NextResponse.json(
