@@ -1,9 +1,9 @@
 {
   "success": true,
   "data": {
-    "id": 623889,
+    "id": 623918,
     "input": {
-      "url": "bilalfaiz.com/",
+      "url": "hookagency.com/",
       "pdf": true,
       "callback": false,
       "template": false
@@ -11,26 +11,26 @@
     "output": {
       "success": true,
       "callback": false,
-      "pdf": "https://seoptimer.com/download-pdf.inc/k6fS5qbZN-cKhssC",
-      "screenshot": "https://seoptimer.com/screenshots/8i6L_KpdwmMUYBDNTlSz7cMAQdSX6WqA-desktop.jpg",
-      "finalUrl": "https://bilalfaiz.com/",
-      "report_generation_time": "24 second(s)",
-      "request_completion_time": "59 second(s)",
+      "pdf": "https://seoptimer.com/download-pdf.inc/Ig2E21vMNtcdmq67",
+      "screenshot": "https://seoptimer.com/screenshots/61TnsH0mAggu20pQlJUfQZYgGtS-eqxL-desktop.jpg",
+      "finalUrl": "https://hookagency.com/",
+      "report_generation_time": "42 second(s)",
+      "request_completion_time": "1 minute(s) 16 second(s)",
       "scores": {
         "overall": {
-          "grade": 54,
-          "title": "Your page could be better",
+          "grade": 81,
+          "title": "Your page is good",
           "description": ""
         },
         "seo": {
-          "grade": 25,
-          "title": "Your On-Page SEO could be better",
-          "description": "Your page has some level of On-Page SEO optimization but could be improved further. On-Page SEO is important to ensure Search Engines can understand your content appropriately and help it rank for relevant keywords. You should ensure that HTML Tag Content is completed correctly and align text content to target keywords."
+          "grade": 100,
+          "title": "Your On-Page SEO is very good!",
+          "description": "Congratulations, your On-Page SEO is well optimized. On-Page SEO is important to ensure Search Engines can understand your content appropriately and help it rank for relevant keywords. You can continue to build on your strong position through testing content improvements for gradual gains."
         },
         "links": {
-          "grade": 100,
-          "title": "Your links are very good!",
-          "description": "Congratulations, your have good link structuring and backlink activity. Ensuring strong linking on and off your site is important for search engines to recognise the authority of your site, and increase it's rankings. We recommend actively building links as an ongoing activity."
+          "grade": 0,
+          "title": "Your links needs improvement",
+          "description": "You appear to have a weak site structure or links to your site. Ensuring strong linking on and off your site is important for search engines to recognise the authority of your site, in order for it to rank. We recommend fixing the link structure of your site and starting to build strong backlinks."
         },
         "performance": {
           "grade": 100,
@@ -38,9 +38,9 @@
           "description": "Congratulations, your page has performed very well in our testing meaning it should be reasonably fast and responsive for users. Performance is important to ensure a good user experience, and reduced bounce rates (which can also indirectly affect your search engine rankings). Continue to monitor your performance over time to ensure there are no periodic fluctuations."
         },
         "ui": {
-          "grade": 57,
-          "title": "Your usability could be better",
-          "description": "Your page is OK but could be more usable across devices. Usability is important to maximize your available audience and minimize user bounce rates (which can indirectly affect your search engine rankings)."
+          "grade": 73,
+          "title": "Your usability is good",
+          "description": "Your page is mostly usable across devices. Usability is important to maximize your available audience and minimize user bounce rates (which can indirectly affect your search engine rankings)."
         },
         "security": {
           "grade": "",
@@ -50,19 +50,19 @@
       },
       "title": {
         "section": "seo",
-        "passed": false,
-        "shortAnswer": "Title Tag Text Too Short",
+        "passed": true,
+        "shortAnswer": "You have a Title Tag of optimal length (between 50 and 60 characters).",
         "recommendation": false,
-        "value": "12",
-        "data": "Home - BILAL"
+        "value": "56",
+        "data": "Home Services Digital Marketing Agency | Lead Generation"
       },
       "description": {
         "section": "seo",
-        "passed": false,
-        "shortAnswer": "Meta Description Too Long",
+        "passed": true,
+        "shortAnswer": "Your page has a Meta Description of optimal length (between 120 and 160 characters).",
         "recommendation": false,
-        "value": "379",
-        "data": "Introducing Hello Im Bilal Faiz Developer with a real zeal for building websites and Mobile Apps that generate results. I provide top-notch services for growing companies. Contact Me Websites Modern and responsive web applications as per requirements Mobile Apps Cross-Platform(IOS &amp; Android) Mobile Apps with React native AI Integrations Build and integrate AI Engines into []"
+        "value": "131",
+        "data": "The best home service businesses deserve a marketing agency that cares. Let us help you get more and better leads. Get started now!"
       },
       "hasHreflang": false,
       "langCheck": false,
@@ -95,8 +95,8 @@
       },
       "friendlyUrls": {
         "section": "links",
-        "passed": true,
-        "shortAnswer": "Your link URLs appear friendly (easily human or search engine readable).",
+        "passed": false,
+        "shortAnswer": "URLs Not Friendly",
         "recommendation": false
       },
       "noindexTags": false,
@@ -120,16 +120,20 @@
         "shortAnswer": "This check visually demonstrates how your page renders on different devices. It is important that your page is optimized for mobile and tablet experiences as today the majority of web traffic comes from these sources.",
         "recommendation": false,
         "data": {
-          "mobile": "https://seoptimer.com/screenshots/8i6L_KpdwmMUYBDNTlSz7cMAQdSX6WqA-mobile.jpg",
-          "tablet": "https://seoptimer.com/screenshots/8i6L_KpdwmMUYBDNTlSz7cMAQdSX6WqA-tablet.jpg"
+          "mobile": "https://seoptimer.com/screenshots/61TnsH0mAggu20pQlJUfQZYgGtS-eqxL-mobile.jpg",
+          "tablet": "https://seoptimer.com/screenshots/61TnsH0mAggu20pQlJUfQZYgGtS-eqxL-tablet.jpg"
         }
       },
       "coreWebVitals": {
         "section": "ui",
-        "passed": null,
-        "shortAnswer": "Google is indicating that they do not have 'sufficient real-world speed data for this page' in order to make a Core Web Vitals assessment. This can occur for smaller websites or those that are not crawl-able by Google.",
+        "passed": true,
+        "shortAnswer": "Your page has passed Google's Core Web Vitals assessment.",
         "recommendation": false,
-        "data": []
+        "data": {
+          "cumulative-layout-shift": 0.01,
+          "largest-contentful-paint": 1.247,
+          "first-input-delay": null
+        }
       },
       "mobilePageInsights": {
         "section": "ui",
@@ -137,22 +141,43 @@
         "shortAnswer": "Mobile PageSpeed Insights Failing",
         "recommendation": false,
         "data": {
-          "score": 20,
+          "score": 36,
           "labdata": [
             {
               "name": "First Contentful Paint",
-              "value": 4.5
+              "value": 3.9
             },
             {
               "name": "Speed Index",
-              "value": 6.8
+              "value": 6.6
+            },
+            {
+              "name": "Largest Contentful Paint",
+              "value": 14
+            },
+            {
+              "name": "Time to Interactive",
+              "value": 14.1
+            },
+            {
+              "name": "Total Blocking Time",
+              "value": 0.64
             },
             {
               "name": "Cumulative Layout Shift",
               "value": 0
             }
           ],
-          "opportunities": []
+          "opportunities": [
+            {
+              "name": "Reduce unused JavaScript",
+              "value": 1.2
+            },
+            {
+              "name": "Avoid multiple page redirects",
+              "value": 0.63
+            }
+          ]
         }
       },
       "desktopPageInsights": false,
@@ -183,9 +208,9 @@
         "shortAnswer": "Your page loads in a reasonable amount of time.",
         "recommendation": false,
         "data": {
-          "responseTime": 75,
-          "loadTime": 1748,
-          "completeTime": 1658
+          "responseTime": 46,
+          "loadTime": 4916,
+          "completeTime": 11047
         }
       },
       "pageSize": false,
@@ -227,17 +252,30 @@
       "gbpIdentified": false,
       "gbpCompleteness": {
         "section": "localseo",
-        "passed": null,
-        "shortAnswer": "No Google Business Profile was identified that links to this website.",
+        "passed": true,
+        "shortAnswer": "The important Business Details are present on the Google Business Profile.",
         "recommendation": false,
-        "data": []
+        "data": {
+          "missing": [],
+          "gbpSite": "600 N Washington Ave Suite C203, Minneapolis, MN 55401",
+          "gbpUrl": "https://hookagency.com/?utm_source=gmb",
+          "gbpPhone": "+1 612 772 9555"
+        }
       },
       "gbpReviews": {
         "section": "localseo",
-        "passed": null,
-        "shortAnswer": "No Google Business Profile was identified that links to this website.",
+        "passed": true,
+        "shortAnswer": "The Google Business Profile has a good rating and review count.",
         "recommendation": false,
-        "data": []
+        "data": {
+          "reviewScore": 4.9,
+          "numberReviews": 175,
+          "reviewScore1Count": 2,
+          "reviewScore2Count": 1,
+          "reviewScore3Count": 0,
+          "reviewScore4Count": 0,
+          "reviewScore5Count": 172
+        }
       },
       "technologies": false,
       "ip": false,
@@ -249,7 +287,7 @@
       "recommendations": false,
       "recommendation_count": false
     },
-    "created_at": "2026-01-19 09:36:53",
-    "completed_at": "2026-01-19 09:37:52"
+    "created_at": "2026-01-19 10:15:09",
+    "completed_at": "2026-01-19 10:16:25"
   }
 }

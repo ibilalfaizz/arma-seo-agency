@@ -181,44 +181,16 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Helper function to convert grade to numeric score
-    // API returns numeric grades directly, but we handle both string and numeric
-    const gradeToScore = (grade: string | number | undefined): number | undefined => {
-      if (grade === undefined || grade === null || grade === '') return undefined
-      
-      // If it's already a number, return it
-      if (typeof grade === 'number') {
-        return grade
-      }
-      
-      // If it's a string grade (like "B+"), convert it
-      if (typeof grade === 'string') {
-        const gradeMap: { [key: string]: number } = {
-          'A+': 98, 'A': 95, 'A-': 92,
-          'B+': 88, 'B': 85, 'B-': 82,
-          'C+': 78, 'C': 75, 'C-': 72,
-          'D+': 68, 'D': 65, 'D-': 62,
-          'F': 50
-        }
-        return gradeMap[grade]
-      }
-      
-      return undefined
-    }
-
     // Return the outputData from the API response
     // Add convenience fields ONLY if they don't exist, and ONLY from API response data
-    // All data comes directly from the SEOptimer API response - no hardcoded values
+    // All data comes directly from the SEOptimer API response - no conversions, no hardcoded values
     const responseData = {
       ...outputData,
       // Add url from API response (finalUrl or input.url) - all from API response
       url: outputData.finalUrl || reportData.data?.input?.url,
       // Add pdfUrl from API response (pdf field)
       pdfUrl: outputData.pdf || null,
-      // Add score from API response (scores.overall.grade)
-      score: typeof outputData?.scores?.overall?.grade === 'number' 
-        ? outputData.scores.overall.grade 
-        : (outputData?.scores?.overall?.grade ? gradeToScore(outputData.scores.overall.grade) : undefined),
+      // Note: score is available directly as scores.overall.grade from API - no conversion needed
     }
 
     return NextResponse.json(responseData)

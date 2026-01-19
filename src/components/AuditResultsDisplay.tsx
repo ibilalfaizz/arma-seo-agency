@@ -33,35 +33,12 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     timeZone: 'UTC'
   }) + ' UTC'
 
-  // Helper functions
-  const parseGradeToScore = (grade: string): number => {
-    const gradeMap: { [key: string]: number } = {
-      'A+': 98, 'A': 95, 'A-': 92,
-      'B+': 88, 'B': 85, 'B-': 82,
-      'C+': 78, 'C': 75, 'C-': 72,
-      'D+': 68, 'D': 65, 'D-': 62,
-      'F': 50
-    }
-    return gradeMap[grade] || 75
-  }
-
+  // Helper functions - display scores exactly as they come from API (numeric only)
   const formatGrade = (grade: string | number | undefined): string => {
     if (grade === undefined || grade === null || grade === '') return 'N/A'
+    // Display numeric score directly from API
     if (typeof grade === 'number') {
-      // Convert numeric score to letter grade
-      if (grade >= 98) return 'A+'
-      if (grade >= 95) return 'A'
-      if (grade >= 92) return 'A-'
-      if (grade >= 88) return 'B+'
-      if (grade >= 85) return 'B'
-      if (grade >= 82) return 'B-'
-      if (grade >= 78) return 'C+'
-      if (grade >= 75) return 'C'
-      if (grade >= 72) return 'C-'
-      if (grade >= 68) return 'D+'
-      if (grade >= 65) return 'D'
-      if (grade >= 62) return 'D-'
-      return 'F'
+      return grade.toString()
     }
     return grade.toString()
   }
@@ -69,18 +46,19 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
   const getGradeColor = (grade: string | number | undefined): string => {
     if (grade === undefined || grade === null || grade === '') return '#6B7280'
     
-    const gradeStr = typeof grade === 'number' ? formatGrade(grade) : grade.toString()
+    // Use numeric score directly to determine color
+    const score = typeof grade === 'number' ? grade : 0
     
-    if (gradeStr.startsWith('A')) return '#10B981' // green
-    if (gradeStr.startsWith('B')) return '#F59E0B' // yellow
-    if (gradeStr.startsWith('C')) return '#F59E0B' // yellow
-    if (gradeStr.startsWith('D')) return '#EF4444' // red
-    return '#EF4444' // red for F
+    if (score >= 80) return '#10B981' // green
+    if (score >= 60) return '#F59E0B' // yellow
+    return '#EF4444' // red
   }
 
+  // Get score directly from API - no conversion, display as-is
   const getScoreFromGrade = useCallback((grade: string | number | undefined): number => {
+    // API returns numeric grades (0-100), use them directly
     if (typeof grade === 'number') return grade
-    if (typeof grade === 'string') return parseGradeToScore(grade)
+    // If it's a string, return 0 (shouldn't happen with current API)
     return 0
   }, [])
 
@@ -90,10 +68,9 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     return 'Your page needs improvement'
   }
 
-      // Get overall grade - API now returns numeric grades (0-100) directly
-      const overallGrade = scores.overall?.grade ?? data.score ?? 0
-      const overallScore = typeof overallGrade === 'number' ? overallGrade : 
-        (typeof overallGrade === 'string' ? parseGradeToScore(overallGrade) : 0)
+  // Get overall grade directly from API - no conversion, display as-is
+  const overallGrade = scores.overall?.grade ?? 0
+  const overallScore = typeof overallGrade === 'number' ? overallGrade : 0
 
   // Category label mapping
   const categoryLabelMap: { [key: string]: string } = {
@@ -288,7 +265,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                         src={desktopScreenshot}
                         alt="Website desktop preview"
                         fill
-                        className="object-contain"
+                        className="object-cover object-top"
                       />
                     </div>
                   </div>
@@ -308,7 +285,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                         src={mobileScreenshot}
                         alt="Website mobile preview"
                         fill
-                        className="object-contain"
+                        className="object-cover object-top"
                       />
                     </div>
                   </div>
