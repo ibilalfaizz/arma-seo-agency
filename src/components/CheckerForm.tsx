@@ -18,7 +18,7 @@ export default function CheckerForm({ onCheck, loading }: CheckerFormProps) {
   }
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 shadow-xl">
+    <div className="bg-gray-800 rounded-lg border border-gray-700 p-8 shadow-xl">
       <form onSubmit={handleSubmit} className="space-y-6">
         <div>
           <label htmlFor="url" className="block text-sm font-medium mb-2 text-gray-300">
@@ -31,7 +31,7 @@ export default function CheckerForm({ onCheck, loading }: CheckerFormProps) {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="https://example.com"
-              className="w-full px-4 py-4 bg-primary-dark border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent text-white placeholder-gray-500 text-lg"
+              className="w-full px-4 py-4 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent text-white placeholder-gray-500 text-lg"
               required
               disabled={loading}
             />

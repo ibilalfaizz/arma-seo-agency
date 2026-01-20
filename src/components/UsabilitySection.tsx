@@ -121,7 +121,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             {/* Tablet Screenshot */}
             {deviceRendering.data.tablet && (
               <div className="flex flex-col items-center">
-                <div className="bg-gray-800 border-2 border-gray-600 rounded-xl p-3 shadow-2xl relative" style={{ width: '520px', maxWidth: '100%' }}>
+                <div className="bg-gray-800 border-2 border-gray-600 rounded-xl p-3 shadow-2xl relative" style={{ width: '520px', maxWidth: '100%', paddingBottom: '4rem' }}>
                   {/* Screen */}
                   <div className="relative overflow-hidden rounded-lg bg-black border-2 border-gray-700" style={{ aspectRatio: '4/3', width: '100%', minHeight: '390px' }}>
                     <Image
