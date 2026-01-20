@@ -126,9 +126,9 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
                             nrOfLevels={30}
                             percent={0}
                             colors={['#10B981', '#EF4444']}
-                            arcWidth={0.3}
-                            needleColor="transparent"
-                            needleBaseColor="transparent"
+                            arcWidth={0.1}
+                            needleColor="grey"
+                            needleBaseColor="red"
                             textColor="#fff"
                             formatTextValue={() => ''}
                             animate={false}
@@ -169,9 +169,9 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
                             nrOfLevels={30}
                             percent={0}
                             colors={['#10B981', '#F59E0B', '#EF4444']}
-                            arcWidth={0.3}
-                            needleColor="transparent"
-                            needleBaseColor="transparent"
+                            arcWidth={0.1}
+                            needleColor="grey"
+                            needleBaseColor="red"
                             textColor="#fff"
                             formatTextValue={() => ''}
                             animate={false}
@@ -210,16 +210,16 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
                           <GaugeChart
                             id="complete-time-gauge"
                             nrOfLevels={30}
-                            percent={0}
+                            percent={completeTime}
                             colors={['#10B981', '#F59E0B', '#EF4444']}
-                            arcWidth={0.3}
-                            needleColor="transparent"
-                            needleBaseColor="transparent"
+                            arcWidth={0.1}
+                            needleColor="grey"
+                            needleBaseColor="red"
                             textColor="#fff"
                             formatTextValue={() => ''}
                             animate={false}
                             arcsLength={[0.5, 0.25, 0.25]} // Green (0-10s), Yellow (10-15s), Red (15s+)
-                            hideText={true}
+                            hideText={false}
                           />
                         </div>
                         {/* Threshold labels */}
