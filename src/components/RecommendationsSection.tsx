@@ -26,7 +26,7 @@ export default function RecommendationsSection({ recommendations }: Recommendati
 
   const getCategoryColor = (category: string) => {
     const categoryMap: { [key: string]: string } = {
-      'On-Page SEO': 'text-blue-400',
+      'On-Page SEO': 'text-accent',
       'Links': 'text-green-400',
       'Usability': 'text-yellow-400',
       'Performance': 'text-purple-400',

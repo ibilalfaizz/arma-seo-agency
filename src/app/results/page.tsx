@@ -30,8 +30,8 @@ function ResultsContent() {
 
   useEffect(() => {
     // Check if we should use test data (via query parameter)
-    // Default to API mode - set ?test=true to use test data (JSON file) instead
-    const useTestData = new URLSearchParams(window.location.search).get('test') === 'true'
+    // Default to test mode (JSON file) - set ?api=true to use API instead
+    const useTestData = new URLSearchParams(window.location.search).get('api') !== 'true'
     
     // Load test data from JSON file
     const loadTestData = async () => {
@@ -210,6 +210,18 @@ function ResultsContent() {
             <PerformanceSection data={seoData} />
             <UsabilitySection data={seoData} />
             <LocalSEOSection data={seoData} />
+            
+            {/* Call Booking Button */}
+            <div className="mt-12 mb-8 text-center">
+              <a
+                href={process.env.NEXT_PUBLIC_BOOKING_URL || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-block bg-accent hover:bg-accent-dark text-white font-semibold py-4 px-8 rounded-lg transition-colors text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+              >
+                Schedule a Strategy Call
+              </a>
+            </div>
           </>
         )}
       </div>

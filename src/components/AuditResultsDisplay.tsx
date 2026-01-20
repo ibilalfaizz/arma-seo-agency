@@ -179,24 +179,32 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
   return (
     <div className="py-8">
       <div className="container mx-auto px-4 max-w-7xl">
-        {/* Header */}
-        <div className="mb-8 flex items-center justify-between flex-wrap gap-4">
-          <h1 className="text-3xl font-bold text-white mb-2">
-            Audit Results for {url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+        {/* Header with Explanatory Text */}
+        <div className="mb-8">
+          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Website Report for <span className="text-accent">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
           </h1>
-          {pdfUrl && (
-            <a
-              href={pdfUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-accent hover:bg-accent-dark text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-              Download PDF Report
-            </a>
-          )}
+          <p className="text-gray-300 text-base leading-relaxed max-w-4xl mb-6">
+            This report grades your website on the strength of a range of important factors such as on-page SEO optimization, off-page backlinks, social, performance, security and more. The overall grade is on a A+ to F- scale, with most major industry leading websites in the A range. Improving a website&apos;s grade is recommended to ensure a better website experience for your users and improved ranking and visibility by search engines.
+          </p>
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-white">
+              Audit Results for <span className="text-accent">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+            </h2>
+            {pdfUrl && (
+              <a
+                href={pdfUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-accent hover:bg-accent-dark text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+                Download PDF Report
+              </a>
+            )}
+          </div>
         </div>
 
         {/* Main Content Grid */}

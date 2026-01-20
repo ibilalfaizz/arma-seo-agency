@@ -1,5 +1,7 @@
 'use client'
 
+import GaugeChart from 'react-gauge-chart'
+
 interface PerformanceSectionProps {
   data: any
 }
@@ -11,75 +13,252 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
   const serverResponseTime = data.serverResponseTime && data.serverResponseTime !== false ? data.serverResponseTime : null
   const optimizedImages = data.optimizedImages && data.optimizedImages !== false ? data.optimizedImages : null
 
+  // Helper functions
+  const formatGrade = (grade: number | string | undefined): string => {
+    if (grade === undefined || grade === null || grade === '') return 'N/A'
+    if (typeof grade === 'number') {
+      return grade.toString()
+    }
+    return grade.toString()
+  }
+
+  const getGradeColor = (grade: number | string | undefined): string => {
+    if (grade === undefined || grade === null || grade === '') return '#6B7280'
+    const score = typeof grade === 'number' ? grade : 0
+    if (score >= 80) return '#10B981' // green
+    if (score >= 60) return '#F59E0B' // yellow
+    return '#EF4444' // red
+  }
+
+  // Calculate circular progress
+  const score = typeof performanceScore === 'number' ? performanceScore : 0
+  const circumference = 2 * Math.PI * 90
+  const offset = circumference - (score / 100) * circumference
+  const gradeColor = getGradeColor(performanceScore)
+
   return (
     <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8">
       <h2 className="text-3xl font-bold text-white mb-8">Performance Results</h2>
       
-      {/* Header Section */}
+      {/* Header Section with Score Gauge */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8">
+        {/* Circular Gauge */}
+        <div className="relative w-48 h-48 flex-shrink-0">
+          <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
+            <circle
+              cx="100"
+              cy="100"
+              r="90"
+              fill="none"
+              stroke="#374151"
+              strokeWidth="20"
+            />
+            <circle
+              cx="100"
+              cy="100"
+              r="90"
+              fill="none"
+              stroke={gradeColor}
+              strokeWidth="20"
+              strokeDasharray={circumference}
+              strokeDashoffset={offset}
+              strokeLinecap="round"
+              className="transition-all duration-1000"
+            />
+          </svg>
+          {/* Grade Text */}
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center">
+              <div className={`text-5xl font-bold ${
+                gradeColor === '#10B981' ? 'text-green-400' : 
+                gradeColor === '#F59E0B' ? 'text-yellow-400' : 
+                'text-red-400'
+              }`}>
+                {formatGrade(performanceScore)}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* Title and Description */}
         <div className="flex-1">
           <h3 className="text-2xl font-bold text-white mb-3">{performanceTitle}</h3>
           <p className="text-gray-300 leading-relaxed">{performanceDescription}</p>
         </div>
       </div>
 
+      {/* Divider */}
+      <div className="border-t border-gray-700 my-8"></div>
+
       {/* Website Load Speed / Server Response Time */}
       {serverResponseTime && (
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
-          <h4 className="text-xl font-bold text-white mb-4">Website Load Speed</h4>
-          <p className="text-gray-300 mb-4">{serverResponseTime.shortAnswer}</p>
+          <div className="flex items-start justify-between mb-6">
+            <div className="flex-1">
+              <h4 className="text-xl font-bold text-white mb-3">Website Load Speed</h4>
+              <p className="text-gray-300">{serverResponseTime.shortAnswer}</p>
+            </div>
+            {serverResponseTime.passed && (
+              <div className="ml-4 flex-shrink-0">
+                <svg className="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              </div>
+            )}
+          </div>
+
+          {/* Performance Gauges */}
           {serverResponseTime.data && (
-            <div className="bg-primary rounded-lg p-4 mt-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-white">
-                <div>
-                  <p className="text-gray-400 text-sm mb-1">Server Response</p>
-                  <p className="text-lg font-semibold">{serverResponseTime.data.responseTime}ms</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+              {/* Server Response */}
+              <div>
+                <h5 className="text-lg font-semibold text-white mb-4">Server Response</h5>
+                <div className="relative">
+                  {(() => {
+                    const responseTime = serverResponseTime.data.responseTime / 1000 // Convert ms to seconds
+                    const normalizedValue = Math.min(responseTime / 1.0, 1) // 0-1s range
+                    
+                    return (
+                      <>
+                        <div className="relative" style={{ height: '200px' }}>
+                          <GaugeChart
+                            id="server-response-gauge"
+                            nrOfLevels={30}
+                            percent={0}
+                            colors={['#10B981', '#EF4444']}
+                            arcWidth={0.3}
+                            needleColor="transparent"
+                            needleBaseColor="transparent"
+                            textColor="#fff"
+                            formatTextValue={() => ''}
+                            animate={false}
+                            arcsLength={[0.5, 0.5]} // Green (0-0.5s), Red (0.5-1s)
+                            hideText={true}
+                          />
+                        </div>
+                        {/* Threshold labels */}
+                        <div className="flex justify-between px-4 mt-2">
+                          <span className="text-white text-sm">0</span>
+                          <span className="text-white text-sm">0.5</span>
+                        </div>
+                        {/* Value Display */}
+                        <div className="text-center mt-4">
+                          <div className="text-3xl font-bold text-white">
+                            {responseTime.toFixed(1)}s
+                          </div>
+                        </div>
+                      </>
+                    )
+                  })()}
                 </div>
-                <div>
-                  <p className="text-gray-400 text-sm mb-1">All Page Content Loaded</p>
-                  <p className="text-lg font-semibold">{serverResponseTime.data.loadTime}ms</p>
+              </div>
+
+              {/* All Page Content Loaded */}
+              <div>
+                <h5 className="text-lg font-semibold text-white mb-4">All Page Content Loaded</h5>
+                <div className="relative">
+                  {(() => {
+                    const loadTime = serverResponseTime.data.loadTime / 1000 // Convert ms to seconds
+                    const normalizedValue = Math.min(loadTime / 15.0, 1) // 0-15s range
+                    
+                    return (
+                      <>
+                        <div className="relative" style={{ height: '200px' }}>
+                          <GaugeChart
+                            id="load-time-gauge"
+                            nrOfLevels={30}
+                            percent={0}
+                            colors={['#10B981', '#F59E0B', '#EF4444']}
+                            arcWidth={0.3}
+                            needleColor="transparent"
+                            needleBaseColor="transparent"
+                            textColor="#fff"
+                            formatTextValue={() => ''}
+                            animate={false}
+                            arcsLength={[0.33, 0.33, 0.34]} // Green (0-5s), Yellow (5-10s), Red (10s+)
+                            hideText={true}
+                          />
+                        </div>
+                        {/* Threshold labels */}
+                        <div className="flex justify-between px-4 mt-2">
+                          <span className="text-white text-sm">5</span>
+                          <span className="text-white text-sm">10</span>
+                        </div>
+                        {/* Value Display */}
+                        <div className="text-center mt-4">
+                          <div className="text-3xl font-bold text-white">
+                            {loadTime.toFixed(1)}s
+                          </div>
+                        </div>
+                      </>
+                    )
+                  })()}
                 </div>
-                <div>
-                  <p className="text-gray-400 text-sm mb-1">All Page Scripts Complete</p>
-                  <p className="text-lg font-semibold">{serverResponseTime.data.completeTime}ms</p>
+              </div>
+
+              {/* All Page Scripts Complete */}
+              <div>
+                <h5 className="text-lg font-semibold text-white mb-4">All Page Scripts Complete</h5>
+                <div className="relative">
+                  {(() => {
+                    const completeTime = serverResponseTime.data.completeTime / 1000 // Convert ms to seconds
+                    const normalizedValue = Math.min(completeTime / 20.0, 1) // 0-20s range
+                    
+                    return (
+                      <>
+                        <div className="relative" style={{ height: '200px' }}>
+                          <GaugeChart
+                            id="complete-time-gauge"
+                            nrOfLevels={30}
+                            percent={0}
+                            colors={['#10B981', '#F59E0B', '#EF4444']}
+                            arcWidth={0.3}
+                            needleColor="transparent"
+                            needleBaseColor="transparent"
+                            textColor="#fff"
+                            formatTextValue={() => ''}
+                            animate={false}
+                            arcsLength={[0.5, 0.25, 0.25]} // Green (0-10s), Yellow (10-15s), Red (15s+)
+                            hideText={true}
+                          />
+                        </div>
+                        {/* Threshold labels */}
+                        <div className="flex justify-between px-4 mt-2">
+                          <span className="text-white text-sm">10</span>
+                          <span className="text-white text-sm">15</span>
+                        </div>
+                        {/* Value Display */}
+                        <div className="text-center mt-4">
+                          <div className="text-3xl font-bold text-white">
+                            {completeTime.toFixed(1)}s
+                          </div>
+                        </div>
+                      </>
+                    )
+                  })()}
                 </div>
               </div>
             </div>
           )}
-          {serverResponseTime.passed ? (
-            <div className="mt-4 flex items-center">
-              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-            </div>
-          ) : null}
         </div>
       )}
 
       {/* Optimize Images */}
       {optimizedImages && (
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
-          <h4 className="text-xl font-bold text-white mb-3">Optimize Images</h4>
-          <p className="text-gray-300 mb-4">{optimizedImages.shortAnswer}</p>
-          {optimizedImages.passed ? (
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <h4 className="text-xl font-bold text-white mb-3">Optimize Images</h4>
+              <p className="text-gray-300">{optimizedImages.shortAnswer}</p>
+            </div>
+            {optimizedImages.passed && (
+              <div className="ml-4 flex-shrink-0">
+                <svg className="w-8 h-8 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                 </svg>
               </div>
-            </div>
-          ) : (
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       )}
     </div>

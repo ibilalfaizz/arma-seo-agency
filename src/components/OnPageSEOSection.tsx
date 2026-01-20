@@ -23,34 +23,23 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
       const finalUrl = data.finalUrl || data.url || ''
 
   // Helper functions
+  // Display numeric scores directly from API - no conversion
   const formatGrade = (grade: number | string | undefined): string => {
     if (grade === undefined || grade === null || grade === '') return 'N/A'
+    // Display numeric score directly from API
     if (typeof grade === 'number') {
-      if (grade >= 98) return 'A+'
-      if (grade >= 95) return 'A'
-      if (grade >= 92) return 'A-'
-      if (grade >= 88) return 'B+'
-      if (grade >= 85) return 'B'
-      if (grade >= 82) return 'B-'
-      if (grade >= 78) return 'C+'
-      if (grade >= 75) return 'C'
-      if (grade >= 72) return 'C-'
-      if (grade >= 68) return 'D+'
-      if (grade >= 65) return 'D'
-      if (grade >= 62) return 'D-'
-      return 'F'
+      return grade.toString()
     }
     return grade.toString()
   }
 
   const getGradeColor = (grade: number | string | undefined): string => {
     if (grade === undefined || grade === null || grade === '') return '#6B7280'
-    const gradeStr = typeof grade === 'number' ? formatGrade(grade) : grade.toString()
-    if (gradeStr.startsWith('A')) return '#10B981' // green
-    if (gradeStr.startsWith('B')) return '#F59E0B' // yellow
-    if (gradeStr.startsWith('C')) return '#F59E0B' // yellow
-    if (gradeStr.startsWith('D')) return '#EF4444' // red
-    return '#EF4444' // red for F
+    // Use numeric score directly to determine color
+    const score = typeof grade === 'number' ? grade : 0
+    if (score >= 80) return '#10B981' // green
+    if (score >= 60) return '#F59E0B' // yellow
+    return '#EF4444' // red
   }
 
   const getGradeTextColor = (grade: number | string | undefined): string => {
@@ -324,7 +313,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
             <div className="text-green-700 text-sm mb-1">
               {finalUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}
             </div>
-            <div className="text-blue-600 text-lg font-semibold mb-1 hover:underline cursor-pointer">
+            <div className="text-accent text-lg font-semibold mb-1 hover:underline cursor-pointer">
               {titleTag.data || 'Page Title'}
             </div>
             <div className="text-gray-700 text-sm leading-relaxed">
@@ -566,7 +555,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
                           <span className="text-white text-sm">{keyword.count || 0}</span>
                           <div className="flex-1 bg-gray-700 rounded-full h-2 max-w-[100px]">
                             <div 
-                              className="bg-blue-500 h-2 rounded-full transition-all duration-500"
+                              className="bg-accent h-2 rounded-full transition-all duration-500"
                               style={{ width: `${frequencyPercentage}%` }}
                             />
                           </div>
@@ -641,7 +630,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
                               <span className="text-white text-sm">{phrase.count || 0}</span>
                               <div className="flex-1 bg-gray-700 rounded-full h-2 max-w-[100px]">
                                 <div 
-                                  className="bg-blue-500 h-2 rounded-full transition-all duration-500"
+                                  className="bg-accent h-2 rounded-full transition-all duration-500"
                                   style={{ width: `${phraseFreqPercentage}%` }}
                                 />
                               </div>

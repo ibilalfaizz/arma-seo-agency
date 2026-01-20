@@ -120,7 +120,7 @@ export default function LocalSEOSection({ data }: LocalSEOSectionProps) {
                       <span className="text-gray-400 text-sm w-8">{rating}</span>
                       <div className="flex-1 bg-gray-700 rounded-full h-4 relative overflow-hidden">
                         <div
-                          className="bg-blue-500 h-full rounded-full transition-all"
+                          className="bg-accent h-full rounded-full transition-all"
                           style={{ width: `${percentage}%` }}
                         />
                       </div>
