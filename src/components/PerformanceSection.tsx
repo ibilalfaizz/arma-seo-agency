@@ -124,7 +124,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
                           <GaugeChart
                             id="server-response-gauge"
                             nrOfLevels={30}
-                            percent={0}
+                            percent={normalizedValue}
                             colors={['#10B981', '#EF4444']}
                             arcWidth={0.1}
                             needleColor="grey"
@@ -167,7 +167,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
                           <GaugeChart
                             id="load-time-gauge"
                             nrOfLevels={30}
-                            percent={0}
+                            percent={normalizedValue}
                             colors={['#10B981', '#F59E0B', '#EF4444']}
                             arcWidth={0.1}
                             needleColor="grey"
@@ -210,7 +210,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
                           <GaugeChart
                             id="complete-time-gauge"
                             nrOfLevels={30}
-                            percent={completeTime}
+                            percent={normalizedValue}
                             colors={['#10B981', '#F59E0B', '#EF4444']}
                             arcWidth={0.1}
                             needleColor="grey"

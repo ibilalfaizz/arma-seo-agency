@@ -11,7 +11,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    <main className="min-h-screen ">
       {/* Minimal Header */}
       <header className="border-b border-gray-700/50 bg-gray-900/50 backdrop-blur-sm">
         <div className="container mx-auto px-4 py-4 max-w-6xl">

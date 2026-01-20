@@ -170,6 +170,13 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                     {/* Gauge Chart - No Needle */}
                     {(() => {
                       const lcp = coreWebVitals.data['largest-contentful-paint']
+                      // LCP thresholds (in seconds) - Core Web Vitals standards
+                      const lcpGoodThreshold = 2.5
+                      const lcpNeedsImprovementThreshold = 4.0
+                      const lcpMaxValue = 6.0
+                      
+                      // Normalize LCP to 0-1 range
+                      const normalizedLCP = Math.min(lcp / lcpMaxValue, 1)
                       
                       return (
                         <>
@@ -177,11 +184,11 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                             <GaugeChart
                               id="lcp-gauge"
                               nrOfLevels={30}
-                              percent={0}
+                              percent={normalizedLCP}
                               colors={['#10B981', '#F59E0B', '#EF4444']}
-                              arcWidth={0.3}
-                              needleColor="transparent"
-                              needleBaseColor="transparent"
+                              arcWidth={0.1}
+                              needleColor="grey"
+                              needleBaseColor="red"
                               textColor="#fff"
                               formatTextValue={() => ''}
                               animate={false}
@@ -191,8 +198,8 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                           </div>
                           {/* Threshold labels */}
                           <div className="flex justify-between px-4 mt-2">
-                            <span className="text-white text-sm">2.5</span>
-                            <span className="text-white text-sm">4</span>
+                            <span className="text-white text-sm">{lcpGoodThreshold}</span>
+                            <span className="text-white text-sm">{lcpNeedsImprovementThreshold}</span>
                           </div>
                           {/* Value Display */}
                           <div className="text-center mt-4">
@@ -215,6 +222,13 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                     {/* Gauge Chart - No Needle */}
                     {(() => {
                       const cls = coreWebVitals.data['cumulative-layout-shift']
+                      // CLS thresholds - Core Web Vitals standards
+                      const clsGoodThreshold = 0.1
+                      const clsNeedsImprovementThreshold = 0.25
+                      const clsMaxValue = 0.5
+                      
+                      // Normalize CLS to 0-1 range
+                      const normalizedCLS = Math.min(cls / clsMaxValue, 1)
                       
                       return (
                         <>
@@ -222,11 +236,11 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                             <GaugeChart
                               id="cls-gauge"
                               nrOfLevels={30}
-                              percent={0}
+                              percent={normalizedCLS}
                               colors={['#10B981', '#F59E0B', '#EF4444']}
-                              arcWidth={0.3}
-                              needleColor="transparent"
-                              needleBaseColor="transparent"
+                              arcWidth={0.1}
+                              needleColor="grey"
+                              needleBaseColor="red"
                               textColor="#fff"
                               formatTextValue={() => ''}
                               animate={false}
@@ -236,8 +250,8 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                           </div>
                           {/* Threshold labels */}
                           <div className="flex justify-between px-4 mt-2">
-                            <span className="text-white text-sm">0.1</span>
-                            <span className="text-white text-sm">0.25</span>
+                            <span className="text-white text-sm">{clsGoodThreshold}</span>
+                            <span className="text-white text-sm">{clsNeedsImprovementThreshold}</span>
                           </div>
                           {/* Value Display */}
                           <div className="text-center mt-4">

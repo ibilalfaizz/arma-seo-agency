@@ -146,7 +146,7 @@ function ResultsContent() {
   }, [url])
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+    <main className="min-h-screen from-gray-900 via-gray-800 to-gray-900">
       {/* Minimal Header - Standalone Report Design */}
       <header className="border-b border-gray-700/50 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="container mx-auto px-4 py-4 max-w-7xl">
