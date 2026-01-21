@@ -101,16 +101,16 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             {/* Mobile Screenshot */}
             {deviceRendering.data.mobile && (
               <div className="flex flex-col items-center">
-                <div className="bg-gray-800 border-2 border-gray-600 rounded-[2.5rem] p-2 shadow-2xl relative w-[240px]">
+                <div className="bg-gray-700 border-2 border-gray-500 rounded-[3rem] p-2 shadow-2xl relative w-[180px]">
                   {/* Notch */}
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-24 h-6 bg-gray-800 border-l-2 border-r-2 border-t-2 border-gray-600 rounded-b-2xl z-10"></div>
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-20 h-5 bg-gray-700 rounded-b-xl z-10"></div>
                   {/* Screen */}
-                  <div className="relative overflow-hidden rounded-[2rem] bg-black mt-1.5 border-2 border-gray-700" style={{ aspectRatio: '9/19.5', width: '100%' }}>
+                  <div className="relative overflow-hidden rounded-[2.5rem] bg-black mt-1" style={{ aspectRatio: '9/19.5', width: '100%', minHeight: '320px' }}>
                     <Image
                       src={deviceRendering.data.mobile}
                       alt="Mobile rendering"
                       fill
-                      className="object-cover object-top"
+                      className="object-fill object-top"
                       unoptimized
                     />
                   </div>
@@ -121,19 +121,18 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             {/* Tablet Screenshot */}
             {deviceRendering.data.tablet && (
               <div className="flex flex-col items-center">
-                <div className="bg-gray-800 border-2 border-gray-600 rounded-xl p-3 shadow-2xl relative" style={{ width: '520px', maxWidth: '100%', paddingBottom: '4rem' }}>
+                <div className="bg-gray-800 border-2 border-gray-600 rounded-xl p-2 shadow-2xl relative" style={{ width: '320px', maxWidth: '100%' }}>
                   {/* Screen */}
-                  <div className="relative overflow-hidden rounded-lg bg-black border-2 border-gray-700" style={{ aspectRatio: '4/3', width: '100%', minHeight: '390px' }}>
+                  <div className="relative overflow-hidden rounded-lg bg-black border-2 border-gray-700" style={{ aspectRatio: '4/3', width: '100%', minHeight: '380px' }}>
                     <Image
                       src={deviceRendering.data.tablet}
                       alt="Tablet rendering"
                       fill
-                      className="object-cover object-top"
+                      className="object-contain object-top"
                       unoptimized
                     />
                   </div>
                   {/* Home Button */}
-                  <div className="absolute bottom-2 left-1/2 transform -translate-x-1/2 w-12 h-12 rounded-full border-2 border-gray-500 bg-gray-800 z-10"></div>
                 </div>
                 <p className="text-white text-sm mt-4 font-medium">Tablet</p>
               </div>
@@ -198,12 +197,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                           </div>
                           {/* Threshold labels */}
                           <div className="flex justify-between px-4 mt-2">
-                            <span className="text-white text-sm">{lcpGoodThreshold}</span>
-                            <span className="text-white text-sm">{lcpNeedsImprovementThreshold}</span>
+                            <span className="text-white text-xs">{lcpGoodThreshold}</span>
+                            <span className="text-white text-xs">{lcpNeedsImprovementThreshold}</span>
                           </div>
                           {/* Value Display */}
-                          <div className="text-center mt-4">
-                            <div className="text-3xl font-bold text-white">
+                          <div className="text-center mt-3">
+                            <div className="text-2xl font-bold text-white">
                               {lcp.toFixed(1)}s
                             </div>
                           </div>
@@ -250,12 +249,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                           </div>
                           {/* Threshold labels */}
                           <div className="flex justify-between px-4 mt-2">
-                            <span className="text-white text-sm">{clsGoodThreshold}</span>
-                            <span className="text-white text-sm">{clsNeedsImprovementThreshold}</span>
+                            <span className="text-white text-xs">{clsGoodThreshold}</span>
+                            <span className="text-white text-xs">{clsNeedsImprovementThreshold}</span>
                           </div>
                           {/* Value Display */}
-                          <div className="text-center mt-4">
-                            <div className="text-3xl font-bold text-white">
+                          <div className="text-center mt-3">
+                            <div className="text-2xl font-bold text-white">
                               {cls.toFixed(2)}
                             </div>
                           </div>
@@ -318,7 +317,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                       r="90"
                       fill="none"
                       stroke="#374151"
-                      strokeWidth="20"
+                      strokeWidth="10"
                     />
                     {/* Progress circle */}
                     <circle
@@ -327,7 +326,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                       r="90"
                       fill="none"
                       stroke={mobilePageInsights.data.score >= 90 ? '#10B981' : mobilePageInsights.data.score >= 50 ? '#F59E0B' : '#EF4444'}
-                      strokeWidth="20"
+                      strokeWidth="10"
                       strokeDasharray={2 * Math.PI * 90}
                       strokeDashoffset={2 * Math.PI * 90 * (1 - mobilePageInsights.data.score / 100)}
                       strokeLinecap="round"

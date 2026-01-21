@@ -207,8 +207,9 @@ function ResultsContent() {
             )}
             <OnPageSEOSection data={seoData} />
             <LinksSection data={seoData} />
-            <PerformanceSection data={seoData} />
             <UsabilitySection data={seoData} />
+            <PerformanceSection data={seoData} />
+            
             <LocalSEOSection data={seoData} />
             
             {/* Call Booking Button */}
