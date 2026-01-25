@@ -14,9 +14,9 @@ export const jobStore = new Map<number, JobStatus>()
 // Clean up old jobs (older than 1 hour)
 setInterval(() => {
   const oneHourAgo = Date.now() - 60 * 60 * 1000
-  for (const [id, job] of jobStore.entries()) {
+  jobStore.forEach((job, id) => {
     if (job.createdAt < oneHourAgo) {
       jobStore.delete(id)
     }
-  }
+  })
 }, 5 * 60 * 1000) // Run cleanup every 5 minutes
