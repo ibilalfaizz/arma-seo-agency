@@ -27,6 +27,8 @@ function ResultsContent() {
   const [seoData, setSeoData] = useState<SEOData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [progress, setProgress] = useState(0)
+  const [jobId, setJobId] = useState<number | null>(null)
 
   useEffect(() => {
     // Check if we should use test data (via query parameter)
@@ -71,7 +73,7 @@ function ResultsContent() {
       }
     }
 
-    // Fetch results from API
+    // Fetch results from API using callback approach
     const fetchResults = async () => {
       if (!url) {
         setError('No URL provided')
@@ -82,9 +84,12 @@ function ResultsContent() {
       setLoading(true)
       setError(null)
       setSeoData(null)
+      setProgress(0)
+      setJobId(null)
 
       try {
-        const response = await fetch('/api/check-seo', {
+        // Step 1: Create report job
+        const createResponse = await fetch('/api/check-seo', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -92,47 +97,116 @@ function ResultsContent() {
           body: JSON.stringify({ url }),
         })
 
-        if (!response.ok) {
-          const errorData = await response.json()
-          throw new Error(errorData.error || 'Failed to check SEO')
+        if (!createResponse.ok) {
+          const errorData = await createResponse.json()
+          throw new Error(errorData.error || 'Failed to start SEO check')
         }
 
-        const apiResponse = await response.json()
+        const createData = await createResponse.json()
         
-        // The API route already extracts and returns outputData directly
-        // So apiResponse IS the outputData (with convenience fields added)
-        const apiData = apiResponse
-        
-        // Map section names to category names for recommendations (if recommendations exist)
-        const sectionToCategory: { [key: string]: string } = {
-          'seo': 'On-Page SEO',
-          'links': 'Links',
-          'ui': 'Usability',
-          'performance': 'Performance',
-          'security': 'Security',
-          'social': 'Social',
-          'localseo': 'Local SEO',
-          'technology': 'Technology',
+        if (!createData.success || !createData.id) {
+          throw new Error('Failed to create report job')
         }
-        
-        // Transform recommendations if they exist and are an array
-        // Note: recommendations can be `false` in the new structure
-        // Only transform labels - use data from API response only
-        if (apiData.recommendations && Array.isArray(apiData.recommendations)) {
-          apiData.recommendations = apiData.recommendations.map((rec: any) => ({
-            recommendation: rec.recommendation,
-            category: sectionToCategory[rec.section] || rec.section,
-            priority: rec.priority
-          }))
-        } else if (apiData.recommendations === false) {
-          // Set to empty array if recommendations is false
-          apiData.recommendations = []
+
+        const reportId = createData.id
+        setJobId(reportId)
+        console.log('Report job created with ID:', reportId)
+
+        // Step 2: Poll status endpoint
+        const pollStatus = async (): Promise<void> => {
+          const maxAttempts = 120 // 10 minutes max (5 second intervals)
+          let attempts = 0
+
+          const poll = async (): Promise<void> => {
+            if (attempts >= maxAttempts) {
+              throw new Error('Report generation timed out. Please try again.')
+            }
+
+            attempts++
+
+            try {
+              const statusResponse = await fetch(`/api/check-status/${reportId}`)
+              
+              if (!statusResponse.ok) {
+                throw new Error('Failed to check status')
+              }
+
+              const statusData = await statusResponse.json()
+              
+              console.log('Status check:', statusData)
+
+              // Update progress (simulate progress based on attempts)
+              // Real progress would come from the API if available
+              const estimatedProgress = Math.min(10 + (attempts * 2), 90)
+              setProgress(estimatedProgress)
+
+              if (statusData.status === 'completed' && statusData.data) {
+                // Report is ready!
+                setProgress(100)
+                
+                const apiData = statusData.data
+                
+                // Map section names to category names for recommendations (if recommendations exist)
+                const sectionToCategory: { [key: string]: string } = {
+                  'seo': 'On-Page SEO',
+                  'links': 'Links',
+                  'ui': 'Usability',
+                  'performance': 'Performance',
+                  'security': 'Security',
+                  'social': 'Social',
+                  'localseo': 'Local SEO',
+                  'technology': 'Technology',
+                }
+                
+                // Transform recommendations if they exist and are an array
+                // Note: recommendations can be `false` in the new structure
+                // Only transform labels - use data from API response only
+                if (apiData.recommendations && Array.isArray(apiData.recommendations)) {
+                  apiData.recommendations = apiData.recommendations.map((rec: any) => ({
+                    recommendation: rec.recommendation,
+                    category: sectionToCategory[rec.section] || rec.section,
+                    priority: rec.priority
+                  }))
+                } else if (apiData.recommendations === false) {
+                  // Set to empty array if recommendations is false
+                  apiData.recommendations = []
+                }
+                
+                setSeoData(apiData as SEOData)
+                setLoading(false)
+                return
+              }
+
+              if (statusData.status === 'error') {
+                throw new Error(statusData.error || 'Report generation failed')
+              }
+
+              // Continue polling if still pending or processing
+              if (statusData.status === 'pending' || statusData.status === 'processing') {
+                setTimeout(poll, 5000) // Poll every 5 seconds
+              } else {
+                throw new Error(`Unknown status: ${statusData.status}`)
+              }
+            } catch (err) {
+              if (err instanceof Error && err.message.includes('timed out')) {
+                throw err
+              }
+              // Retry on error (might be temporary)
+              if (attempts < maxAttempts) {
+                setTimeout(poll, 5000)
+              } else {
+                throw new Error('Failed to get report status. Please try again.')
+              }
+            }
+          }
+
+          // Start polling
+          await poll()
         }
-        
-        setSeoData(apiData as SEOData)
+
+        await pollStatus()
       } catch (err) {
         setError(err instanceof Error ? err.message : 'An unexpected error occurred')
-      } finally {
         setLoading(false)
       }
     }
@@ -172,9 +246,24 @@ function ResultsContent() {
           <div className="text-center py-20">
             <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-accent mb-6"></div>
             <h2 className="text-3xl font-bold mb-4">Analyzing Your Website</h2>
-            <p className="text-gray-400 text-lg">Please wait while we check your SEO performance...</p>
+            <p className="text-gray-400 text-lg mb-6">Please wait while we check your SEO performance...</p>
+            
+            {/* Progress Bar */}
+            <div className="max-w-md mx-auto mb-4">
+              <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
+                <div 
+                  className="bg-accent h-3 rounded-full transition-all duration-500 ease-out"
+                  style={{ width: `${progress}%` }}
+                ></div>
+              </div>
+              <p className="text-gray-400 text-sm mt-2">{progress}% complete</p>
+            </div>
+            
             {url && (
               <p className="text-gray-500 text-sm mt-2">Checking: {url}</p>
+            )}
+            {jobId && (
+              <p className="text-gray-500 text-xs mt-1">Job ID: {jobId}</p>
             )}
           </div>
         )}
