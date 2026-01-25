@@ -197,12 +197,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                           </div>
                           {/* Threshold labels */}
                           <div className="flex justify-between px-4 mt-2">
-                            <span className="text-white text-xs">{lcpGoodThreshold}</span>
-                            <span className="text-white text-xs">{lcpNeedsImprovementThreshold}</span>
+                            <span className="text-white text-sm">{lcpGoodThreshold}</span>
+                            <span className="text-white text-sm">{lcpNeedsImprovementThreshold}</span>
                           </div>
                           {/* Value Display */}
-                          <div className="text-center mt-3">
-                            <div className="text-2xl font-bold text-white">
+                          <div className="text-center mt-4">
+                            <div className="text-3xl font-bold text-white">
                               {lcp.toFixed(1)}s
                             </div>
                           </div>
@@ -249,12 +249,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                           </div>
                           {/* Threshold labels */}
                           <div className="flex justify-between px-4 mt-2">
-                            <span className="text-white text-xs">{clsGoodThreshold}</span>
-                            <span className="text-white text-xs">{clsNeedsImprovementThreshold}</span>
+                            <span className="text-white text-sm">{clsGoodThreshold}</span>
+                            <span className="text-white text-sm">{clsNeedsImprovementThreshold}</span>
                           </div>
                           {/* Value Display */}
-                          <div className="text-center mt-3">
-                            <div className="text-2xl font-bold text-white">
+                          <div className="text-center mt-4">
+                            <div className="text-3xl font-bold text-white">
                               {cls.toFixed(2)}
                             </div>
                           </div>
@@ -317,7 +317,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                       r="90"
                       fill="none"
                       stroke="#374151"
-                      strokeWidth="10"
+                      strokeWidth="20"
                     />
                     {/* Progress circle */}
                     <circle
@@ -326,7 +326,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                       r="90"
                       fill="none"
                       stroke={mobilePageInsights.data.score >= 90 ? '#10B981' : mobilePageInsights.data.score >= 50 ? '#F59E0B' : '#EF4444'}
-                      strokeWidth="10"
+                      strokeWidth="20"
                       strokeDasharray={2 * Math.PI * 90}
                       strokeDashoffset={2 * Math.PI * 90 * (1 - mobilePageInsights.data.score / 100)}
                       strokeLinecap="round"

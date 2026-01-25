@@ -65,19 +65,7 @@ export default function LinksSection({ data }: LinksSectionProps) {
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Friendly Links</h4>
-              {!friendlyUrls.passed && (
-                <>
-                  <p className="text-gray-300 mb-2">
-                    Some of your link URLs do not appear friendly to humans or search engines.
-                  </p>
-                  <p className="text-gray-300">
-                    We would recommend making URLs as readable as possible by reducing length, file names, code strings and special characters.
-                  </p>
-                </>
-              )}
-              {friendlyUrls.passed && (
-                <p className="text-gray-300">{friendlyUrls.shortAnswer}</p>
-              )}
+              <p className="text-gray-300">{friendlyUrls.shortAnswer}</p>
             </div>
             {friendlyUrls.passed ? (
               <div className="flex-shrink-0">

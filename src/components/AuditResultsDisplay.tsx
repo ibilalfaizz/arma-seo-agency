@@ -84,20 +84,14 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     'technology': 'Technology',
   }
 
-  // Define category display order
-  // Radar chart order: Links (top), Performance (right), On-Page SEO (bottom), Usability (left)
-  const categoryOrder = ['links', 'performance', 'seo', 'ui', 'social', 'security', 'localseo', 'technology']
-  
-  // Dynamically extract categories from scores object and sort by predefined order
+  // Dynamically extract categories from scores object
   const categories = Object.keys(scores)
     .filter(key => key !== 'overall' && scores[key] && scores[key].grade !== undefined && scores[key].grade !== null && scores[key].grade !== '')
     .map(key => ({
       key,
       label: categoryLabelMap[key] || key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1'),
-      grade: scores[key].grade,
-      order: categoryOrder.indexOf(key) !== -1 ? categoryOrder.indexOf(key) : 999 // Put unknown categories at the end
+      grade: scores[key].grade
     }))
-    .sort((a, b) => a.order - b.order)
 
   // Draw radar chart
   useEffect(() => {
@@ -111,7 +105,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     const height = canvas.height
     const centerX = width / 2
     const centerY = height / 2
-    const radius = Math.min(width, height) / 2 - 120 // Padding for labels
+    const radius = Math.min(width, height) / 2 - 140 // Increased padding for labels
 
     // Clear canvas
     ctx.clearRect(0, 0, width, height)
@@ -163,10 +157,12 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
 
     // Draw labels
     ctx.fillStyle = '#E5E7EB'
-    ctx.font = '14px sans-serif'
+    ctx.font = '12px sans-serif'
+    ctx.textAlign = 'center'
+    ctx.textBaseline = 'middle'
     categories.forEach((cat, index) => {
       const angle = (index * angleStep) - Math.PI / 2
-      const labelRadius = radius + 25 // Distance from chart edge
+      const labelRadius = radius + 15
       const x = centerX + Math.cos(angle) * labelRadius
       const y = centerY + Math.sin(angle) * labelRadius
       
@@ -277,11 +273,9 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
               </p>
 
               {/* Recommendations Button */}
-              {recommendations && recommendations.length > 0 && (
-                <button className="bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors w-full">
-                  Recommendations: {recommendations.length}
-                </button>
-              )}
+              <button className="bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors w-full">
+                Recommendations: {recommendations.length}
+              </button>
             </div>
           </div>
 
@@ -346,9 +340,9 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
               const catOffset = catCircumference - (score / 100) * catCircumference
 
               return (
-                <div key={category.key} className="bg-primary rounded-lg border border-gray-800 p-6 flex flex-col items-center justify-center text-center">
+                <div key={category.key} className="bg-primary rounded-lg border border-gray-800 p-6 text-center">
                   {/* Circular Gauge */}
-                  <div className="relative w-24 h-24 mb-4">
+                  <div className="relative w-24 h-24 mx-auto mb-4">
                     <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 100 100">
                       <circle
                         cx="50"

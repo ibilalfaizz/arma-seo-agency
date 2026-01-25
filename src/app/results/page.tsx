@@ -112,13 +112,65 @@ function ResultsContent() {
         setJobId(reportId)
         console.log('Report job created with ID:', reportId)
 
-        // Step 2: Poll status endpoint
+        // Step 2: Poll status endpoint with fallback
         const pollStatus = async (): Promise<void> => {
-          const maxAttempts = 120 // 10 minutes max (5 second intervals)
+          const maxAttempts = 60 // 5 minutes max (5 second intervals)
           let attempts = 0
+          let useFallback = false
 
           const poll = async (): Promise<void> => {
             if (attempts >= maxAttempts) {
+              // If callback hasn't worked after 2 minutes, try fallback polling
+              if (!useFallback && attempts >= 24) { // After 2 minutes (24 * 5 seconds)
+                console.log('Callback not received after 2 minutes, switching to fallback polling...')
+                useFallback = true
+                try {
+                  const fallbackResponse = await fetch('/api/check-seo-fallback', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ reportId }),
+                  })
+                  
+                  if (fallbackResponse.ok) {
+                    const fallbackData = await fallbackResponse.json()
+                    if (fallbackData.success && fallbackData.data) {
+                      // Fallback succeeded, process the data
+                      const apiData = fallbackData.data
+                      
+                      // Map section names to category names for recommendations
+                      const sectionToCategory: { [key: string]: string } = {
+                        'seo': 'On-Page SEO',
+                        'links': 'Links',
+                        'ui': 'Usability',
+                        'performance': 'Performance',
+                        'security': 'Security',
+                        'social': 'Social',
+                        'localseo': 'Local SEO',
+                        'technology': 'Technology',
+                      }
+                      
+                      if (apiData.recommendations && Array.isArray(apiData.recommendations)) {
+                        apiData.recommendations = apiData.recommendations.map((rec: any) => ({
+                          recommendation: rec.recommendation,
+                          category: sectionToCategory[rec.section] || rec.section,
+                          priority: rec.priority
+                        }))
+                      } else if (apiData.recommendations === false) {
+                        apiData.recommendations = []
+                      }
+                      
+                      setProgress(100)
+                      setSeoData(apiData as SEOData)
+                      setLoading(false)
+                      return
+                    }
+                  }
+                } catch (fallbackErr) {
+                  console.error('Fallback polling also failed:', fallbackErr)
+                }
+              }
               throw new Error('Report generation timed out. Please try again.')
             }
 
@@ -133,11 +185,11 @@ function ResultsContent() {
 
               const statusData = await statusResponse.json()
               
-              console.log('Status check:', statusData)
+              console.log(`Status check (attempt ${attempts}):`, statusData)
 
               // Update progress (simulate progress based on attempts)
               // Real progress would come from the API if available
-              const estimatedProgress = Math.min(10 + (attempts * 2), 90)
+              const estimatedProgress = Math.min(10 + (attempts * 1.5), useFallback ? 95 : 90)
               setProgress(estimatedProgress)
 
               if (statusData.status === 'completed' && statusData.data) {

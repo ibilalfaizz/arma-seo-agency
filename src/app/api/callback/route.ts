@@ -3,25 +3,55 @@ import { jobStore, JobStatus } from '@/lib/jobStore'
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
+    // Log raw request for debugging
+    const rawBody = await request.text()
+    console.log('Raw callback received from SEOptimer:', rawBody)
     
-    console.log('Callback received from SEOptimer:', JSON.stringify(body, null, 2))
+    let body
+    try {
+      body = JSON.parse(rawBody)
+    } catch (e) {
+      console.error('Failed to parse callback body as JSON:', e)
+      return NextResponse.json(
+        { error: 'Invalid JSON in callback' },
+        { status: 400 }
+      )
+    }
+    
+    console.log('Parsed callback from SEOptimer:', JSON.stringify(body, null, 2))
     
     // Extract report ID from the callback data
     // The structure may vary, but typically it's in data.id or id
-    const reportId = body.data?.id || body.id
+    const reportId = body.data?.id || body.data?.data?.id || body.id
     
     if (!reportId) {
-      console.error('No report ID in callback:', body)
+      console.error('No report ID in callback. Full body:', JSON.stringify(body, null, 2))
       return NextResponse.json(
         { error: 'No report ID provided' },
         { status: 400 }
       )
     }
     
+    console.log(`Processing callback for report ID: ${reportId}`)
+    
     // Parse the output data - handle multiple possible structures
     // Could be: body.data.output, body.data.data.output, body.output, or body.data
-    let outputData = body.data?.data?.output || body.data?.output || body.output || body.data
+    // Also check for nested structures from SEOptimer API
+    let outputData = body.data?.data?.output || 
+                     body.data?.output || 
+                     body.output || 
+                     body.data?.data ||
+                     body.data
+    
+    console.log(`Output data structure for report ${reportId}:`, {
+      hasDataDataOutput: !!body.data?.data?.output,
+      hasDataOutput: !!body.data?.output,
+      hasOutput: !!body.output,
+      hasDataData: !!body.data?.data,
+      hasData: !!body.data,
+      outputDataType: typeof outputData,
+      outputDataKeys: typeof outputData === 'object' && outputData !== null ? Object.keys(outputData) : 'N/A'
+    })
     
     // If outputData is false or null, the report might still be processing
     if (outputData === false || outputData === null) {
