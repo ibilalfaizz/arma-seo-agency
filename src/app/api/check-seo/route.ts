@@ -1,25 +1,83 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { jobStore } from '@/lib/jobStore'
 
 const SEOPTIMER_API_BASE = 'https://api.seoptimer.com'
 
-// Helper function to get the callback URL
-function getCallbackUrl(request: NextRequest): string {
-  // Try to get from environment variable first
-  if (process.env.NEXT_PUBLIC_BASE_URL) {
-    return `${process.env.NEXT_PUBLIC_BASE_URL}/api/callback`
+// Helper function to sleep/delay
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms))
+
+// Helper function to get report with polling
+async function getReportWithPolling(apiKey: string, reportId: number, maxAttempts: number = 30): Promise<any> {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    try {
+      console.log(`Polling attempt ${attempt + 1}/${maxAttempts} for report ${reportId}`)
+      
+      const response = await fetch(`${SEOPTIMER_API_BASE}/v1/report/get/${reportId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': apiKey,
+        },
+      })
+
+      if (!response.ok) {
+        if (response.status === 404 && attempt < maxAttempts - 1) {
+          // Report not ready yet, wait and retry
+          console.log(`Report ${reportId} not ready yet (404), waiting...`)
+          await sleep(3000) // Wait 3 seconds between attempts
+          continue
+        }
+        
+        const errorText = await response.text()
+        console.error(`API Error (${response.status}):`, errorText)
+        throw new Error(`Failed to get report: ${response.status} ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      console.log(`Report ${reportId} response structure:`, JSON.stringify(data, null, 2))
+      
+      // Check if report is ready - check multiple possible structures
+      if (data.success) {
+        // Check if report has completed_at timestamp (most reliable indicator)
+        if (data.data?.completed_at) {
+          console.log(`Report ${reportId} is ready (completed at: ${data.data.completed_at})!`)
+          return data
+        }
+        
+        // Check if output exists (could be in data.data.output or data.output)
+        // Note: output can be false, null, or undefined when not ready
+        // Only consider it ready if it's an actual object with data
+        const output = data.data?.output || data.output
+        
+        if (output && typeof output === 'object' && Object.keys(output).length > 0) {
+          console.log(`Report ${reportId} is ready (output data present)!`)
+          return data
+        }
+        
+        // If output exists but is false/null, report is still processing
+        if (output === false || output === null) {
+          if (attempt < maxAttempts - 1) {
+            console.log(`Report ${reportId} still processing (output is ${output}), waiting 3 seconds...`)
+            await sleep(3000)
+            continue
+          }
+        }
+      }
+      
+      // If report is still processing, wait and retry
+      if (attempt < maxAttempts - 1) {
+        console.log(`Report ${reportId} still processing, waiting 3 seconds...`)
+        await sleep(3000) // Wait 3 seconds between attempts
+      }
+    } catch (error) {
+      console.error(`Error on attempt ${attempt + 1}:`, error)
+      if (attempt === maxAttempts - 1) {
+        throw error
+      }
+      await sleep(3000)
+    }
   }
   
-  // Get from request headers (for Vercel/production)
-  const host = request.headers.get('host')
-  const protocol = request.headers.get('x-forwarded-proto') || 'https'
-  
-  if (host) {
-    return `${protocol}://${host}/api/callback`
-  }
-  
-  // Fallback to localhost for development
-  return 'http://localhost:3000/api/callback'
+  throw new Error(`Report generation timed out after ${maxAttempts} attempts (${maxAttempts * 3} seconds)`)
 }
 
 export async function POST(request: NextRequest) {
@@ -43,11 +101,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get callback URL
-    const callbackUrl = getCallbackUrl(request)
-    console.log('Using callback URL:', callbackUrl)
-
-    // Step 1: Create report with callback
+    // Step 1: Create report
     const createReportResponse = await fetch(`${SEOPTIMER_API_BASE}/v1/report/create`, {
       method: 'POST',
       headers: {
@@ -57,8 +111,7 @@ export async function POST(request: NextRequest) {
       },
       body: JSON.stringify({ 
         url: url,
-        pdf: 1, // Enable PDF generation
-        callback: callbackUrl // Add callback URL
+        pdf: 1 // Enable PDF generation
       }),
     })
 
@@ -95,23 +148,51 @@ export async function POST(request: NextRequest) {
     }
 
     const reportId = createReportData.data.id
-    console.log('Report created with ID:', reportId, 'Waiting for callback...')
+    console.log('Report created with ID:', reportId)
 
-    // Initialize job status in store
-    const jobStatus = {
-      id: reportId,
-      status: 'pending' as const,
-      progress: 0,
-      createdAt: Date.now()
+    // Step 2: Get report results (with polling if needed)
+    const reportData = await getReportWithPolling(apiKey, reportId)
+    
+    // Log the full response structure for debugging
+    console.log('SEOptimer Report Response structure:', JSON.stringify(reportData, null, 2))
+
+    // Parse the output JSON if it's a string
+    // Try multiple possible locations for output data
+    let outputData = reportData.data?.output || reportData.output || reportData.data
+    
+    if (!outputData) {
+      console.error('No output data found in response:', reportData)
+      return NextResponse.json(
+        { error: 'Report data not available. The report may still be processing.' },
+        { status: 503 }
+      )
     }
-    jobStore.set(reportId, jobStatus)
+    
+    if (typeof outputData === 'string') {
+      try {
+        outputData = JSON.parse(outputData)
+      } catch (e) {
+        console.error('Failed to parse output JSON:', e)
+        return NextResponse.json(
+          { error: 'Failed to parse report data' },
+          { status: 500 }
+        )
+      }
+    }
 
-    // Return immediately with job ID for frontend to poll
-    return NextResponse.json({
-      success: true,
-      id: reportId,
-      message: 'Report generation started. Use the status endpoint to check progress.'
-    })
+    // Return the outputData from the API response
+    // Add convenience fields ONLY if they don't exist, and ONLY from API response data
+    // All data comes directly from the SEOptimer API response - no conversions, no hardcoded values
+    const responseData = {
+      ...outputData,
+      // Add url from API response (finalUrl or input.url) - all from API response
+      url: outputData.finalUrl || reportData.data?.input?.url,
+      // Add pdfUrl from API response (pdf field)
+      pdfUrl: outputData.pdf || null,
+      // Note: score is available directly as scores.overall.grade from API - no conversion needed
+    }
+
+    return NextResponse.json(responseData)
   } catch (error) {
     console.error('Error checking SEO:', error)
     return NextResponse.json(

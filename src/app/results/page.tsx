@@ -28,7 +28,6 @@ function ResultsContent() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [progress, setProgress] = useState(0)
-  const [jobId, setJobId] = useState<number | null>(null)
 
   useEffect(() => {
     // Check if we should use test data (via query parameter)
@@ -73,7 +72,7 @@ function ResultsContent() {
       }
     }
 
-    // Fetch results from API using callback approach
+    // Fetch results from API
     const fetchResults = async () => {
       if (!url) {
         setError('No URL provided')
@@ -85,11 +84,30 @@ function ResultsContent() {
       setError(null)
       setSeoData(null)
       setProgress(0)
-      setJobId(null)
+
+      let progressInterval: NodeJS.Timeout | null = null
+      let isComplete = false
+
+      // Simulate progress bar - slower increments
+      progressInterval = setInterval(() => {
+        if (isComplete) {
+          if (progressInterval) clearInterval(progressInterval)
+          return
+        }
+        setProgress((prev) => {
+          // Don't update if already at 100 or if complete
+          if (prev >= 100 || isComplete) return 100
+          // Slower progression as we approach 90%
+          if (prev < 20) return prev + 1
+          if (prev < 50) return prev + 0.8
+          if (prev < 80) return prev + 0.5
+          if (prev < 90) return prev + 0.3
+          return Math.min(prev + 0.1, 90) // Cap at 90% until response arrives
+        })
+      }, 800) // Update every 800ms (slower)
 
       try {
-        // Step 1: Create report job
-        const createResponse = await fetch('/api/check-seo', {
+        const response = await fetch('/api/check-seo', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -97,168 +115,61 @@ function ResultsContent() {
           body: JSON.stringify({ url }),
         })
 
-        if (!createResponse.ok) {
-          const errorData = await createResponse.json()
-          throw new Error(errorData.error || 'Failed to start SEO check')
+        if (!response.ok) {
+          isComplete = true
+          if (progressInterval) clearInterval(progressInterval)
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'Failed to check SEO')
         }
 
-        const createData = await createResponse.json()
+        const apiResponse = await response.json()
         
-        if (!createData.success || !createData.id) {
-          throw new Error('Failed to create report job')
+        // Mark as complete and stop the interval
+        isComplete = true
+        if (progressInterval) clearInterval(progressInterval)
+        
+        // Complete the progress bar to 100%
+        setProgress(100)
+        
+        // Wait a bit longer to show 100% completion before showing results
+        await new Promise(resolve => setTimeout(resolve, 800))
+        
+        // The API route already extracts and returns outputData directly
+        // So apiResponse IS the outputData (with convenience fields added)
+        const apiData = apiResponse
+        
+        // Map section names to category names for recommendations (if recommendations exist)
+        const sectionToCategory: { [key: string]: string } = {
+          'seo': 'On-Page SEO',
+          'links': 'Links',
+          'ui': 'Usability',
+          'performance': 'Performance',
+          'security': 'Security',
+          'social': 'Social',
+          'localseo': 'Local SEO',
+          'technology': 'Technology',
         }
-
-        const reportId = createData.id
-        setJobId(reportId)
-        console.log('Report job created with ID:', reportId)
-
-        // Step 2: Poll status endpoint with fallback
-        const pollStatus = async (): Promise<void> => {
-          const maxAttempts = 60 // 5 minutes max (5 second intervals)
-          let attempts = 0
-          let useFallback = false
-
-          const poll = async (): Promise<void> => {
-            if (attempts >= maxAttempts) {
-              // If callback hasn't worked after 2 minutes, try fallback polling
-              if (!useFallback && attempts >= 24) { // After 2 minutes (24 * 5 seconds)
-                console.log('Callback not received after 2 minutes, switching to fallback polling...')
-                useFallback = true
-                try {
-                  const fallbackResponse = await fetch('/api/check-seo-fallback', {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ reportId }),
-                  })
-                  
-                  if (fallbackResponse.ok) {
-                    const fallbackData = await fallbackResponse.json()
-                    if (fallbackData.success && fallbackData.data) {
-                      // Fallback succeeded, process the data
-                      const apiData = fallbackData.data
-                      
-                      // Map section names to category names for recommendations
-                      const sectionToCategory: { [key: string]: string } = {
-                        'seo': 'On-Page SEO',
-                        'links': 'Links',
-                        'ui': 'Usability',
-                        'performance': 'Performance',
-                        'security': 'Security',
-                        'social': 'Social',
-                        'localseo': 'Local SEO',
-                        'technology': 'Technology',
-                      }
-                      
-                      if (apiData.recommendations && Array.isArray(apiData.recommendations)) {
-                        apiData.recommendations = apiData.recommendations.map((rec: any) => ({
-                          recommendation: rec.recommendation,
-                          category: sectionToCategory[rec.section] || rec.section,
-                          priority: rec.priority
-                        }))
-                      } else if (apiData.recommendations === false) {
-                        apiData.recommendations = []
-                      }
-                      
-                      setProgress(100)
-                      setSeoData(apiData as SEOData)
-                      setLoading(false)
-                      return
-                    }
-                  }
-                } catch (fallbackErr) {
-                  console.error('Fallback polling also failed:', fallbackErr)
-                }
-              }
-              throw new Error('Report generation timed out. Please try again.')
-            }
-
-            attempts++
-
-            try {
-              const statusResponse = await fetch(`/api/check-status/${reportId}`)
-              
-              if (!statusResponse.ok) {
-                throw new Error('Failed to check status')
-              }
-
-              const statusData = await statusResponse.json()
-              
-              console.log(`Status check (attempt ${attempts}):`, statusData)
-
-              // Update progress (simulate progress based on attempts)
-              // Real progress would come from the API if available
-              const estimatedProgress = Math.min(10 + (attempts * 1.5), useFallback ? 95 : 90)
-              setProgress(estimatedProgress)
-
-              if (statusData.status === 'completed' && statusData.data) {
-                // Report is ready!
-                setProgress(100)
-                
-                const apiData = statusData.data
-                
-                // Map section names to category names for recommendations (if recommendations exist)
-                const sectionToCategory: { [key: string]: string } = {
-                  'seo': 'On-Page SEO',
-                  'links': 'Links',
-                  'ui': 'Usability',
-                  'performance': 'Performance',
-                  'security': 'Security',
-                  'social': 'Social',
-                  'localseo': 'Local SEO',
-                  'technology': 'Technology',
-                }
-                
-                // Transform recommendations if they exist and are an array
-                // Note: recommendations can be `false` in the new structure
-                // Only transform labels - use data from API response only
-                if (apiData.recommendations && Array.isArray(apiData.recommendations)) {
-                  apiData.recommendations = apiData.recommendations.map((rec: any) => ({
-                    recommendation: rec.recommendation,
-                    category: sectionToCategory[rec.section] || rec.section,
-                    priority: rec.priority
-                  }))
-                } else if (apiData.recommendations === false) {
-                  // Set to empty array if recommendations is false
-                  apiData.recommendations = []
-                }
-                
-                setSeoData(apiData as SEOData)
-                setLoading(false)
-                return
-              }
-
-              if (statusData.status === 'error') {
-                throw new Error(statusData.error || 'Report generation failed')
-              }
-
-              // Continue polling if still pending or processing
-              if (statusData.status === 'pending' || statusData.status === 'processing') {
-                setTimeout(poll, 5000) // Poll every 5 seconds
-              } else {
-                throw new Error(`Unknown status: ${statusData.status}`)
-              }
-            } catch (err) {
-              if (err instanceof Error && err.message.includes('timed out')) {
-                throw err
-              }
-              // Retry on error (might be temporary)
-              if (attempts < maxAttempts) {
-                setTimeout(poll, 5000)
-              } else {
-                throw new Error('Failed to get report status. Please try again.')
-              }
-            }
-          }
-
-          // Start polling
-          await poll()
+        
+        // Transform recommendations if they exist and are an array
+        // Note: recommendations can be `false` in the new structure
+        // Only transform labels - use data from API response only
+        if (apiData.recommendations && Array.isArray(apiData.recommendations)) {
+          apiData.recommendations = apiData.recommendations.map((rec: any) => ({
+            recommendation: rec.recommendation,
+            category: sectionToCategory[rec.section] || rec.section,
+            priority: rec.priority
+          }))
+        } else if (apiData.recommendations === false) {
+          // Set to empty array if recommendations is false
+          apiData.recommendations = []
         }
-
-        await pollStatus()
+        
+        setSeoData(apiData as SEOData)
       } catch (err) {
+        isComplete = true
+        if (progressInterval) clearInterval(progressInterval)
         setError(err instanceof Error ? err.message : 'An unexpected error occurred')
+      } finally {
         setLoading(false)
       }
     }
@@ -304,18 +215,15 @@ function ResultsContent() {
             <div className="max-w-md mx-auto mb-4">
               <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                 <div 
-                  className="bg-accent h-3 rounded-full transition-all duration-500 ease-out"
+                  className="bg-accent h-3 rounded-full transition-all duration-300 ease-out"
                   style={{ width: `${progress}%` }}
                 ></div>
               </div>
-              <p className="text-gray-400 text-sm mt-2">{progress}% complete</p>
+              <p className="text-gray-400 text-sm mt-2">{Math.round(progress)}% complete</p>
             </div>
             
             {url && (
               <p className="text-gray-500 text-sm mt-2">Checking: {url}</p>
-            )}
-            {jobId && (
-              <p className="text-gray-500 text-xs mt-1">Job ID: {jobId}</p>
             )}
           </div>
         )}
