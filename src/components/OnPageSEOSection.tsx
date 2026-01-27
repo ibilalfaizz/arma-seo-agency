@@ -240,7 +240,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Image Alt Tags Section */}
       {data.imageAlt && data.imageAlt.data && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Image Alt Attributes</h4>
@@ -437,7 +437,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* H2-H6 Header Tag Usage */}
       {headers && headers.data && (headers.data.h2 || headers.data.h3 || headers.data.h4 || headers.data.h5 || headers.data.h6) && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-2">H2-H6 Header Tag Usage</h4>
@@ -474,27 +474,29 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
       {/* Keyword Consistency */}
       {keywords && keywords !== false && keywords.data && keywords.data.keywords && (
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
-          <div className="flex items-start justify-between gap-4 mb-4">
+          {/* Section Title */}
+          <h4 className="text-xl font-bold text-accent mb-4">1. Individual Keywords</h4>
+          
+          {/* Keyword Consistency Header */}
+          <div className="flex items-start gap-3 mb-6">
             <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Keyword Consistency</h4>
-              <p className="text-gray-300 mb-2">
-                {keywords.shortAnswer || "Your page's main keywords distribution across important HTML Tags."}
-              </p>
-              {keywords.passed === false && (
-                <p className="text-gray-400 text-sm">
-                  Your page content should be focused around particular keywords you would like to rank for. Ideally these keywords should also be distributed across tags such as the title, meta and header tags.
-                </p>
-              )}
-            </div>
-            {keywords.passed === false && (
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <div className="flex items-center gap-2 mb-2">
+                <h5 className="text-lg font-semibold text-white">Keyword Consistency</h5>
+                {keywords.passed !== false && (
+                  <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                </div>
+                )}
+                {keywords.passed === false && (
+                  <svg className="w-5 h-5 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                )}
               </div>
-            )}
+              <p className="text-gray-300 text-sm">
+                {keywords.shortAnswer || "Your page's main keywords are distributed well across the important HTML Tags."}
+              </p>
+            </div>
           </div>
 
           {/* Keywords Table */}
@@ -551,11 +553,11 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
                         )}
                       </td>
                       <td className="py-3 px-4">
-                        <div className="flex items-center gap-2">
-                          <span className="text-white text-sm">{keyword.count || 0}</span>
-                          <div className="flex-1 bg-gray-700 rounded-full h-2 max-w-[100px]">
+                        <div className="flex items-center gap-3">
+                          <span className="text-white text-sm font-medium min-w-[30px]">{keyword.count || 0}</span>
+                          <div className="flex-1 bg-gray-700 rounded-full h-3 max-w-[150px]">
                             <div 
-                              className="bg-accent h-2 rounded-full transition-all duration-500"
+                              className="bg-accent h-3 rounded-full transition-all duration-500"
                               style={{ width: `${frequencyPercentage}%` }}
                             />
                           </div>
@@ -569,9 +571,9 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
           </div>
 
           {/* Phrases Section (if available) */}
-          {keywords.data.phrases && Array.isArray(keywords.data.phrases) && keywords.data.phrases.length > 0 && (
-            <div className="mt-6 pt-6 border-t border-gray-700">
-              <h5 className="text-lg font-bold text-white mb-4">Phrases</h5>
+          {keywords.data.phrases && Array.isArray(keywords.data.phrases) && keywords.data.phrases.filter((p: any) => p && typeof p === 'object' && p.word).length > 0 && (
+            <div className="mt-8 pt-6 border-t border-gray-700">
+              <h5 className="text-xl font-bold text-white mb-4">Phrases</h5>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
@@ -626,11 +628,11 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
                             )}
                           </td>
                           <td className="py-3 px-4">
-                            <div className="flex items-center gap-2">
-                              <span className="text-white text-sm">{phrase.count || 0}</span>
-                              <div className="flex-1 bg-gray-700 rounded-full h-2 max-w-[100px]">
+                            <div className="flex items-center gap-3">
+                              <span className="text-white text-sm font-medium min-w-[30px]">{phrase.count || 0}</span>
+                              <div className="flex-1 bg-gray-700 rounded-full h-3 max-w-[150px]">
                                 <div 
-                                  className="bg-accent h-2 rounded-full transition-all duration-500"
+                                  className="bg-accent h-3 rounded-full transition-all duration-500"
                                   style={{ width: `${phraseFreqPercentage}%` }}
                                 />
                               </div>

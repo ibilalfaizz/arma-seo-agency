@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { writeFile, mkdir } from 'fs/promises'
+import { join } from 'path'
 
 const SEOPTIMER_API_BASE = 'https://api.seoptimer.com'
 
@@ -82,7 +84,7 @@ async function getReportWithPolling(apiKey: string, reportId: number, maxAttempt
 
 export async function POST(request: NextRequest) {
   try {
-    const { url } = await request.json()
+    const { url, saveJson } = await request.json()
 
     if (!url) {
       return NextResponse.json(
@@ -155,6 +157,25 @@ export async function POST(request: NextRequest) {
     
     // Log the full response structure for debugging
     console.log('SEOptimer Report Response structure:', JSON.stringify(reportData, null, 2))
+
+    // Save to JSON file if requested
+    if (saveJson === true || process.env.SAVE_API_RESPONSES === 'true') {
+      try {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-')
+        const filename = `seo-report-${reportId}-${timestamp}.json`
+        const filePath = join(process.cwd(), 'public', 'api-responses', filename)
+        
+        // Ensure directory exists
+        await mkdir(join(process.cwd(), 'public', 'api-responses'), { recursive: true })
+        
+        // Save the full reportData
+        await writeFile(filePath, JSON.stringify(reportData, null, 2), 'utf-8')
+        console.log(`Report saved to: ${filePath}`)
+      } catch (saveError) {
+        console.error('Failed to save report to file:', saveError)
+        // Don't fail the request if file save fails
+      }
+    }
 
     // Parse the output JSON if it's a string
     // Try multiple possible locations for output data

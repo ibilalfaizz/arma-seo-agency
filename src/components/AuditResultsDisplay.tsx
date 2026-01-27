@@ -273,7 +273,15 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
               </p>
 
               {/* Recommendations Button */}
-              <button className="bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors w-full">
+              <button 
+                onClick={() => {
+                  const recommendationsSection = document.getElementById('recommendations-section')
+                  if (recommendationsSection) {
+                    recommendationsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  }
+                }}
+                className="bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors w-full"
+              >
                 Recommendations: {recommendations.length}
               </button>
             </div>

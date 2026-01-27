@@ -31,8 +31,8 @@ function ResultsContent() {
 
   useEffect(() => {
     // Check if we should use test data (via query parameter)
-    // Default to API mode - set ?test=true to use test data (JSON file) instead
-    const useTestData = new URLSearchParams(window.location.search).get('test') === 'true'
+    // Default to TEST mode - set ?api=true to use API instead
+    const useTestData = new URLSearchParams(window.location.search).get('api') !== 'true'
     
     // Load test data from JSON file
     const loadTestData = async () => {
@@ -54,13 +54,33 @@ function ResultsContent() {
           'technology': 'Technology',
         }
         
-        // Transform recommendations from JSON to match component expectations
+        // Handle recommendations - can be an array, false, or undefined
         if (outputData.recommendations && Array.isArray(outputData.recommendations)) {
+          // Transform recommendations array
           outputData.recommendations = outputData.recommendations.map((rec: any) => ({
             recommendation: rec.recommendation,
             category: sectionToCategory[rec.section] || rec.section || 'Other',
             priority: rec.priority || 'low'
           }))
+        } else {
+          // If recommendations is false or doesn't exist, try to extract from individual sections
+          const extractedRecommendations: any[] = []
+          
+          // Iterate through all keys in outputData to find sections with recommendations
+          Object.keys(outputData).forEach((key) => {
+            const section = outputData[key]
+            // Check if this section has a recommendation string (not false)
+            if (section && typeof section === 'object' && section.recommendation && typeof section.recommendation === 'string') {
+              extractedRecommendations.push({
+                recommendation: section.recommendation,
+                category: sectionToCategory[section.section] || section.section || 'Other',
+                priority: section.priority || 'low'
+              })
+            }
+          })
+          
+          // Use extracted recommendations if found, otherwise empty array
+          outputData.recommendations = extractedRecommendations.length > 0 ? extractedRecommendations : []
         }
         
         setSeoData(outputData as SEOData)
@@ -150,18 +170,33 @@ function ResultsContent() {
           'technology': 'Technology',
         }
         
-        // Transform recommendations if they exist and are an array
-        // Note: recommendations can be `false` in the new structure
-        // Only transform labels - use data from API response only
+        // Handle recommendations - can be an array, false, or undefined
         if (apiData.recommendations && Array.isArray(apiData.recommendations)) {
+          // Transform recommendations array
           apiData.recommendations = apiData.recommendations.map((rec: any) => ({
             recommendation: rec.recommendation,
             category: sectionToCategory[rec.section] || rec.section,
             priority: rec.priority
           }))
-        } else if (apiData.recommendations === false) {
-          // Set to empty array if recommendations is false
-          apiData.recommendations = []
+        } else {
+          // If recommendations is false or doesn't exist, try to extract from individual sections
+          const extractedRecommendations: any[] = []
+          
+          // Iterate through all keys in apiData to find sections with recommendations
+          Object.keys(apiData).forEach((key) => {
+            const section = apiData[key]
+            // Check if this section has a recommendation string (not false)
+            if (section && typeof section === 'object' && section.recommendation && typeof section.recommendation === 'string') {
+              extractedRecommendations.push({
+                recommendation: section.recommendation,
+                category: sectionToCategory[section.section] || section.section || 'Other',
+                priority: section.priority || 'medium'
+              })
+            }
+          })
+          
+          // Use extracted recommendations if found, otherwise empty array
+          apiData.recommendations = extractedRecommendations.length > 0 ? extractedRecommendations : []
         }
         
         setSeoData(apiData as SEOData)
