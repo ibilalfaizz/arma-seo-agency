@@ -97,13 +97,13 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
           <h4 className="text-xl font-bold text-white mb-3">Device Rendering</h4>
           <p className="text-gray-300 mb-6">{deviceRendering.shortAnswer}</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 justify-items-center">
+          <div className="flex flex-wrap justify-center items-start gap-4 md:gap-6">
             {/* Mobile Screenshot */}
             {deviceRendering.data.mobile && (
               <div className="flex flex-col items-center">
-                <div className="bg-gray-700 border-2 border-gray-500 rounded-[3rem] p-2 shadow-2xl relative w-[180px]">
+                <div className="bg-slate-300 border-2 border-slate-400 rounded-[3rem] p-2 shadow-2xl relative w-[180px]">
                   {/* Notch */}
-                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-20 h-5 bg-gray-700 rounded-b-xl z-10"></div>
+                  <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-20 h-5 bg-slate-300 rounded-b-xl z-10"></div>
                   {/* Screen */}
                   <div className="relative overflow-hidden rounded-[2.5rem] bg-black mt-1" style={{ aspectRatio: '9/19.5', width: '100%', minHeight: '320px' }}>
                     <Image
@@ -121,9 +121,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             {/* Tablet Screenshot */}
             {deviceRendering.data.tablet && (
               <div className="flex flex-col items-center">
-                <div className="bg-gray-800 border-2 border-gray-600 rounded-xl p-2 shadow-2xl relative" style={{ width: '320px', maxWidth: '100%' }}>
+                <div className="bg-slate-300 border-2 border-slate-400 rounded-xl p-2 shadow-2xl relative" style={{ width: '295px', maxWidth: '100%' }}>
                   {/* Screen */}
-                  <div className="relative overflow-hidden rounded-lg bg-black border-2 border-gray-700" style={{ aspectRatio: '4/3', width: '100%', minHeight: '380px' }}>
+                  <div className="relative overflow-hidden rounded-lg bg-black border-2 border-slate-500" style={{ aspectRatio: '4/3', width: '100%', minHeight: '380px' }}>
                     <Image
                       src={deviceRendering.data.tablet}
                       alt="Tablet rendering"

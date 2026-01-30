@@ -6,6 +6,7 @@ import Image from 'next/image'
 import AuditResultsDisplay from '@/components/AuditResultsDisplay'
 import OnPageSEOSection from '@/components/OnPageSEOSection'
 import RecommendationsSection from '@/components/RecommendationsSection'
+import BacklinksSection from '@/components/BacklinksSection'
 import LinksSection from '@/components/LinksSection'
 import PerformanceSection from '@/components/PerformanceSection'
 import UsabilitySection from '@/components/UsabilitySection'
@@ -33,7 +34,9 @@ function ResultsContent() {
     // Check if we should use test data (via query parameter)
     // Default to API mode - set ?test=true to use test data (JSON file) instead
     const useTestData = new URLSearchParams(window.location.search).get('test') === 'true'
-    
+
+    // for testing mode
+    // const useTestData = new URLSearchParams(window.location.search).get('api') !== 'true'
     // Load test data from JSON file
     const loadTestData = async () => {
       try {
@@ -289,6 +292,7 @@ function ResultsContent() {
             {seoData.recommendations && Array.isArray(seoData.recommendations) && seoData.recommendations.length > 0 && (
               <RecommendationsSection recommendations={seoData.recommendations} />
             )}
+            <BacklinksSection data={seoData} />
             <OnPageSEOSection data={seoData} />
             <LinksSection data={seoData} />
             <UsabilitySection data={seoData} />

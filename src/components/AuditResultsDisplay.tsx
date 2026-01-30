@@ -213,6 +213,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
             {pdfUrl && (
               <a
                 href={pdfUrl}
+                download
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-accent hover:bg-accent-dark text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
