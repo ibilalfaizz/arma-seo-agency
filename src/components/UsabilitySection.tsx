@@ -100,17 +100,17 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
           <div className="flex flex-wrap justify-center items-start gap-4 md:gap-6">
             {/* Mobile Screenshot */}
             {deviceRendering.data.mobile && (
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center align-self-end" style={{alignSelf: 'flex-end'}}>
                 <div className="bg-slate-300 border-2 border-slate-400 rounded-[3rem] p-2 shadow-2xl relative w-[180px]">
                   {/* Notch */}
                   <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-20 h-5 bg-slate-300 rounded-b-xl z-10"></div>
                   {/* Screen */}
-                  <div className="relative overflow-hidden rounded-[2.5rem] bg-black mt-1" style={{ aspectRatio: '9/19.5', width: '100%', minHeight: '320px' }}>
+                  <div className="relative overflow-hidden rounded-[2.5rem] bg-black mt-1" style={{  width: '100%', minHeight: '267px' }}>
                     <Image
                       src={deviceRendering.data.mobile}
                       alt="Mobile rendering"
                       fill
-                      className="object-fill object-top"
+                      className="object-contain object-top"
                       unoptimized
                     />
                   </div>
