@@ -23,8 +23,10 @@ export default function LocalSEOSection({ data }: LocalSEOSectionProps) {
   const totalReviews = getTotalReviews()
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break pdf-report-last">
-      <h2 className="text-3xl font-bold text-white mb-8">Local SEO</h2>
+    <>
+      <div className="pdf-new-page mt-5" style={{ height: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
+      <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break pdf-report-last">
+        <h2 className="text-3xl font-bold text-white mb-8">Local SEO</h2>
 
       {/* Google Business Profile Completeness */}
       {gbpCompleteness && (
@@ -133,6 +135,7 @@ export default function LocalSEOSection({ data }: LocalSEOSectionProps) {
           )}
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }

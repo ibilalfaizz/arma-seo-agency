@@ -140,6 +140,11 @@
   font-size: 0.75rem;
 }
 
+/* PDF export: reduce p-8 padding to p-4 (1rem) so content fits better */
+#report-content-for-pdf.pdf-export .p-8 {
+  padding: 1rem !important;
+}
+
 /* PDF export: ensure radar chart area renders and stays on top (prevent overlap) */
 #report-content-for-pdf.pdf-export [data-radar-chart-area] {
   position: relative !important;

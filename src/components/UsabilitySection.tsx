@@ -42,8 +42,10 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
   const gradeColor = getGradeColor(uiScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
-      <h2 className="text-3xl font-bold text-white mb-8">Usability</h2>
+    <>
+      <div className="pdf-new-page mt-5" style={{ height: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
+      <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
+        <h2 className="text-3xl font-bold text-white mb-8">Usability</h2>
       
       {/* Header Section with Grade */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8">
@@ -143,9 +145,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
         </div>
       )}
 
-      {/* Google's Core Web Vitals */}
+      {/* Google's Core Web Vitals - new page in PDF */}
       {coreWebVitals && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="pdf-new-page bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-5">
           <div className="flex items-start justify-between mb-6">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Google&apos;s Core Web Vitals</h4>
@@ -350,9 +352,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                 </div>
               </div>
 
-              {/* Lab Data Section */}
+              {/* Lab Data Section - new page in PDF */}
               {mobilePageInsights.data.labdata && mobilePageInsights.data.labdata.length > 0 && (
-                <div className="mb-6">
+                <div className="pdf-new-page mb-6 mt-5">
                   <h5 className="text-lg font-semibold text-white mb-4">LAB DATA</h5>
                   <div className="overflow-x-auto">
                     <table className="w-full">
@@ -470,6 +472,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }

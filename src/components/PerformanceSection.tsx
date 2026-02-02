@@ -37,8 +37,11 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
   const gradeColor = getGradeColor(performanceScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
-      <h2 className="text-3xl font-bold text-white mb-8">Performance Results</h2>
+    <>
+      {/* Zero-height break trigger so the full section starts on the new page (no border/content on prev page) */}
+      <div className="pdf-new-page mt-5" style={{ height: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
+      <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
+        <h2 className="text-3xl font-bold text-white mb-8">Performance Results</h2>
       
       {/* Header Section with Score Gauge */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8">
@@ -250,6 +253,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
           </div>
         </div>
       )}
-    </div>
+      </div>
+    </>
   )
 }

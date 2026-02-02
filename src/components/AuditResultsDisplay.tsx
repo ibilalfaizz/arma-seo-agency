@@ -315,6 +315,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
         margin: 0,
         filename: 'SEO-Report.pdf',
         image: { type: 'jpeg', quality: 0.95 },
+        pagebreak: { before: '.pdf-new-page' },
         html2canvas: {
           scale: 2,
           useCORS: true,
@@ -523,8 +524,8 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
             </div>
 
             {/* Right 50% - radar chart */}
-            <div className="bg-primary rounded-lg border border-gray-800 p-6 flex items-center justify-center min-h-[320px]" data-radar-chart-area>
-              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="max-w-full h-auto w-full max-w-[400px]" xmlns="http://www.w3.org/2000/svg">
+            <div className="bg-primary rounded-lg border border-gray-800 p-1 flex items-center justify-center min-h-[300px] max-w[52%]" data-radar-chart-area>
+              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="  max-w-[280px] max-h-[280px]" xmlns="http://www.w3.org/2000/svg">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <circle
                     key={i}

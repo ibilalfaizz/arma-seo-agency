@@ -45,46 +45,42 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
       {hasBacklinksSummary && (
         <>
           <h3 className="text-xl font-bold text-white mb-4">Backlink Summary</h3>
-          <p className="text-gray-300 mb-8">{backlinks.shortAnswer}</p>
+          <p className="text-gray-300 mb-6">{backlinks.shortAnswer}</p>
 
-          {/* Domain Strength & Page Strength gauges */}
-          <div className="grid grid-cols-2 gap-6 mb-8">
+          {/* All four metrics in one row */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             {domainStrength != null && (
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center bg-primary-dark rounded-lg border border-gray-700 py-4 px-3">
                 <div
-                  className="relative w-24 h-24 rounded-full flex items-center justify-center border-4"
+                  className="relative w-16 h-16 rounded-full flex items-center justify-center border-2 flex-shrink-0"
                   style={{
                     borderColor: getStrengthColor(domainStrength),
                     backgroundColor: 'rgba(17, 24, 39, 0.5)',
                   }}
                 >
-                  <span className="text-2xl font-bold text-white">{domainStrength}</span>
+                  <span className="text-xl font-bold text-white">{domainStrength}</span>
                 </div>
-                <p className="text-gray-400 font-medium mt-2">Domain Strength</p>
+                <p className="text-gray-400 text-sm font-medium mt-2">Domain Strength</p>
               </div>
             )}
             {pageStrength != null && (
-              <div className="flex flex-col items-center">
+              <div className="flex flex-col items-center bg-primary-dark rounded-lg border border-gray-700 py-4 px-3">
                 <div
-                  className="relative w-24 h-24 rounded-full flex items-center justify-center border-4"
+                  className="relative w-16 h-16 rounded-full flex items-center justify-center border-2 flex-shrink-0"
                   style={{
                     borderColor: getStrengthColor(pageStrength),
                     backgroundColor: 'rgba(17, 24, 39, 0.5)',
                   }}
                 >
-                  <span className="text-2xl font-bold text-white">{pageStrength}</span>
+                  <span className="text-xl font-bold text-white">{pageStrength}</span>
                 </div>
-                <p className="text-gray-400 font-medium mt-2">Page Strength</p>
+                <p className="text-gray-400 text-sm font-medium mt-2">Page Strength</p>
               </div>
             )}
-          </div>
-
-          {/* Total Backlinks & Referring Domains cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
             {totalBacklinks != null && (
-              <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 flex flex-col items-center text-center">
+              <div className="bg-primary-dark rounded-lg border border-gray-700 py-4 px-3 flex flex-col items-center text-center">
                 <svg
-                  className="w-10 h-10 text-accent mb-3"
+                  className="w-8 h-8 text-accent mb-2 flex-shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -96,14 +92,14 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
                     d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
                   />
                 </svg>
-                <p className="text-2xl font-bold text-white">{formatCount(totalBacklinks)}</p>
-                <p className="text-gray-400 text-sm mt-1">Total Backlinks</p>
+                <p className="text-xl font-bold text-white">{formatCount(totalBacklinks)}</p>
+                <p className="text-gray-400 text-sm mt-0.5">Total Backlinks</p>
               </div>
             )}
             {referringDomains != null && (
-              <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 flex flex-col items-center text-center">
+              <div className="bg-primary-dark rounded-lg border border-gray-700 py-4 px-3 flex flex-col items-center text-center">
                 <svg
-                  className="w-10 h-10 text-accent mb-3"
+                  className="w-8 h-8 text-accent mb-2 flex-shrink-0"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -115,18 +111,20 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
                     d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
                   />
                 </svg>
-                <p className="text-2xl font-bold text-white">{formatCount(referringDomains)}</p>
-                <p className="text-gray-400 text-sm mt-1">Referring Domains</p>
+                <p className="text-xl font-bold text-white">{formatCount(referringDomains)}</p>
+                <p className="text-gray-400 text-sm mt-0.5">Referring Domains</p>
               </div>
             )}
           </div>
         </>
       )}
 
-      {/* Top Backlinks list */}
+      {/* Top Backlinks list - starts on new page in PDF */}
       {hasTopBacklinks && (
-        <div className="mt-8 pt-8 border-t border-gray-700">
-          <h3 className="text-xl font-bold text-white mb-2">Top backlinks</h3>
+        <>
+          <div className="pdf-new-page" style={{ height: 0, margin: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
+          <div className="mt-8 pt-8 border-t border-gray-700">
+            <h3 className="text-xl font-bold text-white mb-2">Top backlinks</h3>
           {backlinksList.shortAnswer && (
             <p className="text-gray-300 text-sm mb-4">{backlinksList.shortAnswer}</p>
           )}
@@ -163,7 +161,8 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
               </tbody>
             </table>
           </div>
-        </div>
+          </div>
+        </>
       )}
     </div>
   )

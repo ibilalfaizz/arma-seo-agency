@@ -294,10 +294,12 @@ function ResultsContent() {
             {seoData.recommendations && Array.isArray(seoData.recommendations) && seoData.recommendations.length > 0 && (
               <RecommendationsSection recommendations={seoData.recommendations} />
             )}
-            <BacklinksSection data={seoData} />
+           
             <OnPageSEOSection data={seoData} />
+            <BacklinksSection data={seoData} />
+             <PerformanceSection data={seoData} />
             <UsabilitySection data={seoData} />
-            <PerformanceSection data={seoData} />
+           
             
             <LocalSEOSection data={seoData} />
             

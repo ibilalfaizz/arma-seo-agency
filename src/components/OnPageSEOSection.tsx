@@ -56,13 +56,13 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
   const gradeColor = getGradeColor(seoScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
+    <div className=" bg-primary rounded-lg border border-gray-800 p-8 mb-8 ">
       <h2 className="text-3xl font-bold text-white mb-8">On-Page SEO Results</h2>
       
       {/* Header Section with Grade */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8">
         {/* Circular Gauge */}
-        <div className="relative w-32 h-32 flex-shrink-0">
+        <div className="relative w-24 h-24 flex-shrink-0">
           <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
             <circle
               cx="100"
@@ -86,7 +86,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className={`text-3xl font-bold ${getGradeTextColor(seoScore)}`}>
+            <div className={`text-xl font-bold ${getGradeTextColor(seoScore)}`}>
               {formatGrade(seoScore)}
             </div>
           </div>
