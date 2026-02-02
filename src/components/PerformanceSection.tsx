@@ -37,7 +37,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
   const gradeColor = getGradeColor(performanceScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
       <h2 className="text-3xl font-bold text-white mb-8">Performance Results</h2>
       
       {/* Header Section with Score Gauge */}
@@ -92,7 +92,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
 
       {/* Website Load Speed / Server Response Time */}
       {serverResponseTime && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 md:p-8 mb-6 overflow-visible">
           <div className="flex items-start justify-between mb-6">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Website Load Speed</h4>
@@ -107,20 +107,20 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
             )}
           </div>
 
-          {/* Performance Gauges */}
+          {/* Performance Gauges - compact, labels have padding to avoid overflow */}
           {serverResponseTime.data && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-6">
+            <div className="website-load-speed-gauges grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-4 mt-6 overflow-visible px-1">
               {/* Server Response */}
-              <div>
-                <h5 className="text-lg font-semibold text-white mb-4">Server Response</h5>
-                <div className="relative">
+              <div className="flex flex-col items-center overflow-visible min-w-0">
+                <h5 className="text-xs font-semibold text-white mb-0.5 min-h-[1.5rem] flex items-center justify-center text-center w-full">Server Response</h5>
+                <div className="relative w-full">
                   {(() => {
                     const responseTime = serverResponseTime.data.responseTime / 1000 // Convert ms to seconds
                     const normalizedValue = Math.min(responseTime / 1.0, 1) // 0-1s range
                     
                     return (
                       <>
-                        <div className="relative" style={{ height: '200px' }}>
+                        <div className="website-load-speed-gauge relative overflow-visible mx-auto" style={{ height: '78px', maxWidth: '140px' }}>
                           <GaugeChart
                             id="server-response-gauge"
                             nrOfLevels={30}
@@ -136,16 +136,13 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
                             hideText={true}
                           />
                         </div>
-                        {/* Threshold labels */}
-                        <div className="flex justify-between px-4 mt-2">
-                          <span className="text-white text-sm">0</span>
-                          <span className="text-white text-sm">0.5</span>
+                        {/* Threshold labels - extra padding so 0 and scale values don't clip */}
+                        <div className="flex justify-between items-center mt-0.5 px-2 min-w-[4rem]">
+                          <span className="text-white text-[10px] leading-none flex-shrink-0">0</span>
+                          <span className="text-white text-[10px] leading-none flex-shrink-0">0.5</span>
                         </div>
-                        {/* Value Display */}
-                        <div className="text-center mt-4">
-                          <div className="text-3xl font-bold text-white">
-                            {responseTime.toFixed(1)}s
-                          </div>
+                        <div className="text-center mt-0.5">
+                          <span className="text-base font-bold text-white">{responseTime.toFixed(1)}s</span>
                         </div>
                       </>
                     )
@@ -154,16 +151,16 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
               </div>
 
               {/* All Page Content Loaded */}
-              <div>
-                <h5 className="text-lg font-semibold text-white mb-4">All Page Content Loaded</h5>
-                <div className="relative">
+              <div className="flex flex-col items-center overflow-visible min-w-0">
+                <h5 className="text-xs font-semibold text-white mb-0.5 min-h-[1.5rem] flex items-center justify-center text-center w-full">All Page Content Loaded</h5>
+                <div className="relative w-full">
                   {(() => {
                     const loadTime = serverResponseTime.data.loadTime / 1000 // Convert ms to seconds
                     const normalizedValue = Math.min(loadTime / 15.0, 1) // 0-15s range
                     
                     return (
                       <>
-                        <div className="relative" style={{ height: '200px' }}>
+                        <div className="website-load-speed-gauge relative overflow-visible mx-auto" style={{ height: '78px', maxWidth: '140px' }}>
                           <GaugeChart
                             id="load-time-gauge"
                             nrOfLevels={30}
@@ -179,16 +176,12 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
                             hideText={true}
                           />
                         </div>
-                        {/* Threshold labels */}
-                        <div className="flex justify-between px-4 mt-2">
-                          <span className="text-white text-sm">5</span>
-                          <span className="text-white text-sm">10</span>
+                        <div className="flex justify-between items-center mt-0.5 px-2 min-w-[4rem]">
+                          <span className="text-white text-[10px] leading-none flex-shrink-0">5</span>
+                          <span className="text-white text-[10px] leading-none flex-shrink-0">10</span>
                         </div>
-                        {/* Value Display */}
-                        <div className="text-center mt-4">
-                          <div className="text-3xl font-bold text-white">
-                            {loadTime.toFixed(1)}s
-                          </div>
+                        <div className="text-center mt-0.5">
+                          <span className="text-base font-bold text-white">{loadTime.toFixed(1)}s</span>
                         </div>
                       </>
                     )
@@ -197,16 +190,16 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
               </div>
 
               {/* All Page Scripts Complete */}
-              <div>
-                <h5 className="text-lg font-semibold text-white mb-4">All Page Scripts Complete</h5>
-                <div className="relative">
+              <div className="flex flex-col items-center overflow-visible min-w-0">
+                <h5 className="text-xs font-semibold text-white mb-0.5 min-h-[1.5rem] flex items-center justify-center text-center w-full">All Page Scripts Complete</h5>
+                <div className="relative w-full">
                   {(() => {
                     const completeTime = serverResponseTime.data.completeTime / 1000 // Convert ms to seconds
                     const normalizedValue = Math.min(completeTime / 20.0, 1) // 0-20s range
                     
                     return (
                       <>
-                        <div className="relative" style={{ height: '200px' }}>
+                        <div className="website-load-speed-gauge relative overflow-visible mx-auto" style={{ height: '78px', maxWidth: '140px' }}>
                           <GaugeChart
                             id="complete-time-gauge"
                             nrOfLevels={30}
@@ -219,19 +212,15 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
                             formatTextValue={() => ''}
                             animate={false}
                             arcsLength={[0.5, 0.25, 0.25]} // Green (0-10s), Yellow (10-15s), Red (15s+)
-                            hideText={false}
+                            hideText={true}
                           />
                         </div>
-                        {/* Threshold labels */}
-                        <div className="flex justify-between px-4 mt-2">
-                          <span className="text-white text-sm">10</span>
-                          <span className="text-white text-sm">15</span>
+                        <div className="flex justify-between items-center mt-0.5 px-2 min-w-[4rem]">
+                          <span className="text-white text-[10px] leading-none flex-shrink-0">10</span>
+                          <span className="text-white text-[10px] leading-none flex-shrink-0">15</span>
                         </div>
-                        {/* Value Display */}
-                        <div className="text-center mt-4">
-                          <div className="text-3xl font-bold text-white">
-                            {completeTime.toFixed(1)}s
-                          </div>
+                        <div className="text-center mt-0.5">
+                          <span className="text-base font-bold text-white">{completeTime.toFixed(1)}s</span>
                         </div>
                       </>
                     )

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import Image from 'next/image'
 
 interface SEOData {
@@ -16,7 +16,6 @@ interface AuditResultsDisplayProps {
 }
 
 export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
   const [pdfDownloading, setPdfDownloading] = useState(false)
   
   // Extract data
@@ -94,123 +93,242 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
       grade: scores[key].grade
     }))
 
-  // Draw radar chart
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
+  // Radar chart dimensions
+  const radarSize = 400
+  const centerX = radarSize / 2
+  const centerY = radarSize / 2
+  const radius = Math.min(radarSize, radarSize) / 2 - 60
+  const angleStep = categories.length > 0 ? (Math.PI * 2) / categories.length : 0
 
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    const width = canvas.width
-    const height = canvas.height
-    const centerX = width / 2
-    const centerY = height / 2
-    const radius = Math.min(width, height) / 2 - 140 // Increased padding for labels
-
-    // Clear canvas
-    ctx.clearRect(0, 0, width, height)
-
-    // Draw grid circles
-    ctx.strokeStyle = '#374151'
-    ctx.lineWidth = 1
-    for (let i = 1; i <= 5; i++) {
-      ctx.beginPath()
-      ctx.arc(centerX, centerY, (radius * i) / 5, 0, Math.PI * 2)
-      ctx.stroke()
+  const getRadarPoint = (index: number, normalizedR: number) => {
+    const angle = (index * angleStep) - Math.PI / 2
+    const r = radius * normalizedR
+    return {
+      x: centerX + Math.cos(angle) * r,
+      y: centerY + Math.sin(angle) * r,
     }
+  }
 
-    // Draw axes
-    const angleStep = (Math.PI * 2) / categories.length
-    ctx.strokeStyle = '#4B5563'
-    ctx.lineWidth = 1
-    categories.forEach((_, index) => {
-      const angle = (index * angleStep) - Math.PI / 2
-      const x = centerX + Math.cos(angle) * radius
-      const y = centerY + Math.sin(angle) * radius
-      ctx.beginPath()
-      ctx.moveTo(centerX, centerY)
-      ctx.lineTo(x, y)
-      ctx.stroke()
-    })
+  const getLabelPoint = (index: number) => {
+    const angle = (index * angleStep) - Math.PI / 2
+    const labelRadius = radius + 25
+    return {
+      x: centerX + Math.cos(angle) * labelRadius,
+      y: centerY + Math.sin(angle) * labelRadius,
+      angle,
+    }
+  }
 
-    // Draw data polygon
-    ctx.fillStyle = 'rgba(59, 130, 246, 0.3)'
-    ctx.strokeStyle = '#3B82F6'
-    ctx.lineWidth = 2
-    ctx.beginPath()
-    categories.forEach((cat, index) => {
-      const score = getScoreFromGrade(cat.grade)
-      const normalizedScore = score / 100
-      const angle = (index * angleStep) - Math.PI / 2
-      const r = radius * normalizedScore
-      const x = centerX + Math.cos(angle) * r
-      const y = centerY + Math.sin(angle) * r
-      if (index === 0) {
-        ctx.moveTo(x, y)
-      } else {
-        ctx.lineTo(x, y)
-      }
-    })
-    ctx.closePath()
-    ctx.fill()
-    ctx.stroke()
-
-    // Draw labels
-    ctx.fillStyle = '#E5E7EB'
-    ctx.font = '12px sans-serif'
-    ctx.textAlign = 'center'
-    ctx.textBaseline = 'middle'
-    categories.forEach((cat, index) => {
-      const angle = (index * angleStep) - Math.PI / 2
-      const labelRadius = radius + 15
-      const x = centerX + Math.cos(angle) * labelRadius
-      const y = centerY + Math.sin(angle) * labelRadius
-      
-      // Adjust text alignment based on angle to prevent cutoff
-      const cosAngle = Math.cos(angle)
-      const sinAngle = Math.sin(angle)
-      
-      if (Math.abs(cosAngle) < 0.1) {
-        // Vertical alignment (top/bottom)
-        ctx.textAlign = 'center'
-        ctx.textBaseline = sinAngle > 0 ? 'top' : 'bottom'
-      } else if (cosAngle > 0) {
-        // Right side
-        ctx.textAlign = 'left'
-        ctx.textBaseline = 'middle'
-      } else {
-        // Left side
-        ctx.textAlign = 'right'
-        ctx.textBaseline = 'middle'
-      }
-      
-      ctx.fillText(cat.label, x, y)
-    })
-  }, [categories, getScoreFromGrade])
+  const dataPolygonPoints = categories.length > 0
+    ? categories
+        .map((cat, i) => {
+          const score = getScoreFromGrade(cat.grade)
+          const p = getRadarPoint(i, score / 100)
+          return `${p.x},${p.y}`
+        })
+        .join(' ')
+    : ''
 
   // Calculate circular progress
   const circumference = 2 * Math.PI * 90
   const offset = circumference - (overallScore / 100) * circumference
 
-  // Extract PDF URL if available
-  const pdfUrl = (data as any).pdfUrl || null
-
   const handlePdfDownload = async () => {
-    if (!pdfUrl || pdfDownloading) return
+    if (pdfDownloading) return
     setPdfDownloading(true)
     try {
-      const res = await fetch(`/api/download-pdf?url=${encodeURIComponent(pdfUrl)}`)
-      if (!res.ok) throw new Error('Download failed')
-      const blob = await res.blob()
-      const objectUrl = URL.createObjectURL(blob)
-      const a = document.createElement('a')
-      a.href = objectUrl
-      a.download = 'SEO-Report.pdf'
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
-      URL.revokeObjectURL(objectUrl)
+      await document.fonts.ready
+      const html2pdf = (await import('html2pdf.js')).default
+      const element = document.getElementById('report-content-for-pdf')
+      if (!element) throw new Error('Report content not found')
+      const clone = element.cloneNode(true) as HTMLElement
+      clone.querySelectorAll('[data-pdf-exclude]').forEach((el) => el.remove())
+
+      // Website Preview: load desktop/mobile screenshots via proxy so they render in PDF
+      const websitePreviewContainers = clone.querySelectorAll('[data-website-preview-img][data-pdf-src]')
+      await Promise.all(
+        Array.from(websitePreviewContainers).map(async (container) => {
+          const url = container.getAttribute('data-pdf-src')
+          const img = container.querySelector('img')
+          if (!url || !img) return
+          try {
+            const proxyUrl = `/api/image-proxy?url=${encodeURIComponent(url)}`
+            const res = await fetch(proxyUrl)
+            if (!res.ok) return
+            const blob = await res.blob()
+            const dataUrl = await new Promise<string>((resolve, reject) => {
+              const reader = new FileReader()
+              reader.onload = () => resolve(reader.result as string)
+              reader.onerror = reject
+              reader.readAsDataURL(blob)
+            })
+            img.src = dataUrl
+          } catch {
+            // Keep original src if proxy fails
+          }
+        })
+      )
+
+      // Convert radar chart SVG to image so it renders correctly in PDF
+      const origRadarSvg = element.querySelector('svg[data-radar-chart]')
+      const cloneRadarSvg = clone.querySelector('svg[data-radar-chart]')
+      if (origRadarSvg && cloneRadarSvg) {
+        try {
+          const svgData = new XMLSerializer().serializeToString(origRadarSvg)
+          const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' })
+          const dataUrl = await new Promise<string>((resolve, reject) => {
+            const reader = new FileReader()
+            reader.onload = () => resolve(reader.result as string)
+            reader.onerror = reject
+            reader.readAsDataURL(svgBlob)
+          })
+          const img = document.createElement('img')
+          img.src = dataUrl
+          img.alt = 'Performance radar chart'
+          img.style.width = '100%'
+          img.style.maxWidth = '400px'
+          img.style.height = 'auto'
+          // cloneRadarSvg.parentNode?.replaceChild(img, cloneRadarSvg)
+          // #region agent log
+          fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuditResultsDisplay.tsx:afterRadarReplace',message:'Radar replaced with img',data:{replaced:true,dataUrlLen:dataUrl?.length},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H2'})}).catch(()=>{});
+          // #endregion
+        } catch (e) {
+          // #region agent log
+          fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuditResultsDisplay.tsx:radarReplaceCatch',message:'Radar replace failed',data:{err:String(e)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H2'})}).catch(()=>{});
+          // #endregion
+          // Keep SVG if conversion fails
+        }
+      }
+
+      // Replace canvases with images so canvas content appears in PDF
+      const originalCanvases = element.querySelectorAll('canvas')
+      const cloneCanvases = clone.querySelectorAll('canvas')
+      originalCanvases.forEach((origCanvas, i) => {
+        const cloneCanvas = cloneCanvases[i]
+        if (!cloneCanvas || !(origCanvas instanceof HTMLCanvasElement)) return
+        const img = document.createElement('img')
+        img.src = origCanvas.toDataURL('image/png')
+        img.alt = ''
+        img.style.width = '100%'
+        img.style.height = 'auto'
+        img.style.maxWidth = '100%'
+        cloneCanvas.parentNode?.replaceChild(img, cloneCanvas)
+      })
+
+      // Device Rendering: load screenshots via our proxy (avoids CORS) and set as data URLs
+      const deviceContainers = clone.querySelectorAll('[data-device-img][data-pdf-src]')
+      await Promise.all(
+        Array.from(deviceContainers).map(async (container) => {
+          const url = container.getAttribute('data-pdf-src')
+          const img = container.querySelector('img')
+          if (!url || !img) return
+          try {
+            const proxyUrl = `/api/image-proxy?url=${encodeURIComponent(url)}`
+            const res = await fetch(proxyUrl)
+            if (!res.ok) return
+            const blob = await res.blob()
+            const dataUrl = await new Promise<string>((resolve, reject) => {
+              const reader = new FileReader()
+              reader.onload = () => resolve(reader.result as string)
+              reader.onerror = reject
+              reader.readAsDataURL(blob)
+            })
+            img.src = dataUrl
+          } catch {
+            // Keep original src if proxy fails
+          }
+        })
+      )
+
+      // Convert other images (e.g. desktop preview) to data URLs so they render in PDF
+      const originalImgs = element.querySelectorAll('img')
+      const cloneImgs = clone.querySelectorAll('img')
+      await Promise.all(
+        Array.from(cloneImgs).map(async (cloneImg, i) => {
+          if (cloneImg.closest('[data-device-img]') || cloneImg.closest('[data-website-preview-img]')) return // already handled above
+          const origImg = originalImgs[i] as HTMLImageElement | undefined
+          if (!origImg?.src) return
+          const src = origImg.currentSrc || origImg.src
+          if (!src || src.startsWith('data:')) return
+          try {
+            const res = await fetch(src, { mode: 'cors' })
+            const blob = await res.blob()
+            const dataUrl = await new Promise<string>((resolve, reject) => {
+              const reader = new FileReader()
+              reader.onload = () => resolve(reader.result as string)
+              reader.onerror = reject
+              reader.readAsDataURL(blob)
+            })
+            cloneImg.src = dataUrl
+          } catch {
+            // Try proxy for same-origin relative URLs
+            try {
+              const proxyUrl = src.startsWith('http') ? `/api/image-proxy?url=${encodeURIComponent(src)}` : null
+              if (!proxyUrl) return
+              const res = await fetch(proxyUrl)
+              if (!res.ok) return
+              const blob = await res.blob()
+              const dataUrl = await new Promise<string>((resolve, reject) => {
+                const reader = new FileReader()
+                reader.onload = () => resolve(reader.result as string)
+                reader.onerror = reject
+                reader.readAsDataURL(blob)
+              })
+              cloneImg.src = dataUrl
+            } catch {
+              // Keep original src
+            }
+          }
+        })
+      )
+
+      // Remove mobile preview from clone so its absolute positioning does not paint over the radar chart in html2canvas
+      // let removedMobile = 0
+      // clone.querySelectorAll('[data-website-preview-img]').forEach((container) => {
+      //   if (container.querySelector('img[alt="Website mobile preview"]')) {
+      //     container.remove()
+      //     removedMobile++
+      //   }
+      // })
+      // #region agent log
+      // fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuditResultsDisplay.tsx:afterMobileRemoval',message:'Mobile preview removed from clone',data:{removedMobile},timestamp:Date.now(),sessionId:'debug-session',runId:'post-fix',hypothesisId:'H3'})}).catch(()=>{});
+      // #endregion
+
+      // #region agent log
+      const radarArea = clone.querySelector('[data-radar-chart-area]')
+      const imgsInRadarArea = radarArea?.querySelectorAll('img')?.length ?? 0
+      const websitePreviewContainersFinal = clone.querySelectorAll('[data-website-preview-img]').length
+      const allImgs = clone.querySelectorAll('img')
+      const imgSources = Array.from(allImgs).slice(0, 8).map((i) => ({ src: (i.getAttribute('src') || '').substring(0, 50), alt: i.alt, inRadar: !!i.closest('[data-radar-chart-area]'), inWebsitePreview: !!i.closest('[data-website-preview-img]') }))
+      fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuditResultsDisplay.tsx:beforeHtml2pdf',message:'Clone state before html2pdf',data:{imgsInRadarArea,websitePreviewContainersFinal,totalImgs:allImgs.length,imgSources},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H3,H4,H5'})}).catch(()=>{});
+      // #endregion
+
+      // Force darker background and no white margin; mark clone for PDF-specific CSS
+      clone.classList.add('pdf-export')
+      clone.style.backgroundColor = '#0d0d0d'
+      clone.style.setProperty('-webkit-print-color-adjust', 'exact')
+      clone.style.setProperty('print-color-adjust', 'exact')
+      clone.style.color = '#ffffff'
+      clone.style.padding = '20px 16px 8px'
+
+      const opts: Record<string, unknown> = {
+        margin: 0,
+        filename: 'SEO-Report.pdf',
+        image: { type: 'jpeg', quality: 0.95 },
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          allowTaint: true,
+          logging: false,
+          backgroundColor: '#0d0d0d',
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      }
+
+      await html2pdf()
+        .set(opts)
+        .from(clone)
+        .save()
     } catch (err) {
       console.error('PDF download error:', err)
     } finally {
@@ -219,7 +337,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
   }
 
   return (
-    <div className="py-8">
+    <div className="py-8 pdf-avoid-break">
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Header with Explanatory Text */}
         <div className="mb-8">
@@ -233,13 +351,13 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
             <h2 className="text-2xl md:text-3xl font-bold text-white">
               Audit Results for <span className="text-accent">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
             </h2>
-            {pdfUrl && (
-              <button
-                type="button"
-                onClick={handlePdfDownload}
-                disabled={pdfDownloading}
-                className="bg-accent hover:bg-accent-dark disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
-              >
+            <button
+              type="button"
+              data-pdf-exclude
+              onClick={handlePdfDownload}
+              disabled={pdfDownloading}
+              className="bg-accent hover:bg-accent-dark disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
+            >
                 {pdfDownloading ? (
                   <>
                     <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
@@ -257,28 +375,18 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                   </>
                 )}
               </button>
-            )}
           </div>
         </div>
 
-        {/* Main Content Grid */}
-        <div className="grid lg:grid-cols-3 gap-6 mb-8">
-          {/* Left Column - Overall Score */}
-          <div className="lg:col-span-1">
-            <div className="bg-primary rounded-lg border border-gray-800 p-8 text-center">
+        {/* Main Content Grid - Score card (left) + Website Preview (right) */}
+        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+          {/* Left - Score card with circular gauge and recommendations */}
+          <div>
+            <div className="bg-primary rounded-lg border border-gray-800 p-8 text-center h-full">
               {/* Circular Progress */}
-              <div className="relative w-48 h-48 mx-auto mb-6">
+              <div className="relative w-36 h-36 mx-auto mb-4">
                 <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
-                  {/* Background circle */}
-                  <circle
-                    cx="100"
-                    cy="100"
-                    r="90"
-                    fill="none"
-                    stroke="#374151"
-                    strokeWidth="12"
-                  />
-                  {/* Progress circle */}
+                  <circle cx="100" cy="100" r="90" fill="none" stroke="#374151" strokeWidth="12" />
                   <circle
                     cx="100"
                     cy="100"
@@ -292,44 +400,39 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                     className="transition-all duration-1000"
                   />
                 </svg>
-                {/* Grade Text */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div>
-                    <div className={`text-5xl font-bold ${getGradeColor(overallGrade) === '#10B981' ? 'text-green-400' : getGradeColor(overallGrade) === '#F59E0B' ? 'text-yellow-400' : 'text-red-400'}`}>
-                      {formatGrade(overallGrade)}
-                    </div>
-                  </div>
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <span
+                    className={`text-4xl font-bold tabular-nums ${getGradeColor(overallGrade) === '#10B981' ? 'text-green-400' : getGradeColor(overallGrade) === '#F59E0B' ? 'text-yellow-400' : 'text-red-400'}`}
+                    style={{ lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '0.05em' }}
+                  >
+                    {formatGrade(overallGrade)}
+                  </span>
                 </div>
               </div>
-
-              {/* Status Message */}
-              <p className="text-gray-300 text-lg mb-6">
+              <p className="text-gray-300 text-base mb-4">
                 {getStatusMessage(overallScore)}
               </p>
-
-              {/* Recommendations Button */}
-              <button 
+              <button
                 onClick={() => {
                   const recommendationsSection = document.getElementById('recommendations-section')
                   if (recommendationsSection) {
                     recommendationsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
                   }
                 }}
-                className="bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-6 rounded-lg transition-colors w-full"
+                className="pdf-report-button bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-4 rounded-lg transition-colors w-full text-center"
               >
                 Recommendations: {recommendations.length}
               </button>
             </div>
           </div>
 
-          {/* Right Column - Website Preview */}
-          <div className="lg:col-span-2">
-            <div className="bg-primary rounded-lg border border-gray-800 p-6">
+          {/* Right - Website Preview */}
+          <div>
+            <div className="bg-primary rounded-lg border border-gray-800 p-6 h-full">
               <h2 className="text-xl font-bold text-white mb-4">Website Preview</h2>
               <div className="relative">
-                {/* Desktop Preview */}
                 {desktopScreenshot ? (
-                  <div className="bg-white rounded-lg p-4 mb-4 shadow-lg overflow-hidden">
+                  <div className="bg-white rounded-lg p-4 mb-4 shadow-lg overflow-hidden" data-website-preview-img data-pdf-src={desktopScreenshot}>
                     <div className="relative w-full aspect-video rounded overflow-hidden bg-gray-100">
                       <Image
                         src={desktopScreenshot}
@@ -346,10 +449,8 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                     </div>
                   </div>
                 )}
-
-                {/* Mobile Preview */}
                 {mobileScreenshot ? (
-                  <div className="absolute bottom-0 right-0 w-32 bg-white rounded-lg p-2 shadow-xl border-2 border-gray-300 overflow-hidden">
+                  <div className="absolute bottom-0 right-0 w-32 bg-white rounded-lg p-2 shadow-xl border-2 border-gray-300 overflow-hidden" data-website-preview-img data-pdf-src={mobileScreenshot}>
                     <div className="relative w-full aspect-[9/16] rounded overflow-hidden bg-gray-100">
                       <Image
                         src={mobileScreenshot}
@@ -371,69 +472,110 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
           </div>
         </div>
 
-        {/* Category Scores and Radar Chart */}
-        <div className="grid lg:grid-cols-[1fr_1fr] gap-6 mb-8">
-          {/* Category Scores */}
-          <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
-            {categories.map((category) => {
-              const score = getScoreFromGrade(category.grade)
-              const gradeStr = formatGrade(category.grade)
-              const color = getGradeColor(category.grade)
-              const catCircumference = 2 * Math.PI * 40
-              const catOffset = catCircumference - (score / 100) * catCircumference
+        {/* Performance Overview: 50% category scores (4 cards) + 50% radar chart */}
+        <div className="mb-8">
+          <h2 className="text-xl font-bold text-white mb-4">Performance Overview</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Left 50% - all 4 category score cards in 2x2 grid */}
+            <div className="grid grid-cols-2 gap-4">
+              {categories.map((category) => {
+                const score = getScoreFromGrade(category.grade)
+                const gradeStr = formatGrade(category.grade)
+                const color = getGradeColor(category.grade)
+                const catCircumference = 2 * Math.PI * 40
+                const catOffset = catCircumference - (score / 100) * catCircumference
 
-              return (
-                <div key={category.key} className="bg-primary rounded-lg border border-gray-800 p-6 text-center">
-                  {/* Circular Gauge */}
-                  <div className="relative w-24 h-24 mx-auto mb-4">
-                    <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 100 100">
-                      <circle
-                        cx="50"
-                        cy="50"
-                        r="40"
-                        fill="none"
-                        stroke="#374151"
-                        strokeWidth="6"
-                      />
-                      <circle
-                        cx="50"
-                        cy="50"
-                        r="40"
-                        fill="none"
-                        stroke={color}
-                        strokeWidth="6"
-                        strokeDasharray={catCircumference}
-                        strokeDashoffset={catOffset}
-                        strokeLinecap="round"
-                        className="transition-all duration-1000"
-                      />
-                    </svg>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <span className={`text-xl font-bold ${
-                        color === '#10B981' ? 'text-green-400' : 
-                        color === '#F59E0B' ? 'text-yellow-400' : 
-                        'text-red-400'
-                      }`}>
-                        {gradeStr}
-                      </span>
+                return (
+                  <div key={category.key} className="bg-primary rounded-lg border border-gray-800 p-6 flex flex-col items-center justify-center">
+                    <div className="relative w-24 h-24 mb-4">
+                      <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 100 100">
+                        <circle cx="50" cy="50" r="40" fill="none" stroke="#374151" strokeWidth="6" />
+                        <circle
+                          cx="50"
+                          cy="50"
+                          r="40"
+                          fill="none"
+                          stroke={color}
+                          strokeWidth="6"
+                          strokeDasharray={catCircumference}
+                          strokeDashoffset={catOffset}
+                          strokeLinecap="round"
+                          className="transition-all duration-1000"
+                        />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span
+                          className={`text-xl font-bold tabular-nums ${
+                            color === '#10B981' ? 'text-green-400' :
+                            color === '#F59E0B' ? 'text-yellow-400' :
+                            'text-red-400'
+                          }`}
+                          style={{ lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '0.05em' }}
+                        >
+                          {gradeStr}
+                        </span>
+                      </div>
                     </div>
+                    <h3 className="text-sm font-semibold text-gray-300">{category.label}</h3>
                   </div>
-                  <h3 className="text-sm font-semibold text-gray-300">{category.label}</h3>
-                </div>
-              )
-            })}
-          </div>
+                )
+              })}
+            </div>
 
-          {/* Radar Chart */}
-          <div className="bg-primary rounded-lg border border-gray-800 p-6">
-            <h2 className="text-xl font-bold text-white mb-4">Performance Overview</h2>
-            <div className="flex justify-center">
-              <canvas
-                ref={canvasRef}
-                width={400}
-                height={400}
-                className="max-w-full h-auto"
-              />
+            {/* Right 50% - radar chart */}
+            <div className="bg-primary rounded-lg border border-gray-800 p-6 flex items-center justify-center min-h-[320px]" data-radar-chart-area>
+              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="max-w-full h-auto w-full max-w-[400px]" xmlns="http://www.w3.org/2000/svg">
+                {[1, 2, 3, 4, 5].map((i) => (
+                  <circle
+                    key={i}
+                    cx={centerX}
+                    cy={centerY}
+                    r={(radius * i) / 5}
+                    fill="none"
+                    stroke="#374151"
+                    strokeWidth="1"
+                  />
+                ))}
+                {categories.map((_, index) => {
+                  const p = getRadarPoint(index, 1)
+                  return (
+                    <line
+                      key={index}
+                      x1={centerX}
+                      y1={centerY}
+                      x2={p.x}
+                      y2={p.y}
+                      stroke="#4B5563"
+                      strokeWidth="1"
+                    />
+                  )
+                })}
+                {dataPolygonPoints && (
+                  <polygon
+                    points={dataPolygonPoints}
+                    fill="rgba(59, 130, 246, 0.3)"
+                    stroke="#3B82F6"
+                    strokeWidth="2"
+                  />
+                )}
+                {categories.map((cat, index) => {
+                  const { x, y } = getLabelPoint(index)
+                  return (
+                    <text
+                      key={index}
+                      x={x}
+                      y={y}
+                      fill="#E5E7EB"
+                      fontSize="12"
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                      className="font-sans"
+                    >
+                      {cat.label}
+                    </text>
+                  )
+                })}
+              </svg>
             </div>
           </div>
         </div>

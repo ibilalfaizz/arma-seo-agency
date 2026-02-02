@@ -1,9 +1,9 @@
 {
   "success": true,
   "data": {
-    "id": 644647,
+    "id": 648057,
     "input": {
-      "url": "thriveagency.com",
+      "url": "hookagency.com/",
       "pdf": true,
       "callback": false,
       "template": false
@@ -11,15 +11,15 @@
     "output": {
       "success": true,
       "callback": false,
-      "pdf": "https://seoptimer.com/download-pdf.inc/Ki37ChgsPPPkLCFl",
-      "screenshot": "https://seoptimer.com/screenshots/gMNJNKBvsCNXjJyX9nXgvvbj9c1cQlSR-desktop.jpg",
-      "finalUrl": "https://thriveagency.com/",
-      "report_generation_time": "12 second(s)",
-      "request_completion_time": "1 minute(s) 1 second(s)",
+      "pdf": "https://seoptimer.com/download-pdf.inc/1h5u2BIxurE-XOWf",
+      "screenshot": "https://seoptimer.com/screenshots/hzw-Vdn5aAKvSKkWS_YqX-W14X8Hw4Du-desktop.jpg",
+      "finalUrl": "https://hookagency.com/",
+      "report_generation_time": "30 second(s)",
+      "request_completion_time": "1 minute(s) 24 second(s)",
       "scores": {
         "overall": {
-          "grade": 70,
-          "title": "Your page is good",
+          "grade": 85,
+          "title": "Your page is very good!",
           "description": ""
         },
         "seo": {
@@ -38,9 +38,9 @@
           "description": "Congratulations, your page has performed very well in our testing meaning it should be reasonably fast and responsive for users. Performance is important to ensure a good user experience, and reduced bounce rates (which can also indirectly affect your search engine rankings). Continue to monitor your performance over time to ensure there are no periodic fluctuations."
         },
         "ui": {
-          "grade": 18,
-          "title": "Your usability needs improvement",
-          "description": "Your page has usability issues across devices. Usability is important to maximize your available audience and minimize user bounce rates (which can indirectly affect your search engine rankings)."
+          "grade": 73,
+          "title": "Your usability is good",
+          "description": "Your page is mostly usable across devices. Usability is important to maximize your available audience and minimize user bounce rates (which can indirectly affect your search engine rankings)."
         },
         "security": {
           "grade": "",
@@ -53,16 +53,16 @@
         "passed": true,
         "shortAnswer": "You have a Title Tag of optimal length (between 50 and 60 characters).",
         "recommendation": null,
-        "value": "59",
-        "data": "Digital Marketing Agency | Thrive Internet Marketing Agency"
+        "value": "56",
+        "data": "Home Services Digital Marketing Agency | Lead Generation"
       },
       "description": {
         "section": "seo",
         "passed": true,
         "shortAnswer": "Your page has a Meta Description of optimal length (between 120 and 160 characters).",
         "recommendation": null,
-        "value": "132",
-        "data": "Thrive Internet Marketing Agency is a full-service digital marketing agency. We provide SEO, PPC, social media, web design and more."
+        "value": "131",
+        "data": "The best home service businesses deserve a marketing agency that cares. Let us help you get more and better leads. Get started now!"
       },
       "hasHreflang": false,
       "langCheck": false,
@@ -79,18 +79,18 @@
         "shortAnswer": "You have a very strong level of backlink activity to this page.",
         "recommendation": null,
         "data": {
-          "backlinks": 2526102,
-          "allbacklinks": 2526102,
+          "backlinks": 23191,
+          "allbacklinks": 23191,
           "mozda": null,
-          "referring_domains": 7645,
-          "domain_strength": 88,
-          "page_strength": 62,
-          "nofollow_backlinks": 195509,
-          "dofollow_backlinks": 2330593,
-          "edu_backlinks": 3375,
-          "gov_backlinks": 22,
-          "subnets": 3001,
-          "ips": 5719
+          "referring_domains": 4781,
+          "domain_strength": 86,
+          "page_strength": 29,
+          "nofollow_backlinks": 5249,
+          "dofollow_backlinks": 17942,
+          "edu_backlinks": 640,
+          "gov_backlinks": 186,
+          "subnets": 1811,
+          "ips": 2626
         }
       },
       "backlinksList": {
@@ -102,81 +102,81 @@
           "list": [
             {
               "domain_authority": null,
-              "url": "https://www.wix.com/blog/2018/05/how-to-improve-seo-wix-according-to-experts/?utm_source=contentstudio&utm_medium=referral",
-              "title": "How to Improve Your SEO on Wix According to Experts",
-              "anchor_text": "Thrive Internet Marketing",
+              "url": "https://podcasts.apple.com/mx/podcast/agency-growth-mastermind-podcast/id1529127216",
+              "title": "🏹 Agency Growth Mastermind Podcast - Podcast - Apple Podcasts",
+              "anchor_text": "🏹 Agency Growth Mastermind Podcast",
               "target": null,
               "domain_strength": 100
             },
             {
               "domain_authority": null,
-              "url": "https://github.com/Thrive-Agency",
-              "title": "Thrive Agency · GitHub",
-              "anchor_text": "https://thriveagency.com",
+              "url": "https://en.wikipedia.org/wiki/Parallax_scrolling",
+              "title": "Parallax scrolling - Wikipedia",
+              "anchor_text": "\"New Forgotten World Clone – CP System Code\"",
               "target": null,
               "domain_strength": 100
             },
             {
               "domain_authority": null,
-              "url": "https://www.linkedin.com/pulse/digital-marketing-amidst-coronavirus-vincent-handugan",
-              "title": "Digital Marketing amidst Coronavirus",
-              "anchor_text": "Digital marketing during coronavirus",
+              "url": "https://sites.google.com/view/restae",
+              "title": "RESTAE",
+              "anchor_text": ".",
               "target": null,
               "domain_strength": 100
             },
             {
               "domain_authority": null,
-              "url": "https://www.godaddy.com/resources/mindset/ways-to-catch-up-on-work-after-vacation",
-              "title": "12 ways to catch up on work after vacation - GoDaddy Blog",
-              "anchor_text": "Thrive Agency",
-              "target": null,
-              "domain_strength": 100
-            },
-            {
-              "domain_authority": null,
-              "url": "https://www.google.com/url?q=https://thriveagency.com/news/link-moses-will-missed/&sa=U&ved=2ahUKEwjrvvDiyMrtAhVMA2MBHTrwA8wQFjBEegQIJxAB&usg=AOvVaw0cpWWsgqDUCw1yjlSHB4zq",
-              "title": "",
-              "anchor_text": null,
-              "target": null,
-              "domain_strength": 100
-            },
-            {
-              "domain_authority": null,
-              "url": "https://www.shopify.com/ng/blog/facebook-ads-cost",
-              "title": "What Facebook Ads Cost in September 2025 - Shopify Nigeria",
-              "anchor_text": "Thrive",
-              "target": null,
-              "domain_strength": 100
-            },
-            {
-              "domain_authority": null,
-              "url": "https://www.bing.com/images/search?q=Bing+AI+Bot&FORM=IRIBIP",
-              "title": "Bing AI Bot - Bing images",
-              "anchor_text": "thriveagency.com",
+              "url": "https://www.bing.com/images/search?q=Lighthouse+Knock&FORM=IRMHRS",
+              "title": "Lighthouse Knock - Suchen Bilder",
+              "anchor_text": "hookagency.com",
               "target": null,
               "domain_strength": 98
             },
             {
               "domain_authority": null,
-              "url": "https://www.forbes.com/sites/forbesagencycouncil/people/mattbowman1/",
-              "title": "Matt Bowman - Forbes Agency Council",
-              "anchor_text": "Thrive Internet Marketing Agency",
+              "url": "https://www.eventbrite.com/e/bizcom-summit-2019-tickets-54101696631?aff=ebdssbdestsearch",
+              "title": "BizCom Summit 2019 Tickets, Thu, Oct 10, 2019 at 4:00 PM | Eventbrite",
+              "anchor_text": "Hook Agency",
               "target": null,
               "domain_strength": 98
             },
             {
               "domain_authority": null,
-              "url": "https://blog.hubspot.com/marketing/how-video-consumption-is-changing",
-              "title": "How Video Consumption Is Changing in 2024 [New Research]",
-              "anchor_text": "Thrive Digital Marketing Agency",
+              "url": "https://podcasters.spotify.com/pod/show/ben-beard/episodes/The-Ben-Beard-Show-Season-2---w-Morgan-Kumpfmiller-e11im9s/a-a5m6jfe",
+              "title": "The Ben Beard Show Season 2 - w/ Morgan Kumpfmiller by The Ben Beard Show",
+              "anchor_text": "Website",
               "target": null,
               "domain_strength": 98
             },
             {
               "domain_authority": null,
-              "url": "https://moz.com/community/q/user/moosahemani",
-              "title": "Moosa Hemani | SEO Forum | Moz",
-              "anchor_text": "Thrive Internet Marketing",
+              "url": "https://www.forbes.com/sites/forbesagencycouncil/2018/04/03/want-to-keep-reaching-your-facebook-audience-11-tips-for-adjusting-your-strategy/",
+              "title": "Want To Keep Reaching Your Facebook Audience? 11 Tips For Adjusting Your Strategy",
+              "anchor_text": "Hook   Agency",
+              "target": null,
+              "domain_strength": 98
+            },
+            {
+              "domain_authority": null,
+              "url": "https://www.nytimes.com/2025/12/06/opinion/college-student-complaints.html",
+              "title": "Opinion | How One Student’s Failing Grade Became a Cause Célèbre on the Right - The New York Times",
+              "anchor_text": "old Burger King slogan",
+              "target": null,
+              "domain_strength": 98
+            },
+            {
+              "domain_authority": null,
+              "url": "https://generatepress.com/forums/topic/display-posts-from-a-taxonomy-a-specific-term-from-a-custom-taxonomy/",
+              "title": "Display posts from a taxonomy & a specific term from a custom taxonomy – GeneratePress",
+              "anchor_text": "https://hookagency.com/display-posts-in-archives-pages/#modify-theme",
+              "target": null,
+              "domain_strength": 97
+            },
+            {
+              "domain_authority": null,
+              "url": "https://wpengine.com/resources/webinar-scale-your-agency-quickly-and-profitably/",
+              "title": "Webinar: Scale Your Agency Quickly and Profitably",
+              "anchor_text": "Hook Agency: Marketing Statistics 2021",
               "target": null,
               "domain_strength": 97
             }
@@ -225,74 +225,74 @@
         "data": {
           "keywords": [
             {
-              "keyword": "marketing agency",
+              "keyword": "services digital marketing",
+              "country": "US EN",
+              "position": 6,
+              "total_searches": "14,800",
+              "estimated_traffic": "500"
+            },
+            {
+              "keyword": "hook agency",
               "country": "US EN",
               "position": 1,
+              "total_searches": "1,600",
+              "estimated_traffic": "486"
+            },
+            {
+              "keyword": "hooked agency",
+              "country": "US EN",
+              "position": 1,
+              "total_searches": "1,600",
+              "estimated_traffic": "486"
+            },
+            {
+              "keyword": "marketing agencies",
+              "country": "US EN",
+              "position": 32,
               "total_searches": "60,500",
-              "estimated_traffic": "18,392"
+              "estimated_traffic": "127"
             },
             {
-              "keyword": "digital marketing ads agency",
-              "country": "US EN",
-              "position": 1,
-              "total_searches": "49,500",
-              "estimated_traffic": "15,048"
-            },
-            {
-              "keyword": "digital marketing advertising agency",
+              "keyword": "home services marketing agency",
               "country": "US EN",
               "position": 2,
-              "total_searches": "49,500",
-              "estimated_traffic": "8,019"
+              "total_searches": "720",
+              "estimated_traffic": "117"
             },
             {
               "keyword": "digital marketing agency",
               "country": "US EN",
-              "position": 2,
+              "position": 22,
               "total_searches": "49,500",
-              "estimated_traffic": "8,019"
+              "estimated_traffic": "109"
             },
             {
-              "keyword": "internet marketing services",
+              "keyword": "website marketing firms",
               "country": "US EN",
-              "position": 2,
-              "total_searches": "27,100",
-              "estimated_traffic": "4,390"
+              "position": 9,
+              "total_searches": "5,400",
+              "estimated_traffic": "81"
             },
             {
-              "keyword": "digital marketing firm",
+              "keyword": "services marketing agency",
               "country": "US EN",
-              "position": 1,
-              "total_searches": "12,100",
-              "estimated_traffic": "3,678"
-            },
-            {
-              "keyword": "digital marketing agency near me",
-              "country": "US EN",
-              "position": 3,
-              "total_searches": "27,100",
-              "estimated_traffic": "2,637"
-            },
-            {
-              "keyword": "digital marketing advertising company",
-              "country": "IN EN",
               "position": 5,
-              "total_searches": "49,500",
-              "estimated_traffic": "2,322"
+              "total_searches": "1,600",
+              "estimated_traffic": "75"
             },
             {
-              "keyword": "advertising agency internet marketing",
+              "keyword": "hook marketing",
               "country": "US EN",
               "position": 1,
-              "total_searches": "6,600",
-              "estimated_traffic": "2,006"
+              "total_searches": "210",
+              "estimated_traffic": "64"
             },
             {
-              "keyword": "internet marketing advertising agency",
+              "keyword": "home services digital marketing",
               "country": "US EN",
-              "position": 1,
-              "total_searches": "6,600",
-              "estimated_traffic": "2,006"
+              "position": 2,
+              "total_searches": "320",
+              "estimated_traffic": "52"
             }
           ]
         }
@@ -307,20 +307,19 @@
         "shortAnswer": "This check visually demonstrates how your page renders on different devices. It is important that your page is optimized for mobile and tablet experiences as today the majority of web traffic comes from these sources.",
         "recommendation": null,
         "data": {
-          "mobile": "https://seoptimer.com/screenshots/gMNJNKBvsCNXjJyX9nXgvvbj9c1cQlSR-mobile.jpg",
-          "tablet": "https://seoptimer.com/screenshots/gMNJNKBvsCNXjJyX9nXgvvbj9c1cQlSR-tablet.jpg"
+          "mobile": "https://seoptimer.com/screenshots/hzw-Vdn5aAKvSKkWS_YqX-W14X8Hw4Du-mobile.jpg",
+          "tablet": "https://seoptimer.com/screenshots/hzw-Vdn5aAKvSKkWS_YqX-W14X8Hw4Du-tablet.jpg"
         }
       },
       "coreWebVitals": {
         "section": "ui",
-        "passed": false,
-        "shortAnswer": "Your page has failed Google's Core Web Vitals assessment.",
-        "recommendation": "Optimize for Core Web Vitals",
+        "passed": true,
+        "shortAnswer": "Your page has passed Google's Core Web Vitals assessment.",
+        "recommendation": null,
         "data": {
-          "cumulative-layout-shift": 0.09,
-          "largest-contentful-paint": 3.161,
-          "first-input-delay": null,
-          "interaction-to-next-paint": 273
+          "cumulative-layout-shift": 0.01,
+          "largest-contentful-paint": 1.356,
+          "first-input-delay": null
         }
       },
       "mobilePageInsights": {
@@ -329,34 +328,38 @@
         "shortAnswer": "Mobile PageSpeed Insights Failing",
         "recommendation": "Optimize for Mobile PageSpeed Insights",
         "data": {
-          "score": 73,
+          "score": 52,
           "labdata": [
             {
               "name": "First Contentful Paint",
-              "value": 1.6
+              "value": 3.8
             },
             {
               "name": "Speed Index",
-              "value": 1.6
+              "value": 5.1
             },
             {
               "name": "Largest Contentful Paint",
-              "value": 6.2
+              "value": 14.1
             },
             {
               "name": "Time to Interactive",
-              "value": 6.2
+              "value": 14.1
             },
             {
               "name": "Total Blocking Time",
-              "value": 0
+              "value": 0.19
             },
             {
               "name": "Cumulative Layout Shift",
-              "value": 0.01
+              "value": 0
             }
           ],
           "opportunities": [
+            {
+              "name": "Reduce unused JavaScript",
+              "value": 1.35
+            },
             {
               "name": "Avoid multiple page redirects",
               "value": 0.63
@@ -392,9 +395,9 @@
         "shortAnswer": "Your page loads in a reasonable amount of time.",
         "recommendation": null,
         "data": {
-          "responseTime": 22,
-          "loadTime": 1152,
-          "completeTime": 6201
+          "responseTime": 26,
+          "loadTime": 3759,
+          "completeTime": 9856
         }
       },
       "pageSize": false,
@@ -441,24 +444,24 @@
         "recommendation": null,
         "data": {
           "missing": [],
-          "gbpSite": "260 Madison Ave 8th floor, New York, NY 10016, United States",
-          "gbpUrl": "https://thriveagency.com/nyc-digital-marketing-agency/?utm_source=GMBlisting&utm_medium=organic",
-          "gbpPhone": "+1 315 930 1001"
+          "gbpSite": "600 N Washington Ave Suite C203, Minneapolis, MN 55401",
+          "gbpUrl": "https://hookagency.com/?utm_source=gmb",
+          "gbpPhone": "+1 612 772 9555"
         }
       },
       "gbpReviews": {
         "section": "localseo",
-        "passed": false,
-        "shortAnswer": "Your Google Business Profile has a low rating or low number of reviews.",
-        "recommendation": "Improve Google Business Profile Rating & Review Count",
+        "passed": true,
+        "shortAnswer": "The Google Business Profile has a good rating and review count.",
+        "recommendation": null,
         "data": {
-          "reviewScore": 4.1,
-          "numberReviews": 8,
-          "reviewScore1Count": 1,
+          "reviewScore": 4.9,
+          "numberReviews": 173,
+          "reviewScore1Count": 2,
           "reviewScore2Count": 1,
           "reviewScore3Count": 0,
           "reviewScore4Count": 0,
-          "reviewScore5Count": 6
+          "reviewScore5Count": 170
         }
       },
       "technologies": false,
@@ -470,11 +473,6 @@
       "spf": false,
       "recommendations": [
         {
-          "priority": "medium",
-          "section": "ui",
-          "recommendation": "Optimize for Core Web Vitals"
-        },
-        {
           "priority": "low",
           "section": "ui",
           "recommendation": "Optimize for Mobile PageSpeed Insights"
@@ -483,16 +481,11 @@
           "priority": "low",
           "section": "links",
           "recommendation": "Update Link URLs to be more readable"
-        },
-        {
-          "priority": "low",
-          "section": "localseo",
-          "recommendation": "Improve Google Business Profile Rating & Review Count"
         }
       ],
-      "recommendation_count": 4
+      "recommendation_count": 2
     },
-    "created_at": "2026-01-30 20:51:50",
-    "completed_at": "2026-01-30 20:52:51"
+    "created_at": "2026-02-01 13:03:34",
+    "completed_at": "2026-02-01 13:04:58"
   }
 }

@@ -7,7 +7,6 @@ import AuditResultsDisplay from '@/components/AuditResultsDisplay'
 import OnPageSEOSection from '@/components/OnPageSEOSection'
 import RecommendationsSection from '@/components/RecommendationsSection'
 import BacklinksSection from '@/components/BacklinksSection'
-
 import PerformanceSection from '@/components/PerformanceSection'
 import UsabilitySection from '@/components/UsabilitySection'
 import LocalSEOSection from '@/components/LocalSEOSection'
@@ -32,8 +31,8 @@ function ResultsContent() {
 
   useEffect(() => {
     // Check if we should use test data (via query parameter)
-    // Default to API mode - set ?test=true to use test data (JSON file) instead
-    const useTestData = new URLSearchParams(window.location.search).get('test') === 'true'
+    // Default to test mode - set ?api=true to use live API instead
+    const useTestData = new URLSearchParams(window.location.search).get('api') !== 'true'
     
     // Load test data from JSON file
     const loadTestData = async () => {
@@ -290,21 +289,20 @@ function ResultsContent() {
 
         {/* Results Display */}
         {seoData && !loading && (
-          <>
+          <div id="report-content-for-pdf">
             <AuditResultsDisplay data={seoData} />
             {seoData.recommendations && Array.isArray(seoData.recommendations) && seoData.recommendations.length > 0 && (
               <RecommendationsSection recommendations={seoData.recommendations} />
             )}
             <BacklinksSection data={seoData} />
             <OnPageSEOSection data={seoData} />
-        
             <UsabilitySection data={seoData} />
             <PerformanceSection data={seoData} />
             
             <LocalSEOSection data={seoData} />
             
-            {/* Call Booking Button */}
-            <div className="mt-12 mb-8 text-center">
+            {/* Call Booking Button - excluded from PDF */}
+            <div data-pdf-exclude className="mt-12 mb-8 text-center">
               <a
                 href={process.env.NEXT_PUBLIC_BOOKING_URL || '#'}
                 target="_blank"
@@ -314,7 +312,7 @@ function ResultsContent() {
                 Schedule a Strategy Call
               </a>
             </div>
-          </>
+          </div>
         )}
       </div>
 

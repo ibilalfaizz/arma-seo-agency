@@ -64,6 +64,155 @@
 }
 */
 
+/* PDF export: preserve background colors when capturing report */
+#report-content-for-pdf,
+#report-content-for-pdf * {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* PDF export: reduce font sizes so data fits better */
+#report-content-for-pdf.pdf-export {
+  font-size: 0.875rem;
+}
+
+#report-content-for-pdf.pdf-export h1 {
+  font-size: 1.5rem;
+}
+
+#report-content-for-pdf.pdf-export h2 {
+  font-size: 1.25rem;
+}
+
+#report-content-for-pdf.pdf-export h3 {
+  font-size: 1.1rem;
+}
+
+#report-content-for-pdf.pdf-export h4,
+#report-content-for-pdf.pdf-export h5 {
+  font-size: 1rem;
+}
+
+#report-content-for-pdf.pdf-export h6 {
+  font-size: 0.95rem;
+}
+
+#report-content-for-pdf.pdf-export p,
+#report-content-for-pdf.pdf-export td,
+#report-content-for-pdf.pdf-export th,
+#report-content-for-pdf.pdf-export li {
+  font-size: 0.8125rem;
+}
+
+#report-content-for-pdf.pdf-export .text-5xl {
+  font-size: 2rem;
+}
+
+#report-content-for-pdf.pdf-export .text-4xl {
+  font-size: 1.5rem;
+}
+
+#report-content-for-pdf.pdf-export .text-3xl {
+  font-size: 1.25rem;
+}
+
+#report-content-for-pdf.pdf-export .text-2xl {
+  font-size: 1.1rem;
+}
+
+#report-content-for-pdf.pdf-export .text-xl {
+  font-size: 1rem;
+}
+
+#report-content-for-pdf.pdf-export .text-lg {
+  font-size: 0.95rem;
+}
+
+#report-content-for-pdf.pdf-export .text-base {
+  font-size: 0.875rem;
+}
+
+#report-content-for-pdf.pdf-export .text-sm {
+  font-size: 0.8125rem;
+}
+
+#report-content-for-pdf.pdf-export .text-xs {
+  font-size: 0.75rem;
+}
+
+/* PDF export: ensure radar chart area renders and stays on top (prevent overlap) */
+#report-content-for-pdf.pdf-export [data-radar-chart-area] {
+  position: relative !important;
+  z-index: 10 !important;
+  isolation: isolate !important;
+}
+
+#report-content-for-pdf.pdf-export [data-radar-chart],
+#report-content-for-pdf.pdf-export [data-radar-chart-area] img {
+  min-width: 300px !important;
+  min-height: 300px !important;
+  display: block !important;
+}
+
+/* PDF export: hide Website Preview section entirely (duplicate, causes overlap) */
+#report-content-for-pdf.pdf-export #website-preview-pdf-exclude {
+  display: none !important;
+  visibility: hidden !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+}
+
+/* PDF export: reduce blank section at end - trim last section margin */
+#report-content-for-pdf.pdf-export .pdf-report-last {
+  margin-bottom: 0 !important;
+}
+
+/* PDF/print: Priority badge and table alignment - ensure badge stays centered in PDF */
+#report-content-for-pdf.pdf-export th.priority-cell,
+#report-content-for-pdf.pdf-export td.priority-cell {
+  vertical-align: middle !important;
+}
+
+#report-content-for-pdf.pdf-export .priority-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1 !important;
+  height: 24px !important;
+  min-height: 24px !important;
+}
+
+@media print {
+  th.priority-cell,
+  td.priority-cell {
+    vertical-align: middle !important;
+  }
+  .priority-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    line-height: 1 !important;
+    height: 24px !important;
+    min-height: 24px !important;
+  }
+}
+
+/* PDF export (when clone has .pdf-export): fix buttons, gauges, page breaks */
+#report-content-for-pdf.pdf-export button,
+#report-content-for-pdf.pdf-export .pdf-report-button {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  text-align: center;
+  min-width: 0;
+  max-width: 100%;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+}
+
 @layer utilities {
   @keyframes fadeIn {
     from {

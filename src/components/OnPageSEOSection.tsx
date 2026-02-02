@@ -56,7 +56,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
   const gradeColor = getGradeColor(seoScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
       <h2 className="text-3xl font-bold text-white mb-8">On-Page SEO Results</h2>
       
       {/* Header Section with Grade */}

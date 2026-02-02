@@ -42,7 +42,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
   const gradeColor = getGradeColor(uiScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
       <h2 className="text-3xl font-bold text-white mb-8">Usability</h2>
       
       {/* Header Section with Grade */}
@@ -98,19 +98,20 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
           <h4 className="text-xl font-bold text-white mb-3">Device Rendering</h4>
           <p className="text-gray-300 mb-6">{deviceRendering.shortAnswer}</p>
           <div className="flex flex-wrap justify-center items-start gap-4 md:gap-6">
-            {/* Mobile Screenshot */}
+            {/* Mobile Screenshot - data-pdf-src used by PDF export to load image via proxy */}
             {deviceRendering.data.mobile && (
-              <div className="flex flex-col items-center align-self-end" style={{alignSelf: 'flex-end'}}>
+              <div className="flex flex-col items-center" data-device-img="mobile" data-pdf-src={deviceRendering.data.mobile}>
                 <div className="bg-slate-300 border-2 border-slate-400 rounded-[3rem] p-2 shadow-2xl relative w-[180px]">
                   {/* Notch */}
                   <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-20 h-5 bg-slate-300 rounded-b-xl z-10"></div>
                   {/* Screen */}
-                  <div className="relative overflow-hidden rounded-[2.5rem] bg-black mt-1" style={{  width: '100%', minHeight: '267px' }}>
+                  <div className="relative overflow-hidden rounded-[2.5rem] bg-gray-900 mt-1 w-full" style={{ aspectRatio: '9/19.5', minHeight: '320px' }}>
                     <Image
                       src={deviceRendering.data.mobile}
                       alt="Mobile rendering"
                       fill
-                      className="object-contain object-top"
+                      className="object-cover object-top"
+                      sizes="180px"
                       unoptimized
                     />
                   </div>
@@ -118,17 +119,18 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                 <p className="text-white text-sm mt-4 font-medium">Mobile</p>
               </div>
             )}
-            {/* Tablet Screenshot */}
+            {/* Tablet Screenshot - data-pdf-src used by PDF export to load image via proxy */}
             {deviceRendering.data.tablet && (
-              <div className="flex flex-col items-center">
-                <div className="bg-slate-300 border-2 border-slate-400 rounded-xl p-2 shadow-2xl relative" style={{ width: '295px', maxWidth: '100%' }}>
+              <div className="flex flex-col items-center" data-device-img="tablet" data-pdf-src={deviceRendering.data.tablet}>
+                <div className="bg-slate-300 border-2 border-slate-400 rounded-xl p-2 shadow-2xl relative" style={{ width: '320px', maxWidth: '100%' }}>
                   {/* Screen */}
-                  <div className="relative overflow-hidden rounded-lg bg-black border-2 border-slate-500" style={{ aspectRatio: '4/3', width: '100%', minHeight: '380px' }}>
+                  <div className="relative overflow-hidden rounded-lg bg-gray-900 border-2 border-slate-500 w-full" style={{ aspectRatio: '4/3', minHeight: '380px' }}>
                     <Image
                       src={deviceRendering.data.tablet}
                       alt="Tablet rendering"
                       fill
-                      className="object-contain object-top"
+                      className="object-cover object-top"
+                      sizes="320px"
                       unoptimized
                     />
                   </div>
@@ -163,9 +165,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
               {/* Largest Contentful Paint (LCP) */}
               {coreWebVitals.data['largest-contentful-paint'] !== null && coreWebVitals.data['largest-contentful-paint'] !== undefined && (
-                <div>
-                  <h5 className="text-lg font-semibold text-white mb-4">Largest Contentful Paint (LCP)</h5>
-                  <div className="relative">
+                <div className="flex flex-col items-center">
+                  <h5 className="text-lg font-semibold text-white mb-4 w-full text-center">Largest Contentful Paint (LCP)</h5>
+                  <div className="relative w-full flex flex-col items-center">
                     {/* Gauge Chart - No Needle */}
                     {(() => {
                       const lcp = coreWebVitals.data['largest-contentful-paint']
@@ -196,12 +198,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                             />
                           </div>
                           {/* Threshold labels */}
-                          <div className="flex justify-between px-4 mt-2">
+                          <div className="flex justify-between w-full px-4 mt-2">
                             <span className="text-white text-sm">{lcpGoodThreshold}</span>
                             <span className="text-white text-sm">{lcpNeedsImprovementThreshold}</span>
                           </div>
-                          {/* Value Display */}
-                          <div className="text-center mt-4">
+                          {/* Value Display - centered under gauge */}
+                          <div className="w-full flex justify-center mt-4">
                             <div className="text-3xl font-bold text-white">
                               {lcp.toFixed(1)}s
                             </div>
@@ -215,9 +217,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
               {/* Cumulative Layout Shift (CLS) */}
               {coreWebVitals.data['cumulative-layout-shift'] !== null && coreWebVitals.data['cumulative-layout-shift'] !== undefined && (
-                <div>
-                  <h5 className="text-lg font-semibold text-white mb-4">Cumulative Layout Shift (CLS)</h5>
-                  <div className="relative">
+                <div className="flex flex-col items-center">
+                  <h5 className="text-lg font-semibold text-white mb-4 w-full text-center">Cumulative Layout Shift (CLS)</h5>
+                  <div className="relative w-full flex flex-col items-center">
                     {/* Gauge Chart - No Needle */}
                     {(() => {
                       const cls = coreWebVitals.data['cumulative-layout-shift']
@@ -248,12 +250,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                             />
                           </div>
                           {/* Threshold labels */}
-                          <div className="flex justify-between px-4 mt-2">
+                          <div className="flex justify-between w-full px-4 mt-2">
                             <span className="text-white text-sm">{clsGoodThreshold}</span>
                             <span className="text-white text-sm">{clsNeedsImprovementThreshold}</span>
                           </div>
-                          {/* Value Display */}
-                          <div className="text-center mt-4">
+                          {/* Value Display - centered under gauge */}
+                          <div className="w-full flex justify-center mt-4">
                             <div className="text-3xl font-bold text-white">
                               {cls.toFixed(2)}
                             </div>
