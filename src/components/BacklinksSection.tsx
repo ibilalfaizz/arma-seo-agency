@@ -38,7 +38,7 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
   const referringDomains = blData?.referring_domains != null ? Number(blData.referring_domains) : null
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 ">
       <h2 className="text-3xl font-bold text-white mb-6">Backlinks Summary and Top backlinks</h2>
 
       {/* Backlink Summary */}
@@ -119,12 +119,10 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
         </>
       )}
 
-      {/* Top Backlinks list - starts on new page in PDF */}
+      {/* Top Backlinks list */}
       {hasTopBacklinks && (
-        <>
-          <div className="pdf-new-page" style={{ height: 0, margin: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
-          <div className="mt-8 pt-8 border-t border-gray-700">
-            <h3 className="text-xl font-bold text-white mb-2">Top backlinks</h3>
+        <div className="mt-8 pt-8 border-t border-gray-700 pdf-avoid-break">
+          <h3 className="text-xl font-bold text-white mb-2">Top backlinks</h3>
           {backlinksList.shortAnswer && (
             <p className="text-gray-300 text-sm mb-4">{backlinksList.shortAnswer}</p>
           )}
@@ -161,8 +159,7 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
               </tbody>
             </table>
           </div>
-          </div>
-        </>
+        </div>
       )}
     </div>
   )

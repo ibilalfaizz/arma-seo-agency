@@ -37,16 +37,13 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
   const gradeColor = getGradeColor(performanceScore)
 
   return (
-    <>
-      {/* Zero-height break trigger so the full section starts on the new page (no border/content on prev page) */}
-      <div className="pdf-new-page mt-5" style={{ height: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
-      <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
-        <h2 className="text-3xl font-bold text-white mb-8">Performance Results</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break mt-4">
+      <h2 className="text-3xl font-bold text-white mb-8">Performance Results</h2>
       
       {/* Header Section with Score Gauge */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8">
         {/* Circular Gauge */}
-        <div className="relative w-40 h-40 flex-shrink-0">
+        <div className="relative w-36 h-36 flex-shrink-0">
           <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
             <circle
               cx="100"
@@ -116,7 +113,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
               {/* Server Response */}
               <div className="flex flex-col items-center overflow-visible min-w-0">
                 <h5 className="text-xs font-semibold text-white mb-0.5 min-h-[1.5rem] flex items-center justify-center text-center w-full">Server Response</h5>
-                <div className="relative w-full">
+                <div className="relative w-40">
                   {(() => {
                     const responseTime = serverResponseTime.data.responseTime / 1000 // Convert ms to seconds
                     const normalizedValue = Math.min(responseTime / 1.0, 1) // 0-1s range
@@ -156,7 +153,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
               {/* All Page Content Loaded */}
               <div className="flex flex-col items-center overflow-visible min-w-0">
                 <h5 className="text-xs font-semibold text-white mb-0.5 min-h-[1.5rem] flex items-center justify-center text-center w-full">All Page Content Loaded</h5>
-                <div className="relative w-full">
+                <div className="relative w-40">
                   {(() => {
                     const loadTime = serverResponseTime.data.loadTime / 1000 // Convert ms to seconds
                     const normalizedValue = Math.min(loadTime / 15.0, 1) // 0-15s range
@@ -195,7 +192,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
               {/* All Page Scripts Complete */}
               <div className="flex flex-col items-center overflow-visible min-w-0">
                 <h5 className="text-xs font-semibold text-white mb-0.5 min-h-[1.5rem] flex items-center justify-center text-center w-full">All Page Scripts Complete</h5>
-                <div className="relative w-full">
+                <div className="relative w-40">
                   {(() => {
                     const completeTime = serverResponseTime.data.completeTime / 1000 // Convert ms to seconds
                     const normalizedValue = Math.min(completeTime / 20.0, 1) // 0-20s range
@@ -253,7 +250,6 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
           </div>
         </div>
       )}
-      </div>
-    </>
+    </div>
   )
 }

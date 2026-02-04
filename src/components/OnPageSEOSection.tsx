@@ -56,7 +56,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
   const gradeColor = getGradeColor(seoScore)
 
   return (
-    <div className=" bg-primary rounded-lg border border-gray-800 p-8 mb-8 ">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
       <h2 className="text-3xl font-bold text-white mb-8">On-Page SEO Results</h2>
       
       {/* Header Section with Grade */}
@@ -92,6 +92,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
           </div>
         </div>
 
+
         {/* Title and Description */}
         <div className="flex-1">
           <h3 className="text-2xl font-bold text-white mb-3">{seoTitle}</h3>
@@ -99,9 +100,52 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
         </div>
       </div>
 
+       {/* SERP Snippet Preview */}
+       {titleTag && metaDescription && (
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4 pdf-avoid-break">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <h4 className="text-xl font-bold text-white">SERP Snippet Preview</h4>
+                <div className="w-5 h-5 rounded-full bg-gray-600 flex items-center justify-center">
+                  <span className="text-gray-300 text-xs">i</span>
+                </div>
+              </div>
+              <p className="text-gray-400 text-sm mb-4">
+                This illustrates how your page may appear in Search Results. Note, this is intended as a guide and Search Engines are more frequently generating this content dynamically.
+              </p>
+            </div>
+          </div>
+          
+          {/* SERP Preview Box */}
+          <div className="bg-white rounded-lg p-4 shadow-lg border border-gray-200">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-4 h-4 rounded-full bg-gray-300"></div>
+              <span className="text-gray-600 text-sm font-medium">
+                {titleTag.data 
+                  ? (titleTag.data.includes(' - ') 
+                      ? titleTag.data.split(' - ').pop() || titleTag.data.split(' - ')[0]
+                      : titleTag.data.split(' ')[0])
+                  : finalUrl.replace(/^https?:\/\//, '').replace(/\/$/, '').split('.')[0]}
+              </span>
+              <span className="text-gray-400 text-xs">▼</span>
+            </div>
+            <div className="text-green-700 text-sm mb-1">
+              {finalUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+            </div>
+            <div className="text-accent text-lg font-semibold mb-1 hover:underline cursor-pointer">
+              {titleTag.data || 'Page Title'}
+            </div>
+            <div className="text-gray-700 text-sm leading-relaxed">
+              {metaDescription.data ? (metaDescription.data.length > 160 ? metaDescription.data.substring(0, 160) + '...' : metaDescription.data) : 'Meta description...'}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Title Tag & Meta Description – merged into one box */}
       {(titleTag || metaDescription) && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4 pdf-avoid-break">
           <div className="flex items-start justify-between gap-4 mb-6">
             <h4 className="text-xl font-bold text-white">Title Tag & Meta Description</h4>
             <div className="flex items-center gap-2 flex-shrink-0">
@@ -166,7 +210,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Headers Section */}
       {data.headers && data.headers.data && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 pdf-avoid-break">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Header Tags</h4>
@@ -235,7 +279,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Image Alt Tags Section */}
       {data.imageAlt && data.imageAlt.data && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 pdf-avoid-break">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Image Alt Attributes</h4>
@@ -275,56 +319,12 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
         </div>
       )}
 
-      {/* SERP Snippet Preview – new page in PDF */}
-      {titleTag && metaDescription && (
-        <>
-          <div className="pdf-new-page" style={{ marginTop:"1rem", height: 0, margin: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
-          <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4">
-            <div className="flex items-start justify-between gap-4 mb-4">
-              <div className="flex-1">
-                <div className="flex items-center gap-2 mb-2">
-                  <h4 className="text-xl font-bold text-white">SERP Snippet Preview</h4>
-                <div className="w-5 h-5 rounded-full bg-gray-600 flex items-center justify-center">
-                  <span className="text-gray-300 text-xs">i</span>
-                </div>
-              </div>
-              <p className="text-gray-400 text-sm mb-4">
-                This illustrates how your page may appear in Search Results. Note, this is intended as a guide and Search Engines are more frequently generating this content dynamically.
-              </p>
-            </div>
-          </div>
-          
-          {/* SERP Preview Box */}
-          <div className="bg-white rounded-lg p-4 shadow-lg border border-gray-200">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-4 h-4 rounded-full bg-gray-300"></div>
-              <span className="text-gray-600 text-sm font-medium">
-                {titleTag.data 
-                  ? (titleTag.data.includes(' - ') 
-                      ? titleTag.data.split(' - ').pop() || titleTag.data.split(' - ')[0]
-                      : titleTag.data.split(' ')[0])
-                  : finalUrl.replace(/^https?:\/\//, '').replace(/\/$/, '').split('.')[0]}
-              </span>
-              <span className="text-gray-400 text-xs">▼</span>
-            </div>
-            <div className="text-green-700 text-sm mb-1">
-              {finalUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-            </div>
-            <div className="text-accent text-lg font-semibold mb-1 hover:underline cursor-pointer">
-              {titleTag.data || 'Page Title'}
-            </div>
-            <div className="text-gray-700 text-sm leading-relaxed">
-              {metaDescription.data ? (metaDescription.data.length > 160 ? metaDescription.data.substring(0, 160) + '...' : metaDescription.data) : 'Meta description...'}
-            </div>
-          </div>
-          </div>
-        </>
-      )}
+     
 
   
       {/* Keyword Consistency */}
       {keywords && keywords !== false && keywords.data && keywords.data.keywords && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4 pdf-avoid-break">
           {/* Section Title */}
           <h4 className="text-xl font-bold text-accent mb-4">1. Individual Keywords</h4>
           

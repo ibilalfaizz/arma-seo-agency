@@ -41,10 +41,8 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
   const gradeColor = getGradeColor(uiScore)
 
   return (
-    <>
-      <div className="pdf-new-page mt-5" style={{ height: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
-      <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
-        <h2 className="text-3xl font-bold text-white mb-8">Usability</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
+      <h2 className="text-3xl font-bold text-white mb-8">Usability</h2>
       
       {/* Header Section with Grade */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8">
@@ -93,10 +91,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
         </div>
       </div>
 
-      {/* Device Rendering */}
+      {/* Device Rendering – new page in PDF */}
       {deviceRendering && deviceRendering.data && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
-          <h4 className="text-xl font-bold text-white mb-3">Device Rendering</h4>
+        <>
+          <div className="pdf-new-page" style={{ height: 0, margin: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
+          <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4">
+            <h4 className="text-xl font-bold text-white mb-3">Device Rendering</h4>
           <p className="text-gray-300 mb-6">{deviceRendering.shortAnswer}</p>
           <div className="flex flex-wrap justify-center items-start gap-4 md:gap-6">
             {/* Mobile Screenshot - data-pdf-src used by PDF export to load image via proxy */}
@@ -135,12 +135,13 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
               </div>
             )}
           </div>
-        </div>
+          </div>
+        </>
       )}
 
-      {/* Google's Core Web Vitals - new page in PDF */}
+      {/* Google's Core Web Vitals */}
       {coreWebVitals && (
-        <div className="pdf-new-page bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-5">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-5">
           <div className="flex items-start justify-between mb-6">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Google&apos;s Core Web Vitals</h4>
@@ -176,7 +177,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                       
                       return (
                         <>
-                          <div className="relative" style={{ height: '200px' }}>
+                          <div className="relative" style={{ height: '100px' }}>
                             <GaugeChart
                               id="lcp-gauge"
                               nrOfLevels={30}
@@ -228,7 +229,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                       
                       return (
                         <>
-                          <div className="relative" style={{ height: '200px' }}>
+                          <div className="relative" style={{ height: '100px' }}>
                             <GaugeChart
                               id="cls-gauge"
                               nrOfLevels={30}
@@ -268,7 +269,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Use of Mobile Viewports */}
       {mobileViewport && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4 pdf-avoid-break">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Use of Mobile Viewports</h4>
@@ -304,8 +305,8 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
           {mobilePageInsights.data.score !== undefined && (
             <div className="mt-6">
               {/* Circular Score Gauge */}
-              <div className="flex justify-center mb-8">
-                <div className="relative w-48 h-48">
+              <div className="flex justify-center mb-2">
+                <div className="relative w-32 h-32">
                   <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
                     {/* Background circle */}
                     <circle
@@ -314,7 +315,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                       r="90"
                       fill="none"
                       stroke="#374151"
-                      strokeWidth="20"
+                      strokeWidth="10"
                     />
                     {/* Progress circle */}
                     <circle
@@ -323,7 +324,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                       r="90"
                       fill="none"
                       stroke={mobilePageInsights.data.score >= 90 ? '#10B981' : mobilePageInsights.data.score >= 50 ? '#F59E0B' : '#EF4444'}
-                      strokeWidth="20"
+                      strokeWidth="10"
                       strokeDasharray={2 * Math.PI * 90}
                       strokeDashoffset={2 * Math.PI * 90 * (1 - mobilePageInsights.data.score / 100)}
                       strokeLinecap="round"
@@ -333,7 +334,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                   {/* Score Text */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className={`text-5xl font-bold ${
+                      <div className={`text-3xl font-bold ${
                         mobilePageInsights.data.score >= 90 ? 'text-green-400' : 
                         mobilePageInsights.data.score >= 50 ? 'text-yellow-400' : 
                         'text-red-400'
@@ -345,9 +346,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                 </div>
               </div>
 
-              {/* Lab Data Section - new page in PDF */}
+              {/* Lab Data Section */}
               {mobilePageInsights.data.labdata && mobilePageInsights.data.labdata.length > 0 && (
-                <div className="pdf-new-page mb-6 mt-5">
+                <div className="mb-6 mt-5">
                   <h5 className="text-lg font-semibold text-white mb-4">LAB DATA</h5>
                   <div className="overflow-x-auto">
                     <table className="w-full">
@@ -426,7 +427,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Legible Font Sizes */}
       {legibleFonts && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-6">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Legible Font Sizes</h4>
@@ -465,7 +466,6 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
           </div>
         </div>
       )}
-      </div>
-    </>
+    </div>
   )
 }

@@ -292,15 +292,22 @@ function ResultsContent() {
             {seoData.recommendations && Array.isArray(seoData.recommendations) && seoData.recommendations.length > 0 && (
               <RecommendationsSection recommendations={seoData.recommendations} />
             )}
-           
             <OnPageSEOSection data={seoData} />
             <BacklinksSection data={seoData} />
-             <PerformanceSection data={seoData} />
+            <PerformanceSection data={seoData} />
             <UsabilitySection data={seoData} />
-           
-            
             <LocalSEOSection data={seoData} />
-            
+            {/* Report date at end of PDF */}
+            <div className="text-center text-gray-500 text-sm mt-3">
+              Report Generated: {new Date().toLocaleString('en-US', {
+                month: 'long',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true,
+                timeZone: 'UTC'
+              }) + ' UTC'}
+            </div>
             {/* Call Booking Button - excluded from PDF */}
             <div data-pdf-exclude className="mt-12 mb-8 text-center">
               <a

@@ -24,15 +24,6 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
   const url = data.url || ''
   const desktopScreenshot = (data as any).screenshot
   const mobileScreenshot = (data as any).deviceRendering.data?.mobile
-  const reportDate = new Date().toLocaleString('en-US', {
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-    timeZone: 'UTC'
-  }) + ' UTC'
-
   // Helper functions - display scores exactly as they come from API (numeric only)
   const formatGrade = (grade: string | number | undefined): string => {
     if (grade === undefined || grade === null || grade === '') return 'N/A'
@@ -313,7 +304,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
       // Small dark filler at end to reduce white space below content on last page (avoid extra full pages)
       const darkFiller = document.createElement('div')
       darkFiller.setAttribute('data-pdf-dark-filler', '1')
-      darkFiller.style.height = '378px'
+      darkFiller.style.height = '100%'
       darkFiller.style.width = '100%'
       darkFiller.style.backgroundColor = '#0d0d0d'
       darkFiller.style.flexShrink = '0'
@@ -323,7 +314,10 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
         margin: 0,
         filename: 'SEO-Report.pdf',
         image: { type: 'jpeg', quality: 0.95 },
-        pagebreak: { before: '.pdf-new-page' },
+        pagebreak: {
+          before: '.pdf-new-page',
+          avoid: ['.pdf-avoid-break'],
+        },
         html2canvas: {
           scale: 2,
           useCORS: true,
@@ -367,23 +361,23 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
               disabled={pdfDownloading}
               className="bg-accent hover:bg-accent-dark disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
             >
-                {pdfDownloading ? (
-                  <>
-                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                    </svg>
-                    Downloading...
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    Download PDF Report
-                  </>
-                )}
-              </button>
+              {pdfDownloading ? (
+                <>
+                  <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Downloading...
+                </>
+              ) : (
+                <>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                  Download PDF Report
+                </>
+              )}
+            </button>
           </div>
         </div>
 
@@ -589,11 +583,6 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
               </svg>
             </div>
           </div>
-        </div>
-
-        {/* Report Date */}
-        <div className="text-center text-gray-500 text-sm">
-          Report Generated: {reportDate}
         </div>
       </div>
     </div>
