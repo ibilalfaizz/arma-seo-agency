@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import GaugeChart from 'react-gauge-chart'
 
 interface UsabilitySectionProps {
@@ -106,15 +105,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                 <div className="bg-slate-300 border-2 border-slate-400 rounded-[3rem] p-2 shadow-2xl relative w-[180px]">
                   {/* Notch */}
                   <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-20 h-5 bg-slate-300 rounded-b-xl z-10"></div>
-                  {/* Screen */}
+                  {/* Screen - native img so external screenshots always load */}
                   <div className="relative overflow-hidden rounded-[2.5rem] bg-gray-900 mt-1 w-full" style={{ aspectRatio: '9/19.5', minHeight: '320px' }}>
-                    <Image
+                    <img
                       src={deviceRendering.data.mobile}
                       alt="Mobile rendering"
-                      fill
-                      className="object-cover object-top"
-                      sizes="180px"
-                      unoptimized
+                      className="absolute inset-0 w-full h-full object-cover object-top"
                     />
                   </div>
                 </div>
@@ -125,15 +121,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             {deviceRendering.data.tablet && (
               <div className="flex flex-col items-center" data-device-img="tablet" data-pdf-src={deviceRendering.data.tablet}>
                 <div className="bg-slate-300 border-2 border-slate-400 rounded-xl p-2 shadow-2xl relative" style={{ width: '320px', maxWidth: '100%' }}>
-                  {/* Screen */}
+                  {/* Screen - native img so external screenshots always load */}
                   <div className="relative overflow-hidden rounded-lg bg-gray-900 border-2 border-slate-500 w-full" style={{ aspectRatio: '4/3', minHeight: '380px' }}>
-                    <Image
+                    <img
                       src={deviceRendering.data.tablet}
                       alt="Tablet rendering"
-                      fill
-                      className="object-cover object-top"
-                      sizes="320px"
-                      unoptimized
+                      className="absolute inset-0 w-full h-full object-cover object-top"
                     />
                   </div>
                   {/* Home Button */}

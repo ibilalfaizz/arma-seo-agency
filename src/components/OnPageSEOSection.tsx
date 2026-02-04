@@ -99,70 +99,65 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
         </div>
       </div>
 
-      {/* Title Tag Section */}
-      {titleTag && (
+      {/* Title Tag & Meta Description – merged into one box */}
+      {(titleTag || metaDescription) && (
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Title Tag</h4>
-              <p className="text-gray-300 mb-4">
-                {titleTag.shortAnswer === 'Title Tag Text Too Short' 
-                  ? "You have a Title Tag, but ideally it should be between 50 and 60 characters in length (including spaces)."
-                  : titleTag.shortAnswer || "Title Tag information"}
-              </p>
-              <div className="bg-primary rounded-lg p-4 mb-3">
-                <p className="text-white font-medium mb-2">Current Title Tag:</p>
-                <p className="text-gray-300">{titleTag.data || 'N/A'}</p>
-              </div>
-              <div className="flex items-center gap-4 text-sm">
-                <span className="text-gray-400">Length: <span className="text-white font-semibold">{titleTag.value || '0'}</span></span>
-              </div>
-              <p className="text-gray-400 text-sm mt-4">
-                Title Tags are very important for search engines to correctly understand and categorize your content.
-              </p>
-            </div>
-            {!titleTag.passed && (
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
+          <div className="flex items-start justify-between gap-4 mb-6">
+            <h4 className="text-xl font-bold text-white">Title Tag & Meta Description</h4>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              {titleTag && !titleTag.passed && (
+                <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center" title="Title Tag issue">
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </div>
+              )}
+              {metaDescription && !metaDescription.passed && (
+                <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center" title="Meta Description issue">
+                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="space-y-6">
+            {titleTag && (
+              <div>
+                <p className="text-gray-300 mb-3">
+                  {titleTag.shortAnswer === 'Title Tag Text Too Short'
+                    ? "You have a Title Tag, but ideally it should be between 50 and 60 characters in length (including spaces)."
+                    : titleTag.shortAnswer || "Title Tag information"}
+                </p>
+                <div className="bg-primary rounded-lg p-4 mb-2">
+                  <p className="text-white font-medium mb-2">Current Title Tag:</p>
+                  <p className="text-gray-300">{titleTag.data || 'N/A'}</p>
+                </div>
+                <div className="flex items-center gap-4 text-sm mb-2">
+                  <span className="text-gray-400">Length: <span className="text-white font-semibold">{titleTag.value || '0'}</span></span>
+                </div>
+                <p className="text-gray-400 text-sm">
+                  Title Tags are very important for search engines to correctly understand and categorize your content.
+                </p>
               </div>
             )}
-          </div>
-        </div>
-      )}
-
-      {/* Meta Description Section */}
-      {metaDescription && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Meta Description Tag</h4>
-              <p className="text-gray-300 mb-4">
-                {metaDescription.shortAnswer === 'Meta Description Too Long'
-                  ? "Your page has a Meta Description Tag however, your Meta Description should ideally be between 120 and 160 characters (including spaces)."
-                  : metaDescription.shortAnswer || "Meta Description information"}
-              </p>
-              <div className="bg-primary rounded-lg p-4 mb-3">
-                <p className="text-white font-medium mb-2">Current Meta Description:</p>
-                <p className="text-gray-300">{metaDescription.data || 'N/A'}</p>
-              </div>
-              <div className="flex items-center gap-4 text-sm">
-                <span className="text-gray-400">Length: <span className="text-white font-semibold">{metaDescription.value || '0'}</span></span>
-              </div>
-              <p className="text-gray-400 text-sm mt-4">
-                A Meta Description is important for search engines to understand the content of your page, and is often shown as the description text blurb in search results.
-              </p>
-            </div>
-            {!metaDescription.passed && (
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
+            {metaDescription && (
+              <div className={titleTag ? 'pt-4 border-t border-gray-700' : ''}>
+                <p className="text-gray-300 mb-3">
+                  {metaDescription.shortAnswer === 'Meta Description Too Long'
+                    ? "Your page has a Meta Description Tag however, your Meta Description should ideally be between 120 and 160 characters (including spaces)."
+                    : metaDescription.shortAnswer || "Meta Description information"}
+                </p>
+                <div className="bg-primary rounded-lg p-4 mb-2">
+                  <p className="text-white font-medium mb-2">Current Meta Description:</p>
+                  <p className="text-gray-300">{metaDescription.data || 'N/A'}</p>
                 </div>
+                <div className="flex items-center gap-4 text-sm mb-2">
+                  <span className="text-gray-400">Length: <span className="text-white font-semibold">{metaDescription.value || '0'}</span></span>
+                </div>
+                <p className="text-gray-400 text-sm">
+                  A Meta Description is important for search engines to understand the content of your page, and is often shown as the description text blurb in search results.
+                </p>
               </div>
             )}
           </div>
@@ -280,13 +275,15 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
         </div>
       )}
 
-      {/* SERP Snippet Preview */}
+      {/* SERP Snippet Preview – new page in PDF */}
       {titleTag && metaDescription && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
-          <div className="flex items-start justify-between gap-4 mb-4">
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-2">
-                <h4 className="text-xl font-bold text-white">SERP Snippet Preview</h4>
+        <>
+          <div className="pdf-new-page" style={{ marginTop:"1rem", height: 0, margin: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
+          <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4">
+            <div className="flex items-start justify-between gap-4 mb-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <h4 className="text-xl font-bold text-white">SERP Snippet Preview</h4>
                 <div className="w-5 h-5 rounded-full bg-gray-600 flex items-center justify-center">
                   <span className="text-gray-300 text-xs">i</span>
                 </div>
@@ -320,13 +317,14 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
               {metaDescription.data ? (metaDescription.data.length > 160 ? metaDescription.data.substring(0, 160) + '...' : metaDescription.data) : 'Meta description...'}
             </div>
           </div>
-        </div>
+          </div>
+        </>
       )}
 
   
       {/* Keyword Consistency */}
       {keywords && keywords !== false && keywords.data && keywords.data.keywords && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4">
           {/* Section Title */}
           <h4 className="text-xl font-bold text-accent mb-4">1. Individual Keywords</h4>
           

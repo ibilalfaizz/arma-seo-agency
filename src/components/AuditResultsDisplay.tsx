@@ -310,6 +310,14 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
       clone.style.setProperty('print-color-adjust', 'exact')
       clone.style.color = '#ffffff'
       clone.style.padding = '20px 16px 8px'
+      // Small dark filler at end to reduce white space below content on last page (avoid extra full pages)
+      const darkFiller = document.createElement('div')
+      darkFiller.setAttribute('data-pdf-dark-filler', '1')
+      darkFiller.style.height = '378px'
+      darkFiller.style.width = '100%'
+      darkFiller.style.backgroundColor = '#0d0d0d'
+      darkFiller.style.flexShrink = '0'
+      clone.appendChild(darkFiller)
 
       const opts: Record<string, unknown> = {
         margin: 0,
@@ -379,11 +387,11 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
           </div>
         </div>
 
-        {/* Main Content Grid - Score card (left) + Website Preview (right) */}
-        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+        {/* Main Content Grid - Score card (40%) + Website Preview (60%) */}
+        <div className="grid lg:grid-cols-[2fr_3fr] gap-6 mb-8">
           {/* Left - Score card with circular gauge and recommendations */}
           <div>
-            <div className="bg-primary rounded-lg border border-gray-800 p-8 text-center h-full">
+            <div className="bg-primary rounded-lg border border-gray-800 p-8 text-center">
               {/* Circular Progress */}
               <div className="relative w-36 h-36 mx-auto mb-4">
                 <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
@@ -420,7 +428,9 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                     recommendationsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
                   }
                 }}
-                className="pdf-report-button bg-accent hover:bg-accent-dark text-white font-semibold py-3 px-4 rounded-lg transition-colors w-full text-center"
+             
+
+                className="pdf-report-button bg-accent text-white font-semibold px-4 rounded-lg w-full text-center d-block" style={{height:'48px',lineHeight:'48px'}}
               >
                 Recommendations: {recommendations.length}
               </button>
