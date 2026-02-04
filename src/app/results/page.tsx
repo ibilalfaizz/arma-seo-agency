@@ -30,9 +30,8 @@ function ResultsContent() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    // Check if we should use test data (via query parameter)
-    // Default to test mode - set ?api=true to use live API instead
-    const useTestData = new URLSearchParams(window.location.search).get('api') !== 'true'
+    // Default: use live API. Use test data only when ?test=true
+    const useTestData = new URLSearchParams(window.location.search).get('test') === 'true'
     
     // Load test data from JSON file
     const loadTestData = async () => {
@@ -214,7 +213,6 @@ function ResultsContent() {
       }
     }
 
-    // Use test data if test parameter is present, otherwise use API
     if (useTestData) {
       loadTestData()
     } else {

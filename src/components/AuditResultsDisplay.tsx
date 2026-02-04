@@ -432,7 +432,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
 
                 className="pdf-report-button bg-accent text-white font-semibold px-4 rounded-lg w-full text-center d-block" style={{height:'48px',lineHeight:'48px'}}
               >
-                Recommendations: {recommendations.length}
+            <span style={{display:'inline-block'}}>   Recommendations: {recommendations.length}</span>  
               </button>
             </div>
           </div>
