@@ -298,7 +298,7 @@ function ResultsContent() {
             <UsabilitySection data={seoData} />
             <LocalSEOSection data={seoData} />
             {/* Report date at end of PDF */}
-            <div className="text-center text-gray-500 text-sm mt-3">
+            {/* <div className="text-center text-gray-500 text-sm mt-3">
               Report Generated: {new Date().toLocaleString('en-US', {
                 month: 'long',
                 day: 'numeric',
@@ -307,7 +307,7 @@ function ResultsContent() {
                 hour12: true,
                 timeZone: 'UTC'
               }) + ' UTC'}
-            </div>
+            </div> */}
             {/* Call Booking Button - excluded from PDF */}
             <div data-pdf-exclude className="mt-12 mb-8 text-center">
               <a
