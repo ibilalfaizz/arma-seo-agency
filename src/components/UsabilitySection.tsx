@@ -168,7 +168,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
               {coreWebVitals.data['largest-contentful-paint'] !== null && coreWebVitals.data['largest-contentful-paint'] !== undefined && (
                 <div className="flex flex-col items-center">
                   <h5 className="text-lg font-semibold text-white mb-4 w-full text-center">Largest Contentful Paint (LCP)</h5>
-                  <div className="relative w-full flex flex-col items-center">
+                  <div className="relative  flex flex-col items-center" style={{width:"60%"}}>
                     {/* Gauge Chart - No Needle */}
                     {(() => {
                       const lcp = coreWebVitals.data['largest-contentful-paint']
@@ -204,7 +204,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                             <span className="text-white text-sm">{lcpNeedsImprovementThreshold}</span>
                           </div>
                           {/* Value Display - centered under gauge */}
-                          <div className="w-full flex justify-center mt-4">
+                          <div className="w-full flex justify-center">
                             <div className="text-3xl font-bold text-white">
                               {lcp.toFixed(1)}s
                             </div>
@@ -220,7 +220,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
               {coreWebVitals.data['cumulative-layout-shift'] !== null && coreWebVitals.data['cumulative-layout-shift'] !== undefined && (
                 <div className="flex flex-col items-center">
                   <h5 className="text-lg font-semibold text-white mb-4 w-full text-center">Cumulative Layout Shift (CLS)</h5>
-                  <div className="relative w-full flex flex-col items-center">
+                  <div className="relative flex flex-col items-center" style={{width:"60%"}}>
                     {/* Gauge Chart - No Needle */}
                     {(() => {
                       const cls = coreWebVitals.data['cumulative-layout-shift']
@@ -256,7 +256,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                             <span className="text-white text-sm">{clsNeedsImprovementThreshold}</span>
                           </div>
                           {/* Value Display - centered under gauge */}
-                          <div className="w-full flex justify-center mt-4">
+                          <div className="w-full flex justify-center">
                             <div className="text-3xl font-bold text-white">
                               {cls.toFixed(2)}
                             </div>
@@ -430,44 +430,45 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
         </div>
       )}
 
-      {/* Legible Font Sizes */}
-      {legibleFonts && (
+      {/* Legible Font Sizes + Tap Target Sizing */}
+      {(legibleFonts || tapTargetSizing) && (
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-6">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Legible Font Sizes</h4>
-              <p className="text-gray-300">{legibleFonts.shortAnswer}</p>
-            </div>
-            {legibleFonts.passed ? (
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+          <h4 className="text-xl font-bold text-white mb-4">Legible Font Sizes &amp; Tap Target Sizing</h4>
+          <div className="space-y-4">
+            {legibleFonts && (
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex-1">
+                  <h5 className="text-lg font-semibold text-white mb-2">Legible Font Sizes</h5>
+                  <p className="text-gray-300">{legibleFonts.shortAnswer}</p>
                 </div>
+                {legibleFonts.passed ? (
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  </div>
+                ) : null}
               </div>
-            ) : null}
-          </div>
-        </div>
-      )}
-
-      {/* Tap Target Sizing */}
-      {tapTargetSizing && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
-          <div className="flex items-start justify-between gap-4">
-            <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Tap Target Sizing</h4>
-              <p className="text-gray-300">{tapTargetSizing.shortAnswer}</p>
-            </div>
-            {tapTargetSizing.passed ? (
-              <div className="flex-shrink-0">
-                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
+            )}
+            {tapTargetSizing && (
+              <div className={`flex items-start justify-between gap-4 ${legibleFonts ? 'pt-4 border-t border-gray-700' : ''}`}>
+                <div className="flex-1">
+                  <h5 className="text-lg font-semibold text-white mb-2">Tap Target Sizing</h5>
+                  <p className="text-gray-300">{tapTargetSizing.shortAnswer}</p>
                 </div>
+                {tapTargetSizing.passed ? (
+                  <div className="flex-shrink-0">
+                    <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
+                      <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                  </div>
+                ) : null}
               </div>
-            ) : null}
+            )}
           </div>
         </div>
       )}

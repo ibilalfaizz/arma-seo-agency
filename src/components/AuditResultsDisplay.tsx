@@ -137,28 +137,27 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
 
       const pdfStyle = document.createElement('style')
 pdfStyle.innerHTML = `
-  .pdf-export * {
-    overflow: visible !important;
+  .pdf-export {
+    overflow: hidden !important;
+    scrollbar-width: none !important;
+  }
+  .pdf-export::-webkit-scrollbar,
+  .pdf-export *::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
   }
 
-
-    .pdf-export button
-  {
+  .pdf-export button {
     display: block;
     padding-bottom: 2px !important;
     line-height: 1.2 !important;
   }
-  
- .pdf-export .priority-badge,
-  .pdf-export .prog-text{
+
+  .pdf-export .priority-badge,
+  .pdf-export .prog-text {
     display: block;
     padding-bottom: 18px;
-  }
-
- 
-
-  .pdf-export [class*="rounded"] {
-    overflow: visible !important;
   }
 `
 clone.prepend(pdfStyle)
@@ -350,33 +349,32 @@ clone.prepend(pdfStyle)
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       }
 
-      await html2pdf()
-        .set(opts)
-        .from(clone)
-        .toPdf()
-        .get('pdf')
-        .then((pdf: any) => {
-          const pageWidth = pdf.internal.pageSize.getWidth()
-          const pageHeight = pdf.internal.pageSize.getHeight()
-          const totalPages = pdf.internal.getNumberOfPages()
-          const k = pdf.internal.scaleFactor // points per mm
-          const wPt = pageWidth * k
-          const hPt = pageHeight * k
+      let canvasWidth = 0
+      let canvasHeight = 0
+      let canvasRef: HTMLCanvasElement | null = null
 
-          // Prepend dark background rect into each page's content stream
-          // so it is drawn BEHIND existing content (not on top)
-          for (let i = 1; i <= totalPages; i++) {
-            const page = pdf.internal.pages[i]
-            if (Array.isArray(page)) {
-              page.splice(0, 0,
-                'q',
-                '0.051 0.051 0.051 rg',
-                `0 0 ${wPt.toFixed(2)} ${hPt.toFixed(2)} re`,
-                'f',
-                'Q'
-              )
-            }
-          }
+      await html2pdf()
+      .set(opts)
+      .from(clone)
+      .toPdf()
+      .get('pdf')
+      .then((pdf: any) => {
+    
+        const pageWidth = pdf.internal.pageSize.getWidth()
+        const pageHeight = pdf.internal.pageSize.getHeight()
+    
+        // 🔑 Hook into page creation
+        const originalAddPage = pdf.addPage
+        pdf.addPage = function (...args: any[]) {
+          originalAddPage.apply(this, args)
+    
+          pdf.setFillColor(13, 13, 13) // #0d0d0d
+          pdf.rect(0, 0, pageWidth, pageHeight, 'F')
+        }
+    
+        // Paint background for FIRST page
+        pdf.setFillColor(13, 13, 13)
+        pdf.rect(0, 0, pageWidth, pageHeight, 'F')      
 
           pdf.save('SEO-Report.pdf')
         })
