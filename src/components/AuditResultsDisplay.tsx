@@ -135,6 +135,35 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
       const clone = element.cloneNode(true) as HTMLElement
       clone.querySelectorAll('[data-pdf-exclude]').forEach((el) => el.remove())
 
+      const pdfStyle = document.createElement('style')
+pdfStyle.innerHTML = `
+  .pdf-export * {
+    overflow: visible !important;
+  }
+
+
+    .pdf-export button
+  {
+    display: block;
+    padding-bottom: 2px !important;
+    line-height: 1.2 !important;
+  }
+  
+ .pdf-export .priority-badge,
+  .pdf-export .prog-text{
+    display: block;
+    padding-bottom: 18px;
+  }
+
+ 
+
+  .pdf-export [class*="rounded"] {
+    overflow: visible !important;
+  }
+`
+clone.prepend(pdfStyle)
+
+
       // Website Preview: load desktop/mobile screenshots via proxy so they render in PDF
       const websitePreviewContainers = clone.querySelectorAll('[data-website-preview-img][data-pdf-src]')
       await Promise.all(
@@ -301,14 +330,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
       clone.style.setProperty('print-color-adjust', 'exact')
       clone.style.color = '#ffffff'
       clone.style.padding = '20px 16px 8px'
-      // Small dark filler at end to reduce white space below content on last page (avoid extra full pages)
-      const darkFiller = document.createElement('div')
-      darkFiller.setAttribute('data-pdf-dark-filler', '1')
-      darkFiller.style.height = '100%'
-      darkFiller.style.width = '100%'
-      darkFiller.style.backgroundColor = '#0d0d0d'
-      darkFiller.style.flexShrink = '0'
-      clone.appendChild(darkFiller)
+      // (dark filler removed — background is handled via jsPDF page stream)
 
       const opts: Record<string, unknown> = {
         margin: 0,
@@ -319,7 +341,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
           avoid: ['.pdf-avoid-break'],
         },
         html2canvas: {
-          scale: 2,
+          scale: 1.5,
           useCORS: true,
           allowTaint: true,
           logging: false,
@@ -331,7 +353,34 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
       await html2pdf()
         .set(opts)
         .from(clone)
-        .save()
+        .toPdf()
+        .get('pdf')
+        .then((pdf: any) => {
+          const pageWidth = pdf.internal.pageSize.getWidth()
+          const pageHeight = pdf.internal.pageSize.getHeight()
+          const totalPages = pdf.internal.getNumberOfPages()
+          const k = pdf.internal.scaleFactor // points per mm
+          const wPt = pageWidth * k
+          const hPt = pageHeight * k
+
+          // Prepend dark background rect into each page's content stream
+          // so it is drawn BEHIND existing content (not on top)
+          for (let i = 1; i <= totalPages; i++) {
+            const page = pdf.internal.pages[i]
+            if (Array.isArray(page)) {
+              page.splice(0, 0,
+                'q',
+                '0.051 0.051 0.051 rg',
+                `0 0 ${wPt.toFixed(2)} ${hPt.toFixed(2)} re`,
+                'f',
+                'Q'
+              )
+            }
+          }
+
+          pdf.save('SEO-Report.pdf')
+        })
+    
     } catch (err) {
       console.error('PDF download error:', err)
     } finally {
@@ -405,7 +454,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <span
-                    className={`text-4xl font-bold tabular-nums ${getGradeColor(overallGrade) === '#10B981' ? 'text-green-400' : getGradeColor(overallGrade) === '#F59E0B' ? 'text-yellow-400' : 'text-red-400'}`}
+                    className={`prog-text text-4xl font-bold tabular-nums ${getGradeColor(overallGrade) === '#10B981' ? 'text-green-400' : getGradeColor(overallGrade) === '#F59E0B' ? 'text-yellow-400' : 'text-red-400'}`}
                     style={{ lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '0.05em' }}
                   >
                     {formatGrade(overallGrade)}
@@ -426,7 +475,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
 
                 className="pdf-report-button bg-accent text-white font-semibold px-4 rounded-lg w-full text-center d-block" style={{height:'48px',lineHeight:'48px'}}
               >
-            <span style={{display:'inline-block'}}>   Recommendations: {recommendations.length}</span>  
+            <span className='prog-text' style={{display:'inline-block'}}>   Recommendations: {recommendations.length}</span>  
               </button>
             </div>
           </div>
@@ -510,7 +559,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span
-                          className={`text-xl font-bold tabular-nums ${
+                          className={`prog-text text-xl font-bold tabular-nums ${
                             color === '#10B981' ? 'text-green-400' :
                             color === '#F59E0B' ? 'text-yellow-400' :
                             'text-red-400'

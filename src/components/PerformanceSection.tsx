@@ -69,7 +69,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
           {/* Grade Text */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <div className={`text-3xl font-bold ${
+              <div className={` prog-text text-3xl font-bold ${
                 gradeColor === '#10B981' ? 'text-green-400' : 
                 gradeColor === '#F59E0B' ? 'text-yellow-400' : 
                 'text-red-400'

@@ -58,7 +58,7 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
                     backgroundColor: 'rgba(17, 24, 39, 0.5)',
                   }}
                 >
-                  <span className="text-xl font-bold text-white">{domainStrength}</span>
+                  <span className="prog-text text-xl font-bold text-white">{domainStrength}</span>
                 </div>
                 <p className="text-gray-400 text-sm font-medium mt-2">Domain Strength</p>
               </div>
@@ -72,7 +72,7 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
                     backgroundColor: 'rgba(17, 24, 39, 0.5)',
                   }}
                 >
-                  <span className="text-xl font-bold text-white">{pageStrength}</span>
+                  <span className="prog-text text-xl font-bold text-white">{pageStrength}</span>
                 </div>
                 <p className="text-gray-400 text-sm font-medium mt-2">Page Strength</p>
               </div>

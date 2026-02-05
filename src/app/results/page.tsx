@@ -30,7 +30,7 @@ function ResultsContent() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    // Default: use live API. Use test data only when ?test=true
+    // Default: use live API. Use test data when ?test=true
     const useTestData = new URLSearchParams(window.location.search).get('test') === 'true'
     
     // Load test data from JSON file

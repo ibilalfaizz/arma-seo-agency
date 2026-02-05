@@ -73,7 +73,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
           {/* Grade Text */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <div className={`text-3xl font-bold ${
+              <div className={`prog-text text-3xl font-bold ${
                 gradeColor === '#10B981' ? 'text-green-400' : 
                 gradeColor === '#F59E0B' ? 'text-yellow-400' : 
                 'text-red-400'
@@ -102,16 +102,21 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             {/* Mobile Screenshot - data-pdf-src used by PDF export to load image via proxy */}
             {deviceRendering.data.mobile && (
               <div className="flex flex-col items-center" data-device-img="mobile" data-pdf-src={deviceRendering.data.mobile}>
-                <div className="bg-slate-300 border-2 border-slate-400 rounded-[3rem] p-2 shadow-2xl relative w-[180px]">
+                <div className="bg-slate-300 border-2 border-slate-400 rounded-[3rem] p-3 shadow-2xl relative w-[200px]">
                   {/* Notch */}
                   <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-20 h-5 bg-slate-300 rounded-b-xl z-10"></div>
-                  {/* Screen - native img so external screenshots always load */}
-                  <div className="relative overflow-hidden rounded-[2.5rem] bg-gray-900 mt-1 w-full" style={{ aspectRatio: '9/19.5', minHeight: '320px' }}>
-                    <img
-                      src={deviceRendering.data.mobile}
-                      alt="Mobile rendering"
-                      className="absolute inset-0 w-full h-full object-cover object-top"
-                    />
+                  {/* Screen */}
+                  <div className="overflow-hidden rounded-[2.2rem] bg-gray-900 mt-2 w-full flex flex-col" style={{ aspectRatio: '9/19.5', minHeight: '340px' }}>
+                    {/* Status bar gap */}
+                    <div className="h-6 flex-shrink-0 bg-gray-900"></div>
+                    {/* Screenshot */}
+                    <div className="flex-1 overflow-hidden">
+                      <img
+                        src={deviceRendering.data.mobile}
+                        alt="Mobile rendering"
+                        className="w-full h-full object-cover object-top"
+                      />
+                    </div>
                   </div>
                 </div>
                 <p className="text-white text-sm mt-4 font-medium">Mobile</p>
@@ -334,7 +339,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                   {/* Score Text */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className={`text-3xl font-bold ${
+                      <div className={`prog-text text-3xl font-bold ${
                         mobilePageInsights.data.score >= 90 ? 'text-green-400' : 
                         mobilePageInsights.data.score >= 50 ? 'text-yellow-400' : 
                         'text-red-400'

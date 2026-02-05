@@ -86,7 +86,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
             />
           </svg>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className={`text-xl font-bold ${getGradeTextColor(seoScore)}`}>
+            <div className={`prog-text text-xl font-bold ${getGradeTextColor(seoScore)}`}>
               {formatGrade(seoScore)}
             </div>
           </div>
@@ -107,9 +107,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
                   <h4 className="text-xl font-bold text-white">SERP Snippet Preview</h4>
-                <div className="w-5 h-5 rounded-full bg-gray-600 flex items-center justify-center">
-                  <span className="text-gray-300 text-xs">i</span>
-                </div>
+               
               </div>
               <p className="text-gray-400 text-sm mb-4">
                 This illustrates how your page may appear in Search Results. Note, this is intended as a guide and Search Engines are more frequently generating this content dynamically.

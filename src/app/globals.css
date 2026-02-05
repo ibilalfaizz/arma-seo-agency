@@ -235,3 +235,21 @@
   }
 }
 
+@media print {
+  * {
+    overflow: visible !important;
+  }
+
+  svg,
+  canvas,
+  button {
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .card {
+    padding-bottom: 12px;
+  }
+}
+
+
