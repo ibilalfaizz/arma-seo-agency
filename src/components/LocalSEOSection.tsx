@@ -23,7 +23,7 @@ export default function LocalSEOSection({ data }: LocalSEOSectionProps) {
   const totalReviews = getTotalReviews()
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2  pdf-report-last">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2  pdf-report-last" style={{minHeight: '100vh'}}>
       <h2 className="text-3xl font-bold text-white mb-2">Local SEO</h2>
 
       {/* Google Business Profile Completeness + Google Reviews */}
