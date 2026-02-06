@@ -5,7 +5,7 @@ import personImage from '@/assets/images/person.png'
 
 export default function StrategistSection() {
   return (
-    <div className="container mx-auto px-4 max-w-7xl mb-8">
+    <div className="container mx-auto px-4 max-w-7xl mb-2">
       <div className="overflow-hidden relative rounded-lg border border-gray-800 bg-primary">
         <div className="grid md:grid-cols-[2fr_1fr] gap-0 items-stretch">
         {/* Left Side - Content (2/3 width) */}
@@ -13,7 +13,7 @@ export default function StrategistSection() {
           <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 leading-tight text-white uppercase">
             LET&apos;S BUILD A MARKETING PLAN THAT WORKS ALL YEAR LONG
           </h3>
-          <p className="text-gray-300 text-base md:text-lg mb-6 leading-relaxed">
+          <p className="text-gray-300 text-base md:text-lg mb-2 leading-relaxed">
             Book a free strategy call and we&apos;ll review your current website, marketing, and local competition. You&apos;ll walk away with clear next steps to get more qualified leads and keep your crew busy.
           </p>
           

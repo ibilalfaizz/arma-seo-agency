@@ -159,6 +159,9 @@ pdfStyle.innerHTML = `
     display: block;
     padding-bottom: 18px;
   }
+    .mti-6 {
+    margin-top: 8rem !important;
+    }
 `
 clone.prepend(pdfStyle)
 
@@ -301,19 +304,7 @@ clone.prepend(pdfStyle)
         })
       )
 
-      // Remove mobile preview from clone so its absolute positioning does not paint over the radar chart in html2canvas
-      // let removedMobile = 0
-      // clone.querySelectorAll('[data-website-preview-img]').forEach((container) => {
-      //   if (container.querySelector('img[alt="Website mobile preview"]')) {
-      //     container.remove()
-      //     removedMobile++
-      //   }
-      // })
-      // #region agent log
-      // fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuditResultsDisplay.tsx:afterMobileRemoval',message:'Mobile preview removed from clone',data:{removedMobile},timestamp:Date.now(),sessionId:'debug-session',runId:'post-fix',hypothesisId:'H3'})}).catch(()=>{});
-      // #endregion
-
-      // #region agent log
+    
       const radarArea = clone.querySelector('[data-radar-chart-area]')
       const imgsInRadarArea = radarArea?.querySelectorAll('img')?.length ?? 0
       const websitePreviewContainersFinal = clone.querySelectorAll('[data-website-preview-img]').length
@@ -329,6 +320,7 @@ clone.prepend(pdfStyle)
       clone.style.setProperty('print-color-adjust', 'exact')
       clone.style.color = '#ffffff'
       clone.style.padding = '20px 16px 8px'
+      clone.style.minHeight = '100vh'
       // (dark filler removed — background is handled via jsPDF page stream)
 
       const opts: Record<string, unknown> = {
@@ -359,22 +351,7 @@ clone.prepend(pdfStyle)
       .toPdf()
       .get('pdf')
       .then((pdf: any) => {
-    
-        const pageWidth = pdf.internal.pageSize.getWidth()
-        const pageHeight = pdf.internal.pageSize.getHeight()
-    
-        // 🔑 Hook into page creation
-        const originalAddPage = pdf.addPage
-        pdf.addPage = function (...args: any[]) {
-          originalAddPage.apply(this, args)
-    
-          pdf.setFillColor(13, 13, 13) // #0d0d0d
-          pdf.rect(0, 0, pageWidth, pageHeight, 'F')
-        }
-    
-        // Paint background for FIRST page
-        pdf.setFillColor(13, 13, 13)
-        pdf.rect(0, 0, pageWidth, pageHeight, 'F')      
+        
 
           pdf.save('SEO-Report.pdf')
         })
@@ -387,14 +364,14 @@ clone.prepend(pdfStyle)
   }
 
   return (
-    <div className="py-8 pdf-avoid-break">
-      <div className="container mx-auto px-4 max-w-7xl">
+    <div className="py-2 pdf-avoid-break">
+      <div className="container mx-auto  max-w-7xl">
         {/* Header with Explanatory Text */}
-        <div className="mb-8">
+        <div className="mb-2">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Website Report for <span className="text-accent">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
           </h1>
-          <p className="text-gray-300 text-base leading-relaxed max-w-4xl mb-6">
+          <p className="text-gray-300 text-base leading-relaxed max-w-4xl mb-2">
             This report grades your website on the strength of a range of important factors such as on-page SEO optimization, off-page backlinks, social, performance, security and more. The overall grade is on a A+ to F- scale, with most major industry leading websites in the A range. Improving a website&apos;s grade is recommended to ensure a better website experience for your users and improved ranking and visibility by search engines.
           </p>
           <div className="flex items-center justify-between flex-wrap gap-4">
@@ -429,7 +406,7 @@ clone.prepend(pdfStyle)
         </div>
 
         {/* Main Content Grid - Score card (40%) + Website Preview (60%) */}
-        <div className="grid lg:grid-cols-[2fr_3fr] gap-6 mb-8">
+        <div className="grid lg:grid-cols-[2fr_3fr] gap-6 mb-2">
           {/* Left - Score card with circular gauge and recommendations */}
           <div>
             <div className="bg-primary rounded-lg border border-gray-800 p-8 text-center">
@@ -525,7 +502,7 @@ clone.prepend(pdfStyle)
         </div>
 
         {/* Performance Overview: 50% category scores (4 cards) + 50% radar chart */}
-        <div className="mb-8">
+        <div className="mb-2">
           <h2 className="text-xl font-bold text-white mb-4">Performance Overview</h2>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Left 50% - all 4 category score cards in 2x2 grid */}
@@ -618,7 +595,7 @@ clone.prepend(pdfStyle)
                       x={x}
                       y={y}
                       fill="#E5E7EB"
-                      fontSize="12"
+                      fontSize="16"
                       textAnchor="middle"
                       dominantBaseline="middle"
                       className="font-sans"

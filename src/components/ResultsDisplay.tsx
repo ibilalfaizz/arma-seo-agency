@@ -147,8 +147,8 @@ export default function ResultsDisplay({ data }: ResultsDisplayProps) {
       {/* Category Scores */}
       {scores && (
         <div className="bg-primary rounded-lg border border-gray-800 p-8 shadow-xl">
-          <h2 className="text-2xl font-bold mb-6">Category Breakdown</h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <h2 className="text-2xl font-bold mb-2">Category Breakdown</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-2">
             {scores.seo && (
               <div className="text-center p-6 bg-primary-dark rounded-lg border border-gray-700 hover:border-gray-600 transition-colors">
                 <svg className="w-10 h-10 mx-auto mb-3 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -355,7 +355,7 @@ export default function ResultsDisplay({ data }: ResultsDisplayProps) {
       {/* Top Issues Affecting Rankings */}
       {topIssues.length > 0 && (
         <div className="bg-primary rounded-lg border border-gray-800 p-8 shadow-xl">
-          <h2 className="text-2xl font-bold mb-6">Top Issues Affecting Your Rankings</h2>
+          <h2 className="text-2xl font-bold mb-2">Top Issues Affecting Your Rankings</h2>
           <div className="space-y-3">
             {topIssues.map((issue, index) => (
               <div

@@ -37,11 +37,11 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
   const gradeColor = getGradeColor(performanceScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break mt-4">
-      <h2 className="text-3xl font-bold text-white mb-8">Performance Results</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 pdf-avoid-break mt-4">
+      <h2 className="text-3xl font-bold text-white mb-2">Performance Results</h2>
       
       {/* Header Section with Score Gauge */}
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-2">
         {/* Circular Gauge */}
         <div className="relative w-36 h-36 flex-shrink-0">
           <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
@@ -92,8 +92,8 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
 
       {/* Website Load Speed / Server Response Time */}
       {serverResponseTime && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 md:p-8 mb-6 overflow-visible">
-          <div className="flex items-start justify-between mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 md:p-8 mb-2 overflow-visible">
+          <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Website Load Speed</h4>
               <p className="text-gray-300">{serverResponseTime.shortAnswer}</p>
@@ -234,7 +234,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
 
       {/* Optimize Images */}
       {optimizedImages && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Optimize Images</h4>

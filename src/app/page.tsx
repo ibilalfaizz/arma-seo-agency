@@ -24,7 +24,7 @@ export default function Home() {
       <div className="container mx-auto px-4 py-16 max-w-4xl">
         {/* Hero Section - Standalone Design */}
         <div className="text-center mb-12">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight text-white">
+          <h1 className="text-5xl md:text-7xl font-bold mb-2 leading-tight text-white">
             <span className="inline-block relative">
               FREE SEO
               <Image

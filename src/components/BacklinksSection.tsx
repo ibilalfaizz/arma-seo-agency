@@ -40,17 +40,17 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
   const referringDomains = blData?.referring_domains != null ? Number(blData.referring_domains) : null
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 ">
-      <h2 className="text-3xl font-bold text-white mb-6">Backlinks Summary and Top backlinks</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 ">
+      <h2 className="text-3xl font-bold text-white mb-2">Backlinks Summary and Top backlinks</h2>
 
       {/* Backlink Summary */}
       {hasBacklinksSummary && (
         <>
           <h3 className="text-xl font-bold text-white mb-4">Backlink Summary</h3>
-          <p className="text-gray-300 mb-6">{backlinks.shortAnswer}</p>
+          <p className="text-gray-300 mb-2">{backlinks.shortAnswer}</p>
 
           {/* All four metrics in one row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-2">
             {domainStrength != null && (
               <div className="flex flex-col items-center bg-primary-dark rounded-lg border border-gray-700 py-4 px-3">
                 <div

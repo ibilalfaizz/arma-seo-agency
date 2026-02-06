@@ -245,9 +245,9 @@ function ResultsContent() {
         {/* Loading State */}
         {loading && (
           <div className="text-center py-20">
-            <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-accent mb-6"></div>
+            <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-accent mb-2"></div>
             <h2 className="text-3xl font-bold mb-4">Analyzing Your Website</h2>
-            <p className="text-gray-400 text-lg mb-6">Please wait while we check your SEO performance...</p>
+            <p className="text-gray-400 text-lg mb-2">Please wait while we check your SEO performance...</p>
             
             {/* Progress Bar */}
             <div className="max-w-md mx-auto mb-4">
@@ -309,7 +309,7 @@ function ResultsContent() {
               }) + ' UTC'}
             </div> */}
             {/* Call Booking Button - excluded from PDF */}
-            <div data-pdf-exclude className="mt-12 mb-8 text-center">
+            <div data-pdf-exclude className="mt-12 mb-2 text-center">
               <a
                 href={process.env.NEXT_PUBLIC_BOOKING_URL || '#'}
                 target="_blank"
@@ -340,7 +340,7 @@ export default function ResultsPage() {
     <Suspense fallback={
       <main className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-accent mb-6"></div>
+          <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-accent mb-2"></div>
           <p className="text-gray-400 text-lg">Loading...</p>
         </div>
       </main>

@@ -41,11 +41,11 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
   const gradeColor = getGradeColor(uiScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
-      <h2 className="text-3xl font-bold text-white mb-8">Usability</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 pdf-avoid-break">
+      <h2 className="text-3xl font-bold text-white mb-2">Usability</h2>
       
       {/* Header Section with Grade */}
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-2">
         {/* Circular Gauge */}
         <div className="relative w-32 h-32 flex-shrink-0">
           <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
@@ -95,9 +95,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
       {deviceRendering && deviceRendering.data && (
         <>
           <div className="pdf-new-page" style={{ height: 0, margin: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
-          <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4">
+          <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4">
             <h4 className="text-xl font-bold text-white mb-3">Device Rendering</h4>
-          <p className="text-gray-300 mb-6">{deviceRendering.shortAnswer}</p>
+          <p className="text-gray-300 mb-2">{deviceRendering.shortAnswer}</p>
           <div className="flex flex-wrap justify-center items-start gap-4 md:gap-6">
             {/* Mobile Screenshot - data-pdf-src used by PDF export to load image via proxy */}
             {deviceRendering.data.mobile && (
@@ -146,8 +146,8 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Google's Core Web Vitals */}
       {coreWebVitals && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-5">
-          <div className="flex items-start justify-between mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-2">
+          <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Google&apos;s Core Web Vitals</h4>
               <p className="text-gray-300">{coreWebVitals.shortAnswer}</p>
@@ -274,7 +274,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Use of Mobile Viewports */}
       {mobileViewport && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4 pdf-avoid-break">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 pdf-avoid-break">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Use of Mobile Viewports</h4>
@@ -295,7 +295,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Google's PageSpeed Insights - Mobile */}
       {mobilePageInsights && mobilePageInsights.data && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 pdf-avoid-break">
           <h4 className="text-xl font-bold text-white mb-3">Google&apos;s PageSpeed Insights - Mobile</h4>
           <p className="text-gray-300 mb-4">{mobilePageInsights.shortAnswer}</p>
           
@@ -303,7 +303,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
           <p className="text-gray-400 text-sm mb-4">
             Note that this evaluation is being performed from US servers and the results may differ slightly from an evaluation carried out from Google&apos;s PageSpeed Web Interface as that reporting localizes to the region in which you are running the report.
           </p>
-          <p className="text-gray-300 text-sm mb-6">
+          <p className="text-gray-300 text-sm mb-2">
             Google has indicated that the performance of a webpage is becoming more important from a user and subsequently ranking perspective.
           </p>
 
@@ -353,7 +353,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
               {/* Lab Data Section */}
               {mobilePageInsights.data.labdata && mobilePageInsights.data.labdata.length > 0 && (
-                <div className="mb-6 mt-5">
+                <div className="mb-2 mt-2">
                   <h5 className="text-lg font-semibold text-white mb-4">LAB DATA</h5>
                   <div className="overflow-x-auto">
                     <table className="w-full">
@@ -432,7 +432,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Legible Font Sizes + Tap Target Sizing */}
       {(legibleFonts || tapTargetSizing) && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-6">
+        <div className="mti-6 bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-6 pdf-avoid-break">
           <h4 className="text-xl font-bold text-white mb-4">Legible Font Sizes &amp; Tap Target Sizing</h4>
           <div className="space-y-4">
             {legibleFonts && (

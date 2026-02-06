@@ -23,12 +23,12 @@ export default function LocalSEOSection({ data }: LocalSEOSectionProps) {
   const totalReviews = getTotalReviews()
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8  pdf-report-last">
-      <h2 className="text-3xl font-bold text-white mb-8">Local SEO</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2  pdf-report-last">
+      <h2 className="text-3xl font-bold text-white mb-2">Local SEO</h2>
 
       {/* Google Business Profile Completeness + Google Reviews */}
       {(gbpCompleteness || gbpReviews) && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2">
           <h4 className="text-xl font-bold text-white mb-4">Google Business Profile</h4>
           <div className="space-y-6">
             {gbpCompleteness && (
@@ -89,7 +89,7 @@ export default function LocalSEOSection({ data }: LocalSEOSectionProps) {
                 {/* Rating Display */}
                 {gbpReviews.data && (
                   <div className="mt-2">
-                    <div className="flex items-center gap-3 mb-6">
+                    <div className="flex items-center gap-3 mb-2">
                       <span className="text-3xl font-bold text-white">{gbpReviews.data.reviewScore}</span>
                       <div className="flex items-center gap-1">
                         {[1, 2, 3, 4, 5].map((star) => (

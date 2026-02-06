@@ -56,11 +56,11 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
   const gradeColor = getGradeColor(seoScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-8 pdf-avoid-break">
-      <h2 className="text-3xl font-bold text-white mb-8">On-Page SEO Results</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 ">
+      <h2 className="text-3xl font-bold text-white mb-2">On-Page SEO Results</h2>
       
       {/* Header Section with Grade */}
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-8">
+      <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-2">
         {/* Circular Gauge */}
         <div className="relative w-24 h-24 flex-shrink-0">
           <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
@@ -102,7 +102,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
        {/* SERP Snippet Preview */}
        {titleTag && metaDescription && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4 pdf-avoid-break">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 pdf-avoid-break">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
@@ -143,8 +143,8 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Title Tag & Meta Description – merged into one box */}
       {(titleTag || metaDescription) && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4 pdf-avoid-break">
-          <div className="flex items-start justify-between gap-4 mb-6">
+        <div className=" mti-6 bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 pdf-avoid-break">
+          <div className="flex items-start justify-between gap-4 mb-2">
             <h4 className="text-xl font-bold text-white">Title Tag & Meta Description</h4>
             <div className="flex items-center gap-2 flex-shrink-0">
               {titleTag && !titleTag.passed && (
@@ -208,7 +208,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Headers Section */}
       {data.headers && data.headers.data && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 pdf-avoid-break">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 pdf-avoid-break">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Header Tags</h4>
@@ -251,7 +251,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Content Length Section */}
       {data.contentLength && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Content Length</h4>
@@ -277,7 +277,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Image Alt Tags Section */}
       {data.imageAlt && data.imageAlt.data && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 pdf-avoid-break">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 pdf-avoid-break">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Image Alt Attributes</h4>
@@ -322,12 +322,12 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
   
       {/* Keyword Consistency */}
       {keywords && keywords !== false && keywords.data && keywords.data.keywords && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-6 mt-4 pdf-avoid-break">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 pdf-avoid-break">
           {/* Section Title */}
           <h4 className="text-xl font-bold text-accent mb-4">1. Individual Keywords</h4>
           
           {/* Keyword Consistency Header */}
-          <div className="flex items-start gap-3 mb-6">
+          <div className="flex items-start gap-3 mb-2">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
                 <h5 className="text-lg font-semibold text-white">Keyword Consistency</h5>
