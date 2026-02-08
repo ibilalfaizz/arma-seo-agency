@@ -102,7 +102,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
        {/* SERP Snippet Preview */}
        {titleTag && metaDescription && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 pdf-avoid-break">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 ">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
@@ -143,7 +143,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Title Tag & Meta Description – merged into one box */}
       {(titleTag || metaDescription) && (
-        <div className=" mti-6 bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 pdf-avoid-break">
+        <div className=" mti-6 bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 ">
           <div className="flex items-start justify-between gap-4 mb-2">
             <h4 className="text-xl font-bold text-white">Title Tag & Meta Description</h4>
             <div className="flex items-center gap-2 flex-shrink-0">
@@ -208,7 +208,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Headers Section */}
       {data.headers && data.headers.data && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 pdf-avoid-break">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 ">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Header Tags</h4>
@@ -277,7 +277,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Image Alt Tags Section */}
       {data.imageAlt && data.imageAlt.data && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 pdf-avoid-break">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 ">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Image Alt Attributes</h4>
@@ -322,7 +322,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
   
       {/* Keyword Consistency */}
       {keywords && keywords !== false && keywords.data && keywords.data.keywords && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 pdf-avoid-break">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 ">
           {/* Section Title */}
           <h4 className="text-xl font-bold text-accent mb-4">1. Individual Keywords</h4>
           

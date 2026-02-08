@@ -41,7 +41,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
   const gradeColor = getGradeColor(uiScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 pdf-avoid-break">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 ">
       <h2 className="text-3xl font-bold text-white mb-2">Usability</h2>
       
       {/* Header Section with Grade */}
@@ -94,7 +94,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
       {/* Device Rendering – new page in PDF */}
       {deviceRendering && deviceRendering.data && (
         <>
-          <div className="pdf-new-page" style={{ height: 0, margin: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
+          <div  style={{ height: 0, margin: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
           <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4">
             <h4 className="text-xl font-bold text-white mb-3">Device Rendering</h4>
           <p className="text-gray-300 mb-2">{deviceRendering.shortAnswer}</p>
@@ -274,7 +274,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Use of Mobile Viewports */}
       {mobileViewport && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 pdf-avoid-break">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 ">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Use of Mobile Viewports</h4>
@@ -295,7 +295,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Google's PageSpeed Insights - Mobile */}
       {mobilePageInsights && mobilePageInsights.data && (
-        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 pdf-avoid-break">
+        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 ">
           <h4 className="text-xl font-bold text-white mb-3">Google&apos;s PageSpeed Insights - Mobile</h4>
           <p className="text-gray-300 mb-4">{mobilePageInsights.shortAnswer}</p>
           
@@ -432,7 +432,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Legible Font Sizes + Tap Target Sizing */}
       {(legibleFonts || tapTargetSizing) && (
-        <div className="mti-6 bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-6 pdf-avoid-break">
+        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 ">
           <h4 className="text-xl font-bold text-white mb-4">Legible Font Sizes &amp; Tap Target Sizing</h4>
           <div className="space-y-4">
             {legibleFonts && (

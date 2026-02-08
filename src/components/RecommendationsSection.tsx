@@ -40,7 +40,7 @@ export default function RecommendationsSection({ recommendations }: Recommendati
   }
 
   return (
-    <div id="recommendations-section" className="mti-6 bg-primary rounded-lg border border-gray-800 p-8 mb-2 scroll-mt-20 pdf-avoid-break mt-3">
+    <div id="recommendations-section" className="mti-6 bg-primary rounded-lg border border-gray-800 p-8 mb-2 scroll-mt-20  mt-3">
       <h2 className="text-3xl font-bold text-white mb-2">Recommendations</h2>
       
       <div className="overflow-x-auto">

@@ -162,6 +162,9 @@ pdfStyle.innerHTML = `
     .mti-6 {
     margin-top: 8rem !important;
     }
+     .pbi-6 {
+    margin-top: 8rem !important;
+    }
 `
 clone.prepend(pdfStyle)
 

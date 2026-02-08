@@ -123,7 +123,7 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
 
       {/* Top Backlinks list */}
       {hasTopBacklinks && (
-        <div className="mt-8 pt-8 border-t border-gray-700 pdf-avoid-break">
+        <div className="mt-8 pt-8 border-t border-gray-700 ">
           <h3 className="text-xl font-bold text-white mb-2">Top backlinks</h3>
           {backlinksList.shortAnswer && (
             <p className="text-gray-300 text-sm mb-4">{backlinksList.shortAnswer}</p>

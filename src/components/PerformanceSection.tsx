@@ -37,7 +37,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
   const gradeColor = getGradeColor(performanceScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 pdf-avoid-break mt-4">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2  mt-4">
       <h2 className="text-3xl font-bold text-white mb-2">Performance Results</h2>
       
       {/* Header Section with Score Gauge */}
