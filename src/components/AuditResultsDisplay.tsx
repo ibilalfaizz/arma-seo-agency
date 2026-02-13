@@ -85,7 +85,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     }))
 
   // Radar chart dimensions
-  const radarSize = 400
+  const radarSize = 200
   const centerX = radarSize / 2
   const centerY = radarSize / 2
   const radius = Math.min(radarSize, radarSize) / 2 - 60
@@ -165,9 +165,65 @@ pdfStyle.innerHTML = `
      .pbi-6 {
     margin-top: 8rem !important;
     }
+
+  /* Flat PDF styling: remove boxes, borders, heavy padding */
+  .pdf-export .bg-primary,
+  .pdf-export .bg-primary-dark,
+  .pdf-export .bg-gray-900,
+  .pdf-export .bg-gray-800,
+  .pdf-export .bg-slate-300 {
+    background: transparent !important;
+  }
+  .pdf-export .border,
+  .pdf-export .border-2,
+  .pdf-export .border-gray-800,
+  .pdf-export .border-gray-700,
+  .pdf-export .border-gray-700\\/50,
+  .pdf-export .border-slate-400,
+  .pdf-export .border-slate-500 {
+    border: 0 !important;
+  }
+  .pdf-export [class*="rounded"],
+  .pdf-export [class*="shadow"] {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .pdf-export .p-8 { padding: 12px !important; }
+  .pdf-export .p-6 { padding: 10px !important; }
+  .pdf-export .p-4 { padding: 8px !important; }
+  .pdf-export .px-4 { padding-left: 8px !important; padding-right: 8px !important; }
+  .pdf-export .px-6 { padding-left: 10px !important; padding-right: 10px !important; }
+  .pdf-export .py-8 { padding-top: 12px !important; padding-bottom: 12px !important; }
+  .pdf-export .mb-8 { margin-bottom: 12px !important; }
+  .pdf-export .mb-6 { margin-bottom: 10px !important; }
+  .pdf-export .mt-6 { margin-top: 10px !important; }
+
+  .pdf-export svg[data-radar-chart] {
+    width: 130px !important;
+    height: 130px !important;
+    max-width: 130px !important;
+    max-height: 130px !important;
+  }
+  .pdf-export [data-radar-chart-area] {
+    min-height: 150px !important;
+  }
+      .pdf-export [data-radar-chart-area] {
+    width: 100px !important;
+    height: 100px !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
 `
 clone.prepend(pdfStyle)
 
+
+      // Force radar SVG size in PDF export (html2canvas ignores some CSS)
+      // clone.querySelectorAll('svg[data-radar-chart]').forEach((svg) => {
+      //   svg.setAttribute('width', '80')
+      //   svg.setAttribute('height', '80')
+      //   ;(svg as HTMLElement).style.width = '80px'
+      //   ;(svg as HTMLElement).style.height = '80px'
+      // })
 
       // Website Preview: load desktop/mobile screenshots via proxy so they render in PDF
       const websitePreviewContainers = clone.querySelectorAll('[data-website-preview-img][data-pdf-src]')
@@ -211,7 +267,7 @@ clone.prepend(pdfStyle)
           img.src = dataUrl
           img.alt = 'Performance radar chart'
           img.style.width = '100%'
-          img.style.maxWidth = '400px'
+          img.style.maxWidth = '180px'
           img.style.height = 'auto'
           // cloneRadarSvg.parentNode?.replaceChild(img, cloneRadarSvg)
           // #region agent log
@@ -234,7 +290,7 @@ clone.prepend(pdfStyle)
         const img = document.createElement('img')
         img.src = origCanvas.toDataURL('image/png')
         img.alt = ''
-        img.style.width = '100%'
+        img.style.width = '180px'
         img.style.height = 'auto'
         img.style.maxWidth = '100%'
         cloneCanvas.parentNode?.replaceChild(img, cloneCanvas)
@@ -322,7 +378,7 @@ clone.prepend(pdfStyle)
       clone.style.setProperty('-webkit-print-color-adjust', 'exact')
       clone.style.setProperty('print-color-adjust', 'exact')
       clone.style.color = '#ffffff'
-      clone.style.padding = '20px 16px 8px'
+      clone.style.padding = '12px 12px 8px'
       clone.style.minHeight = '100vh'
       // (dark filler removed — background is handled via jsPDF page stream)
 
@@ -504,12 +560,12 @@ clone.prepend(pdfStyle)
           </div>
         </div>
 
-        {/* Performance Overview: 50% category scores (4 cards) + 50% radar chart */}
+        {/* Performance Overview: category scores + radar chart in one line */}
         <div className="mb-2">
           <h2 className="text-xl font-bold text-white mb-4">Performance Overview</h2>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left 50% - all 4 category score cards in 2x2 grid */}
-            <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col lg:flex-row items-start gap-4">
+            {/* Left - 4 category score cards in a single row on large screens */}
+            <div className="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:basis-[65%] lg:justify-start">
               {categories.map((category) => {
                 const score = getScoreFromGrade(category.grade)
                 const gradeStr = formatGrade(category.grade)
@@ -518,8 +574,8 @@ clone.prepend(pdfStyle)
                 const catOffset = catCircumference - (score / 100) * catCircumference
 
                 return (
-                  <div key={category.key} className="bg-primary rounded-lg border border-gray-800 p-6 flex flex-col items-center justify-center">
-                    <div className="relative w-24 h-24 mb-4">
+                  <div key={category.key} className="bg-primary rounded-lg border border-gray-800 p-3 w-[120px] flex flex-col items-center justify-center">
+                    <div className="relative w-20 h-20 mb-3">
                       <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 100 100">
                         <circle cx="50" cy="50" r="40" fill="none" stroke="#374151" strokeWidth="6" />
                         <circle
@@ -548,15 +604,15 @@ clone.prepend(pdfStyle)
                         </span>
                       </div>
                     </div>
-                    <h3 className="text-sm font-semibold text-gray-300">{category.label}</h3>
+                    <h3 className="text-xs font-semibold text-gray-300 text-center">{category.label}</h3>
                   </div>
                 )
               })}
             </div>
 
-            {/* Right 50% - radar chart */}
-            <div className="bg-primary rounded-lg border border-gray-800 p-1 flex items-center justify-center min-h-[300px] max-w[52%]" data-radar-chart-area>
-              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="  max-w-[280px] max-h-[280px]" xmlns="http://www.w3.org/2000/svg">
+            {/* Right - radar chart */}
+            <div className="bg-primary rounded-lg border border-gray-800 p-2 flex items-center justify-center min-h-[160px] w-full lg:basis-[35%]" data-radar-chart-area>
+              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="max-w-[130px] max-h-[130px]" xmlns="http://www.w3.org/2000/svg">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <circle
                     key={i}
@@ -598,7 +654,7 @@ clone.prepend(pdfStyle)
                       x={x}
                       y={y}
                       fill="#E5E7EB"
-                      fontSize="16"
+                      fontSize="13"
                       textAnchor="middle"
                       dominantBaseline="middle"
                       className="font-sans"

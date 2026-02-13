@@ -99,7 +99,7 @@ export default function ResultsDisplay({ data }: ResultsDisplayProps) {
   }
 
   return (
-    <div className="mt-8 space-y-6 animate-fadeIn">
+    <div className="mt-8 animate-fadeIn">
       {/* Overall SEO Score Card */}
       {data.score !== undefined && (
         <div className="bg-primary-light rounded-lg border border-gray-800 p-8 shadow-xl">
