@@ -134,7 +134,7 @@ export default function LocalSEOSection({ data }: LocalSEOSectionProps) {
           </div>
         </div>
       )}
-      <div style={{height: '11rem'}}></div>
+      <div style={{height: '7rem'}}></div>
     </div>
   )
 }

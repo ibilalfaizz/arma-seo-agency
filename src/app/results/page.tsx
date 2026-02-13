@@ -30,8 +30,8 @@ function ResultsContent() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    // Default: use test data. Use live API when ?api=true
-    const useTestData = new URLSearchParams(window.location.search).get('api') !== 'true'
+    // Default: use live API. Use test data when ?test=true
+    const useTestData = new URLSearchParams(window.location.search).get('test') === 'true'
     
     // Load test data from JSON file
     const loadTestData = async () => {
@@ -294,8 +294,9 @@ function ResultsContent() {
             )}
             <OnPageSEOSection data={seoData} />
             <BacklinksSection data={seoData} />
-            <PerformanceSection data={seoData} />
             <UsabilitySection data={seoData} />
+            <PerformanceSection data={seoData} />
+           
             <LocalSEOSection data={seoData} />
             {/* Report date at end of PDF */}
             {/* <div className="text-center text-gray-500 text-sm mt-3">

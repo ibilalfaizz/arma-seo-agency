@@ -39,9 +39,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
   const circumference = 2 * Math.PI * 90
   const offset = circumference - (score / 100) * circumference
   const gradeColor = getGradeColor(uiScore)
-
+  const chartStyle = {
+   
+    width: 150,
+  }
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 ">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 pdf-new-page">
       <h2 className="text-3xl font-bold text-white mb-2">Usability</h2>
       
       {/* Header Section with Grade */}
@@ -182,8 +185,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                       
                       return (
                         <>
-                          <div className="relative" style={{ height: '100px' }}>
+                          <div className="relative" style={{ height: '35px' }}>
                             <GaugeChart
+                            style={chartStyle}
                               id="lcp-gauge"
                               nrOfLevels={30}
                               percent={normalizedLCP}
@@ -205,7 +209,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                           </div>
                           {/* Value Display - centered under gauge */}
                           <div className="w-full flex justify-center">
-                            <div className="text-3xl font-bold text-white">
+                            <div className="text-l font-bold text-white">
                               {lcp.toFixed(1)}s
                             </div>
                           </div>
@@ -234,8 +238,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                       
                       return (
                         <>
-                          <div className="relative" style={{ height: '100px' }}>
+                          <div className="relative" style={{ height: '35px' }}>
                             <GaugeChart
+                              style={chartStyle}
                               id="cls-gauge"
                               nrOfLevels={30}
                               percent={normalizedCLS}
@@ -257,7 +262,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                           </div>
                           {/* Value Display - centered under gauge */}
                           <div className="w-full flex justify-center">
-                            <div className="text-3xl font-bold text-white">
+                            <div className="text-l font-bold text-white">
                               {cls.toFixed(2)}
                             </div>
                           </div>
@@ -282,7 +287,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             </div>
             {mobileViewport.passed ? (
               <div className="flex-shrink-0">
-                <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
+                <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center">
                   <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                   </svg>
@@ -295,7 +300,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Google's PageSpeed Insights - Mobile */}
       {mobilePageInsights && mobilePageInsights.data && (
-        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 ">
+        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 pdf-new-page">
           <h4 className="text-xl font-bold text-white mb-3">Google&apos;s PageSpeed Insights - Mobile</h4>
           <p className="text-gray-300 mb-4">{mobilePageInsights.shortAnswer}</p>
           
@@ -311,8 +316,8 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             <div className="mt-6">
               {/* Circular Score Gauge */}
               <div className="flex justify-center mb-2">
-                <div className="relative w-32 h-32">
-                  <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
+                <div className="relative w-20 h-20">
+                  <svg className="transform -rotate-90 w-30 h-30" viewBox="0 0 200 200">
                     {/* Background circle */}
                     <circle
                       cx="100"
@@ -339,7 +344,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                   {/* Score Text */}
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <div className={`prog-text text-3xl font-bold ${
+                      <div className={`prog-text text-xl font-bold ${
                         mobilePageInsights.data.score >= 90 ? 'text-green-400' : 
                         mobilePageInsights.data.score >= 50 ? 'text-yellow-400' : 
                         'text-red-400'
@@ -351,80 +356,82 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                 </div>
               </div>
 
-              {/* Lab Data Section */}
-              {mobilePageInsights.data.labdata && mobilePageInsights.data.labdata.length > 0 && (
-                <div className="mb-2 mt-2">
-                  <h5 className="text-lg font-semibold text-white mb-4">LAB DATA</h5>
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b border-gray-700">
-                          <th className="text-left py-3 px-4 text-gray-300 font-semibold">LAB DATA</th>
-                          <th className="text-left py-3 px-4 text-gray-300 font-semibold">VALUE</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {mobilePageInsights.data.labdata.map((item: any, index: number) => {
-                          // Determine color based on metric and value
-                          let valueColor = 'text-white'
-                          const value = item.value
-                          const name = item.name
-                          
-                          if (name === 'First Contentful Paint') {
-                            valueColor = value <= 1.8 ? 'text-green-400' : value <= 3.0 ? 'text-yellow-400' : 'text-red-400'
-                          } else if (name === 'Speed Index') {
-                            valueColor = value <= 3.4 ? 'text-green-400' : value <= 5.8 ? 'text-yellow-400' : 'text-red-400'
-                          } else if (name === 'Largest Contentful Paint') {
-                            valueColor = value <= 2.5 ? 'text-green-400' : value <= 4.0 ? 'text-yellow-400' : 'text-red-400'
-                          } else if (name === 'Time to Interactive') {
-                            valueColor = value <= 3.8 ? 'text-green-400' : value <= 7.3 ? 'text-yellow-400' : 'text-red-400'
-                          } else if (name === 'Total Blocking Time') {
-                            valueColor = value <= 200 ? 'text-green-400' : value <= 600 ? 'text-yellow-400' : 'text-red-400'
-                          } else if (name === 'Cumulative Layout Shift') {
-                            valueColor = value <= 0.1 ? 'text-green-400' : value <= 0.25 ? 'text-yellow-400' : 'text-red-400'
-                          }
-                          
-                          return (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {/* Lab Data Section */}
+                {mobilePageInsights.data.labdata && mobilePageInsights.data.labdata.length > 0 && (
+                  <div className="mb-2 mt-2">
+                    <h5 className="text-lg font-semibold text-white mb-4">LAB DATA</h5>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-gray-700">
+                            <th className="text-left py-3 px-4 text-gray-300 font-semibold">LAB DATA</th>
+                            <th className="text-left py-3 px-4 text-gray-300 font-semibold">VALUE</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {mobilePageInsights.data.labdata.map((item: any, index: number) => {
+                            // Determine color based on metric and value
+                            let valueColor = 'text-white'
+                            const value = item.value
+                            const name = item.name
+                            
+                            if (name === 'First Contentful Paint') {
+                              valueColor = value <= 1.8 ? 'text-green-400' : value <= 3.0 ? 'text-yellow-400' : 'text-red-400'
+                            } else if (name === 'Speed Index') {
+                              valueColor = value <= 3.4 ? 'text-green-400' : value <= 5.8 ? 'text-yellow-400' : 'text-red-400'
+                            } else if (name === 'Largest Contentful Paint') {
+                              valueColor = value <= 2.5 ? 'text-green-400' : value <= 4.0 ? 'text-yellow-400' : 'text-red-400'
+                            } else if (name === 'Time to Interactive') {
+                              valueColor = value <= 3.8 ? 'text-green-400' : value <= 7.3 ? 'text-yellow-400' : 'text-red-400'
+                            } else if (name === 'Total Blocking Time') {
+                              valueColor = value <= 200 ? 'text-green-400' : value <= 600 ? 'text-yellow-400' : 'text-red-400'
+                            } else if (name === 'Cumulative Layout Shift') {
+                              valueColor = value <= 0.1 ? 'text-green-400' : value <= 0.25 ? 'text-yellow-400' : 'text-red-400'
+                            }
+                            
+                            return (
+                              <tr key={index} className="border-b border-gray-800">
+                                <td className="py-3 px-4 text-white">{item.name}</td>
+                                <td className={`py-3 px-4 ${valueColor} font-semibold`}>
+                                  {item.value} {item.name.includes('Time') || item.name.includes('Index') || item.name.includes('Paint') ? 's' : ''}
+                                </td>
+                              </tr>
+                            )
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+
+                {/* Opportunities Section */}
+                {mobilePageInsights.data.opportunities && mobilePageInsights.data.opportunities.length > 0 && (
+                  <div className='mb-2 mt-2'>
+                    <h5 className="text-lg font-semibold text-white mb-4">OPPORTUNITIES</h5>
+                    <div className="overflow-x-auto">
+                      <table className="w-full">
+                        <thead>
+                          <tr className="border-b border-gray-700">
+                            <th className="text-left py-3 px-4 text-gray-300 font-semibold">OPPORTUNITIES</th>
+                            <th className="text-left py-3 px-4 text-gray-300 font-semibold">ESTIMATED SAVINGS</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {mobilePageInsights.data.opportunities.map((item: any, index: number) => (
                             <tr key={index} className="border-b border-gray-800">
                               <td className="py-3 px-4 text-white">{item.name}</td>
-                              <td className={`py-3 px-4 ${valueColor} font-semibold`}>
-                                {item.value} {item.name.includes('Time') || item.name.includes('Index') || item.name.includes('Paint') ? 's' : ''}
+                              <td className="py-3 px-4 text-red-400 font-semibold">
+                                {item.value}s
                               </td>
                             </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
-                </div>
-              )}
-
-              {/* Opportunities Section */}
-              {mobilePageInsights.data.opportunities && mobilePageInsights.data.opportunities.length > 0 && (
-                <div>
-                  <h5 className="text-lg font-semibold text-white mb-4">OPPORTUNITIES</h5>
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="border-b border-gray-700">
-                          <th className="text-left py-3 px-4 text-gray-300 font-semibold">OPPORTUNITIES</th>
-                          <th className="text-left py-3 px-4 text-gray-300 font-semibold">ESTIMATED SAVINGS</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {mobilePageInsights.data.opportunities.map((item: any, index: number) => (
-                          <tr key={index} className="border-b border-gray-800">
-                            <td className="py-3 px-4 text-white">{item.name}</td>
-                            <td className="py-3 px-4 text-red-400 font-semibold">
-                              {item.value}s
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           )}
         </div>
@@ -432,7 +439,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Legible Font Sizes + Tap Target Sizing */}
       {(legibleFonts || tapTargetSizing) && (
-        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 ">
+        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2">
           <h4 className="text-xl font-bold text-white mb-4">Legible Font Sizes &amp; Tap Target Sizing</h4>
           <div className="space-y-4">
             {legibleFonts && (

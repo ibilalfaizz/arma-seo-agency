@@ -40,7 +40,7 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
   const referringDomains = blData?.referring_domains != null ? Number(blData.referring_domains) : null
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 ">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 pdf-new-page">
       <h2 className="text-3xl font-bold text-white mb-2">Backlinks Summary and Top backlinks</h2>
 
       {/* Backlink Summary */}

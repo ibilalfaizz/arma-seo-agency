@@ -56,7 +56,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
   const gradeColor = getGradeColor(seoScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 ">
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2  pdf-new-page">
       <h2 className="text-3xl font-bold text-white mb-2">On-Page SEO Results</h2>
       
       {/* Header Section with Grade */}
@@ -117,17 +117,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
           
           {/* SERP Preview Box */}
           <div className="bg-white rounded-lg p-4 shadow-lg border border-gray-200">
-            <div className="flex items-center gap-2 mb-2">
-              <div className="w-4 h-4 rounded-full bg-gray-300"></div>
-              <span className="text-gray-600 text-sm font-medium">
-                {titleTag.data 
-                  ? (titleTag.data.includes(' - ') 
-                      ? titleTag.data.split(' - ').pop() || titleTag.data.split(' - ')[0]
-                      : titleTag.data.split(' ')[0])
-                  : finalUrl.replace(/^https?:\/\//, '').replace(/\/$/, '').split('.')[0]}
-              </span>
-              <span className="text-gray-400 text-xs">▼</span>
-            </div>
+            
             <div className="text-green-700 text-sm mb-1">
               {finalUrl.replace(/^https?:\/\//, '').replace(/\/$/, '')}
             </div>
@@ -143,7 +133,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
       {/* Title Tag & Meta Description – merged into one box */}
       {(titleTag || metaDescription) && (
-        <div className=" mti-6 bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 ">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 ">
           <div className="flex items-start justify-between gap-4 mb-2">
             <h4 className="text-xl font-bold text-white">Title Tag & Meta Description</h4>
             <div className="flex items-center gap-2 flex-shrink-0">

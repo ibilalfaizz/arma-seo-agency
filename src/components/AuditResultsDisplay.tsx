@@ -199,17 +199,17 @@ pdfStyle.innerHTML = `
   .pdf-export .mt-6 { margin-top: 10px !important; }
 
   .pdf-export svg[data-radar-chart] {
-    width: 130px !important;
-    height: 130px !important;
-    max-width: 130px !important;
-    max-height: 130px !important;
+    width: 80px !important;
+    height: 80px !important;
+    max-width: 80px !important;
+    max-height: 80px !important;
   }
   .pdf-export [data-radar-chart-area] {
-    min-height: 150px !important;
+    min-height: 80px !important;
   }
       .pdf-export [data-radar-chart-area] {
-    width: 100px !important;
-    height: 100px !important;
+    width: 80px !important;
+    height: 80px !important;
     min-height: 0 !important;
     padding: 0 !important;
   }
@@ -611,8 +611,8 @@ clone.prepend(pdfStyle)
             </div>
 
             {/* Right - radar chart */}
-            <div className="bg-primary rounded-lg border border-gray-800 p-2 flex items-center justify-center min-h-[160px] w-full lg:basis-[35%]" data-radar-chart-area>
-              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="max-w-[130px] max-h-[130px]" xmlns="http://www.w3.org/2000/svg">
+            <div className="bg-primary rounded-lg border border-gray-800 p-2 flex items-center justify-center min-h-[130px] w-full lg:basis-[35%]" data-radar-chart-area>
+              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="max-w-[200px] max-h-[200px]" xmlns="http://www.w3.org/2000/svg">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <circle
                     key={i}

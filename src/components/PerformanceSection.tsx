@@ -37,13 +37,13 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
   const gradeColor = getGradeColor(performanceScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2  mt-4">
-      <h2 className="text-3xl font-bold text-white mb-2">Performance Results</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2  mt-4 ">
+      <h2 className="text-3xl font-bold text-white">Performance Results</h2>
       
       {/* Header Section with Score Gauge */}
       <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-2">
         {/* Circular Gauge */}
-        <div className="relative w-36 h-36 flex-shrink-0">
+        <div className="relative w-20 h-20 flex-shrink-0">
           <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
             <circle
               cx="100"
@@ -69,7 +69,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
           {/* Grade Text */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <div className={` prog-text text-3xl font-bold ${
+              <div className={` prog-text text-xl font-bold ${
                 gradeColor === '#10B981' ? 'text-green-400' : 
                 gradeColor === '#F59E0B' ? 'text-yellow-400' : 
                 'text-red-400'
