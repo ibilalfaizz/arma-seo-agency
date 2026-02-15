@@ -92,7 +92,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
 
       {/* Website Load Speed / Server Response Time */}
       {serverResponseTime && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 md:p-8 mb-2 overflow-visible">
+        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 md:p-8 mb-2 overflow-visible pdf-new-page">
           <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
               <h4 className="text-xl font-bold text-white mb-3">Website Load Speed</h4>

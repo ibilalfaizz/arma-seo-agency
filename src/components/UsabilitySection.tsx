@@ -101,23 +101,22 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
           <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4">
             <h4 className="text-xl font-bold text-white mb-3">Device Rendering</h4>
           <p className="text-gray-300 mb-2">{deviceRendering.shortAnswer}</p>
-          <div className="flex flex-wrap justify-center items-start gap-4 md:gap-6">
+          <div className="flex flex-wrap justify-center items-start gap-4 md:gap-6 mt-5">
             {/* Mobile Screenshot - data-pdf-src used by PDF export to load image via proxy */}
             {deviceRendering.data.mobile && (
               <div className="flex flex-col items-center" data-device-img="mobile" data-pdf-src={deviceRendering.data.mobile}>
-                <div className="bg-slate-300 border-2 border-slate-400 rounded-[3rem] p-3 shadow-2xl relative w-[200px]">
+                <div className="bg-slate-300 border-2 border-slate-400 rounded-[3rem] p-3 shadow-2xl relative w-[200px] pdf-device-frame">
                   {/* Notch */}
                   <div className="absolute top-0 left-1/2 transform -translate-x-1/2 w-20 h-5 bg-slate-300 rounded-b-xl z-10"></div>
                   {/* Screen */}
-                  <div className="overflow-hidden rounded-[2.2rem] bg-gray-900 mt-2 w-full flex flex-col" style={{ aspectRatio: '9/19.5', minHeight: '340px' }}>
+                  <div className="overflow-hidden rounded-[2.2rem] bg-gray-900 mt-2 w-full flex flex-col pdf-device-screen" style={{  minHeight: '280px' }}>
                     {/* Status bar gap */}
-                    <div className="h-6 flex-shrink-0 bg-gray-900"></div>
                     {/* Screenshot */}
                     <div className="flex-1 overflow-hidden">
                       <img
                         src={deviceRendering.data.mobile}
                         alt="Mobile rendering"
-                        className="w-full h-full object-cover object-top"
+                        className="w-full h-full object-contain object-top"
                       />
                     </div>
                   </div>
@@ -128,9 +127,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             {/* Tablet Screenshot - data-pdf-src used by PDF export to load image via proxy */}
             {deviceRendering.data.tablet && (
               <div className="flex flex-col items-center" data-device-img="tablet" data-pdf-src={deviceRendering.data.tablet}>
-                <div className="bg-slate-300 border-2 border-slate-400 rounded-xl p-2 shadow-2xl relative" style={{ width: '320px', maxWidth: '100%' }}>
+                <div className="bg-slate-300 border-2 border-slate-400 rounded-xl p-2 shadow-2xl relative pdf-device-frame" style={{ width: '320px', maxWidth: '100%' }}>
                   {/* Screen - native img so external screenshots always load */}
-                  <div className="relative overflow-hidden rounded-lg bg-gray-900 border-2 border-slate-500 w-full" style={{ aspectRatio: '4/3', minHeight: '380px' }}>
+                  <div className="relative overflow-hidden rounded-lg bg-gray-900 border-2 border-slate-500 w-full pdf-device-screen" style={{ aspectRatio: '4/3', minHeight: '380px' }}>
                     <img
                       src={deviceRendering.data.tablet}
                       alt="Tablet rendering"

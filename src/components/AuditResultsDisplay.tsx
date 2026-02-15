@@ -103,11 +103,13 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
   const getLabelPoint = (index: number) => {
     const angle = (index * angleStep) - Math.PI / 2
     const labelRadius = radius + 25
-    return {
-      x: centerX + Math.cos(angle) * labelRadius,
-      y: centerY + Math.sin(angle) * labelRadius,
-      angle,
+    const x = centerX + Math.cos(angle) * labelRadius
+    let y = centerY + Math.sin(angle) * labelRadius
+    // Pull top/bottom labels slightly closer to the chart
+    if (Math.abs(Math.cos(angle)) < 0.2) {
+      y += angle < 0 ? 8 : -8
     }
+    return { x, y, angle }
   }
 
   const dataPolygonPoints = categories.length > 0
@@ -188,6 +190,22 @@ pdfStyle.innerHTML = `
     border-radius: 0 !important;
     box-shadow: none !important;
   }
+  .pdf-export .pdf-device-frame {
+    background: #d1d5db !important;
+    border: 1px solid #9ca3af !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.35) !important;
+    padding: 8px !important;
+    box-sizing: border-box !important;
+  }
+  .pdf-export .pdf-device-frame.rounded-\\[3rem\\] {
+    border-radius: 1.5rem !important;
+  }
+  .pdf-export .pdf-device-screen {
+    overflow: hidden !important;
+    border-radius: 0.6rem !important;
+    background: #111827 !important;
+  }
   .pdf-export .p-8 { padding: 12px !important; }
   .pdf-export .p-6 { padding: 10px !important; }
   .pdf-export .p-4 { padding: 8px !important; }
@@ -212,6 +230,33 @@ pdfStyle.innerHTML = `
     height: 80px !important;
     min-height: 0 !important;
     padding: 0 !important;
+  }
+  .pdf-export .report-top-grid {
+    grid-template-columns: 2fr 3fr !important;
+  }
+  .pdf-export .website-preview-frame {
+    width: 20rem !important;
+    height: 16rem !important;
+  }
+  .pdf-export .website-preview-mobile {
+    bottom: -36px !important;
+    right: -54px !important;
+  }
+  .pdf-export svg[data-radar-chart] text {
+    font-size: 9px !important;
+  }
+  .pdf-export .radar-chart-area {
+    margin-top: 2rem !important;
+  }
+ 
+  .pdf-export .hide-on-pdf {
+    display: none !important;
+  }
+  .pdf-export .perf-card {
+    padding: 0 !important;
+  }
+  .pdf-export .perf-cards-row {
+    gap: 0.5rem !important;
   }
 `
 clone.prepend(pdfStyle)
@@ -423,9 +468,10 @@ clone.prepend(pdfStyle)
   }
 
   return (
-    <div className="py-2 pdf-avoid-break">
+    <div className=" pdf-avoid-break report-root  rounded-lg">
       <div className="container mx-auto  max-w-7xl">
         {/* Header with Explanatory Text */}
+        <div className="bg-primary p-8 rounded-lg">
         <div className="mb-2">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Website Report for <span className="text-accent">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
@@ -463,12 +509,12 @@ clone.prepend(pdfStyle)
             </button>
           </div>
         </div>
-
+       
         {/* Main Content Grid - Score card (40%) + Website Preview (60%) */}
-        <div className="grid lg:grid-cols-[2fr_3fr] gap-6 mb-2">
+        <div className="grid lg:grid-cols-2 gap-6 mb-2 report-top-grid">
           {/* Left - Score card with circular gauge and recommendations */}
-          <div>
-            <div className="bg-primary rounded-lg border border-gray-800 p-8 text-center">
+          <div className="flex items-center h-full">
+            <div className="rounded-lg p-8 text-center w-full">
               {/* Circular Progress */}
               <div className="relative w-36 h-36 mx-auto mb-4">
                 <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
@@ -516,18 +562,20 @@ clone.prepend(pdfStyle)
 
           {/* Right - Website Preview */}
           <div>
-            <div className="bg-primary rounded-lg border border-gray-800 p-6 h-full">
-              <h2 className="text-xl font-bold text-white mb-4">Website Preview</h2>
-              <div className="relative">
+            <div className=" rounded-lg  p-6 h-full flex flex-col justify-center items-center">
+              <h2 className="text-xl font-bold text-white mb-4 hide-on-pdf">Website Preview</h2>
+              <div className="relative website-preview-frame" style={{width:'28rem',height:'23rem'}}>
                 {desktopScreenshot ? (
-                  <div className="bg-white rounded-lg p-4 mb-4 shadow-lg overflow-hidden" data-website-preview-img data-pdf-src={desktopScreenshot}>
-                    <div className="relative w-full aspect-video rounded overflow-hidden bg-gray-100">
-                      <Image
-                        src={desktopScreenshot}
-                        alt="Website desktop preview"
-                        fill
-                        className="object-cover object-top"
-                      />
+                  <div className=" rounded-lg p-4 mb-4 shadow-lg overflow-hidden" data-website-preview-img data-pdf-src={desktopScreenshot} style={{width:'100%',height:'100%'}}>
+                    <div className="bg-slate-300 border-2 border-slate-400 rounded-xl p-2 shadow-2xl relative pdf-device-frame" style={{width:'100%',height:'100%',boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
+                      <div className="relative w-full rounded overflow-hidden bg-gray-100 pdf-device-screen" style={{width:'100%',height:'100%'}}>
+                        <Image
+                          src={desktopScreenshot}
+                          alt="Website desktop preview"
+                          fill
+                          className="object-contain object-top"
+                        />
+                      </div>
                     </div>
                   </div>
                 ) : (
@@ -538,14 +586,16 @@ clone.prepend(pdfStyle)
                   </div>
                 )}
                 {mobileScreenshot ? (
-                  <div className="absolute bottom-0 right-0 w-32 bg-white rounded-lg p-2 shadow-xl border-2 border-gray-300 overflow-hidden" data-website-preview-img data-pdf-src={mobileScreenshot}>
-                    <div className="relative w-full aspect-[9/16] rounded overflow-hidden bg-gray-100">
-                      <Image
-                        src={mobileScreenshot}
-                        alt="Website mobile preview"
-                        fill
-                        className="object-cover object-top"
-                      />
+                  <div className="absolute bottom-0 right-0 w-32 rounded-lg p-2 shadow-xl overflow-hidden website-preview-mobile" data-website-preview-img data-pdf-src={mobileScreenshot}>
+                    <div className="bg-slate-300 border-2 border-slate-400 rounded-[2rem] p-2 shadow-2xl relative w-full pdf-device-frame" style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
+                      <div className="relative w-full aspect-[9/16] rounded-[1.6rem] overflow-hidden bg-gray-100 pdf-device-screen">
+                        <Image
+                          src={mobileScreenshot}
+                          alt="Website mobile preview"
+                          fill
+                          className="object-contain object-top"
+                        />
+                      </div>
                     </div>
                   </div>
                 ) : (
@@ -559,13 +609,13 @@ clone.prepend(pdfStyle)
             </div>
           </div>
         </div>
-
+        </div>
         {/* Performance Overview: category scores + radar chart in one line */}
-        <div className="mb-2">
+        <div className="mb-2 bg-primary p-8 rounded-lg mt-2">
           <h2 className="text-xl font-bold text-white mb-4">Performance Overview</h2>
           <div className="flex flex-col lg:flex-row items-start gap-4">
             {/* Left - 4 category score cards in a single row on large screens */}
-            <div className="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:basis-[65%] lg:justify-start">
+            <div className="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:basis-[80%] lg:justify-start perf-cards-row">
               {categories.map((category) => {
                 const score = getScoreFromGrade(category.grade)
                 const gradeStr = formatGrade(category.grade)
@@ -574,7 +624,7 @@ clone.prepend(pdfStyle)
                 const catOffset = catCircumference - (score / 100) * catCircumference
 
                 return (
-                  <div key={category.key} className="bg-primary rounded-lg border border-gray-800 p-3 w-[120px] flex flex-col items-center justify-center">
+                  <div key={category.key} className=" rounded-lg border border-gray-800 p-3 w-[120px] flex flex-col items-center justify-center perf-card">
                     <div className="relative w-20 h-20 mb-3">
                       <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 100 100">
                         <circle cx="50" cy="50" r="40" fill="none" stroke="#374151" strokeWidth="6" />
@@ -608,10 +658,7 @@ clone.prepend(pdfStyle)
                   </div>
                 )
               })}
-            </div>
-
-            {/* Right - radar chart */}
-            <div className="bg-primary rounded-lg border border-gray-800 p-2 flex items-center justify-center min-h-[130px] w-full lg:basis-[35%]" data-radar-chart-area>
+               <div className="ms-9 rounded-lg  p-2 flex items-center justify-center min-h-[130px] w-full lg:basis-[35%] radar-chart-area" data-radar-chart-area>
               <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="max-w-[200px] max-h-[200px]" xmlns="http://www.w3.org/2000/svg">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <circle
@@ -665,6 +712,10 @@ clone.prepend(pdfStyle)
                 })}
               </svg>
             </div>
+            </div>
+
+            {/* Right - radar chart */}
+           
           </div>
         </div>
       </div>
