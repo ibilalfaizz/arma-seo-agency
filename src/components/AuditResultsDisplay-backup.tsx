@@ -174,7 +174,7 @@ pdfStyle.innerHTML = `
   .pdf-export .bg-gray-900,
   .pdf-export .bg-gray-800,
   .pdf-export .bg-slate-300 {
-    background: #0d0d0d !important;
+    background: transparent !important;
   }
   .pdf-export .border,
   .pdf-export .border-2,
@@ -260,7 +260,7 @@ pdfStyle.innerHTML = `
   }
     #eport-content-for-pdf{
   min-height: 1122px; /* A4 height at 96dpi */
-  background: #ffffff;
+  background: #0f172a; /* your dark background */
   color: #fff;
 }
 `
@@ -461,7 +461,7 @@ clone.prepend(bgLayer);
           useCORS: true,
           allowTaint: true,
           logging: false,
-          backgroundColor: null,
+          backgroundColor: '#0d0d0d',
         },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
       }
@@ -477,34 +477,29 @@ clone.prepend(bgLayer);
       .get('pdf')
       .then((pdf: any) => {
         
-// Add a red background on the last page only
-const totalPages = pdf.internal.getNumberOfPages()
-for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
-  pdf.setPage(pageIndex)
+// Insert a dark background rectangle on every page
+for (let pageIndex = 1; pageIndex <= pdf.internal.getNumberOfPages(); pageIndex++) {
+  pdf.setPage(pageIndex);
 
-  const page = pdf.internal.pages[pageIndex] || pdf.internal.pages[pageIndex - 1]
-  if (!page) continue
+  // Access the internal page object (0‑based index)
+  const page = pdf.internal.pages[pageIndex - 1];
+  if (!page || !page.content) continue;
 
-  const w = typeof pdf.internal.pageSize.getWidth === 'function'
-    ? pdf.internal.pageSize.getWidth()
-    : pdf.internal.pageSize.width
-  const h = typeof pdf.internal.pageSize.getHeight === 'function'
-    ? pdf.internal.pageSize.getHeight()
-    : pdf.internal.pageSize.height
-  const scale = typeof pdf.internal.scaleFactor === 'number' ? pdf.internal.scaleFactor : 1
-  const wPts = w * scale
-  const hPts = h * scale
-  const darkBgCmd = `q\n` +
-    `0 0 ${wPts} ${hPts} re\n` +
-    `0.051 0.051 0.051 rg\n` + // #0d0d0d
-    `f\n` +
-    `Q\n`
-  if (Array.isArray(page)) {
-    page.unshift(darkBgCmd)
-  } else if (Array.isArray(page.content)) {
-    page.content.unshift(darkBgCmd)
+  // PDF rectangle command covering the whole page
+  const w = pdf.internal.pageSize.width;
+  const h = pdf.internal.pageSize.height;
+  // Fill with #0d0d0d (RGB: 13/255 ≈ 0.051)
+  const bgCmd = `q\n` +                     // save graphics state
+                `0 0 ${w} ${h} re\n` +      // rectangle path
+                `0.051 0.051 0.051 rg\n` +  // set fill color (dark)
+                `f\n` +                      // fill
+                `Q\n`;                       // restore state
+
+  // Prepend the command to the page’s content stream
+  if (Array.isArray(page.content)) {
+    page.content.unshift(bgCmd);
   } else if (typeof page.content === 'string') {
-    page.content = darkBgCmd + page.content
+    page.content = bgCmd + page.content;
   }
 }
           pdf.save('SEO-Report.pdf')
