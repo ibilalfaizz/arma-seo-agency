@@ -258,30 +258,8 @@ pdfStyle.innerHTML = `
   .pdf-export .perf-cards-row {
     gap: 0.5rem !important;
   }
-    #eport-content-for-pdf{
-  min-height: 1122px; /* A4 height at 96dpi */
-  background: #ffffff;
-  color: #fff;
-}
 `
 clone.prepend(pdfStyle)
-
-// Create a full‑page dark background layer
-const bgLayer = document.createElement('div');
-bgLayer.style.position = 'absolute';
-bgLayer.style.top = '0';
-bgLayer.style.left = '0';
-bgLayer.style.width = '100%';
-bgLayer.style.height = '300mm';        // taller than any A4 page (~297mm)
-bgLayer.style.backgroundColor = '#0d0d0d';
-bgLayer.style.zIndex = '-1';           // place behind content
-bgLayer.style.pointerEvents = 'none';  // allow clicks to pass through
-
-// Make the clone a positioning context and ensure it clips overflow
-clone.style.position = 'relative';
-clone.style.overflow = 'hidden';
-clone.style.minHeight = '297mm';       // approximate A4 height
-clone.prepend(bgLayer);
 
       // Force radar SVG size in PDF export (html2canvas ignores some CSS)
       // clone.querySelectorAll('svg[data-radar-chart]').forEach((svg) => {
@@ -495,7 +473,7 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
   const wPts = w * scale
   const hPts = h * scale
   const darkBgCmd = `q\n` +
-    `0 0 ${wPts} ${hPts} re\n` +
+    `-2 -2 ${wPts + 4} ${hPts + 4} re\n` +
     `0.051 0.051 0.051 rg\n` + // #0d0d0d
     `f\n` +
     `Q\n`
