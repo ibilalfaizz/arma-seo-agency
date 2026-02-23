@@ -5,7 +5,20 @@ import { markReportComplete, markReportError } from '@/lib/reportStore'
 
 export async function POST(request: NextRequest) {
   try {
-    const payload = await request.json()
+    let payload: any = null
+    const contentType = request.headers.get('content-type') || ''
+
+    if (contentType.includes('application/json')) {
+      payload = await request.json()
+    } else {
+      const raw = await request.text()
+      try {
+        payload = JSON.parse(raw)
+      } catch {
+        const params = new URLSearchParams(raw)
+        payload = Object.fromEntries(params.entries())
+      }
+    }
     const reportId = Number(payload?.id)
 
     if (!reportId) {
