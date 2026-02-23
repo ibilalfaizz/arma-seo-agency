@@ -147,6 +147,25 @@ function ResultsContent() {
         }
 
         const apiResponse = await response.json()
+
+        const waitForCallbackResult = async (reportId: number) => {
+          const start = Date.now()
+          const timeoutMs = 3 * 60 * 1000
+          while (Date.now() - start < timeoutMs) {
+            const statusRes = await fetch(`/api/report-status?id=${reportId}`)
+            if (statusRes.ok) {
+              const statusData = await statusRes.json()
+              if (statusData.status === 'complete') {
+                return statusData.data
+              }
+              if (statusData.status === 'error') {
+                throw new Error(statusData.error || 'Report generation failed')
+              }
+            }
+            await new Promise(resolve => setTimeout(resolve, 3000))
+          }
+          throw new Error('Report generation timed out. Please try again.')
+        }
         
         // Mark as complete and stop the interval
         isComplete = true
@@ -160,7 +179,9 @@ function ResultsContent() {
         
         // The API route already extracts and returns outputData directly
         // So apiResponse IS the outputData (with convenience fields added)
-        const apiData = apiResponse
+        const apiData = apiResponse?.status === 'pending' && apiResponse?.reportId
+          ? await waitForCallbackResult(apiResponse.reportId)
+          : apiResponse
         
         // Map section names to category names for recommendations (if recommendations exist)
         const sectionToCategory: { [key: string]: string } = {
