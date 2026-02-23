@@ -7,11 +7,16 @@ export async function POST(request: NextRequest) {
   try {
     let payload: any = null
     const contentType = request.headers.get('content-type') || ''
+    const raw = await request.text()
 
     if (contentType.includes('application/json')) {
-      payload = await request.json()
-    } else {
-      const raw = await request.text()
+      try {
+        payload = JSON.parse(raw)
+      } catch {
+        payload = null
+      }
+    }
+    if (!payload) {
       try {
         payload = JSON.parse(raw)
       } catch {
@@ -19,9 +24,11 @@ export async function POST(request: NextRequest) {
         payload = Object.fromEntries(params.entries())
       }
     }
-    const reportId = Number(payload?.id)
+    const url = new URL(request.url)
+    const reportId = Number(payload?.id || payload?.report_id || url.searchParams.get('id'))
 
     if (!reportId) {
+      console.error('Callback missing report id:', { contentType, raw: raw?.slice(0, 500) })
       return NextResponse.json({ error: 'Missing report id' }, { status: 400 })
     }
 
