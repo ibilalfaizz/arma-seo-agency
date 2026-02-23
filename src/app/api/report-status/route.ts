@@ -5,13 +5,16 @@ const SEOPTIMER_API_BASE = 'https://api.seoptimer.com'
 
 const extractOutputData = (reportData: any) => {
   let outputData = reportData?.data?.output || reportData?.output || reportData?.data
-  if (!outputData) return null
+  if (!outputData || outputData === false) return null
   if (typeof outputData === 'string') {
     try {
       outputData = JSON.parse(outputData)
     } catch {
       return null
     }
+  }
+  if (typeof outputData === 'object' && Object.keys(outputData).length === 0) {
+    return null
   }
   const responseData = {
     ...outputData,

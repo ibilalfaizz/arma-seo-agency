@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
               const name = nameMatch[1]
               const valueMatch = part.split('\r\n\r\n')
               if (valueMatch.length < 2) continue
-              const value = valueMatch[1].replace(/\r\n--?$/, '').trim()
+              const valueRaw = valueMatch.slice(1).join('\r\n\r\n')
+              const value = valueRaw.replace(/\r\n$/, '').trim()
               if (value) formData[name] = value
             }
             payload = formData
@@ -54,6 +55,15 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Missing report id' }, { status: 400 })
     }
 
+    let inputData = payload?.input
+    if (typeof inputData === 'string') {
+      try {
+        inputData = JSON.parse(inputData)
+      } catch {
+        // ignore
+      }
+    }
+
     let outputData = payload?.output
     if (typeof outputData === 'string') {
       try {
@@ -63,10 +73,14 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Invalid output JSON' }, { status: 400 })
       }
     }
+    if (!outputData || (typeof outputData === 'object' && Object.keys(outputData).length === 0)) {
+      markReportError(reportId, 'Empty output data')
+      return NextResponse.json({ error: 'Empty output data' }, { status: 400 })
+    }
 
     const responseData = {
       ...outputData,
-      url: outputData?.finalUrl || payload?.input?.url,
+      url: outputData?.finalUrl || inputData?.url,
       pdfUrl: outputData?.pdf || null,
     }
 
