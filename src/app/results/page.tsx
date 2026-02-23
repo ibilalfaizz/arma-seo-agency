@@ -112,6 +112,9 @@ function ResultsContent() {
       let progressInterval: NodeJS.Timeout | null = null
       let isComplete = false
 
+      const startTime = Date.now()
+      const minLoadingMs = 1500
+
       // Simulate progress bar - slower increments
       progressInterval = setInterval(() => {
         if (isComplete) {
@@ -167,21 +170,26 @@ function ResultsContent() {
           throw new Error('Report generation timed out. Please try again.')
         }
         
-        // Mark as complete and stop the interval
-        isComplete = true
-        if (progressInterval) clearInterval(progressInterval)
-        
-        // Complete the progress bar to 100%
-        setProgress(100)
-        
-        // Wait a bit longer to show 100% completion before showing results
-        await new Promise(resolve => setTimeout(resolve, 800))
-        
         // The API route already extracts and returns outputData directly
         // So apiResponse IS the outputData (with convenience fields added)
         const apiData = apiResponse?.status === 'pending' && apiResponse?.reportId
           ? await waitForCallbackResult(apiResponse.reportId)
           : apiResponse
+
+        const elapsed = Date.now() - startTime
+        if (elapsed < minLoadingMs) {
+          await new Promise(resolve => setTimeout(resolve, minLoadingMs - elapsed))
+        }
+
+        // Mark as complete and stop the interval
+        isComplete = true
+        if (progressInterval) clearInterval(progressInterval)
+
+        // Complete the progress bar to 100%
+        setProgress(100)
+
+        // Wait a bit longer to show 100% completion before showing results
+        await new Promise(resolve => setTimeout(resolve, 800))
         
         // Map section names to category names for recommendations (if recommendations exist)
         const sectionToCategory: { [key: string]: string } = {
