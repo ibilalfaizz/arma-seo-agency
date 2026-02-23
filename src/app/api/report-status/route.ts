@@ -31,41 +31,38 @@ export async function GET(request: NextRequest) {
   }
 
   const status = getReportStatus(reportId)
-  if (!status) {
-    // Fallback: check directly with SEOptimer (covers callback not reachable in local dev)
-    const apiKey = process.env.SEOPTIMER_API_KEY
-    if (!apiKey) {
-      return NextResponse.json({ status: 'pending' }, { status: 202 })
-    }
-    try {
-      const response = await fetch(`${SEOPTIMER_API_BASE}/v1/report/get/${reportId}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-        },
-      })
-      if (response.ok) {
-        const data = await response.json()
-        const outputData = extractOutputData(data)
-        if (outputData) {
-          markReportComplete(reportId, outputData)
-          return NextResponse.json({ status: 'complete', data: outputData })
-        }
-      }
-    } catch {
-      // ignore and return pending
-    }
-    return NextResponse.json({ status: 'pending' }, { status: 202 })
+  if (status?.status === 'complete') {
+    return NextResponse.json({ status: 'complete', data: status.data })
   }
-
-  if (status.status === 'error') {
+  if (status?.status === 'error') {
     return NextResponse.json({ status: 'error', error: status.error || 'Unknown error' }, { status: 500 })
   }
 
-  if (status.status === 'complete') {
-    return NextResponse.json({ status: 'complete', data: status.data })
+  // Always check directly with SEOptimer so we don't rely on in-memory state
+  const apiKey = process.env.SEOPTIMER_API_KEY
+  if (!apiKey) {
+    return NextResponse.json({ status: 'pending' }, { status: 202 })
   }
+  try {
+    const response = await fetch(`${SEOPTIMER_API_BASE}/v1/report/get/${reportId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': apiKey,
+      },
+    })
+    if (response.ok) {
+      const data = await response.json()
+      const outputData = extractOutputData(data)
+      if (outputData) {
+        markReportComplete(reportId, outputData)
+        return NextResponse.json({ status: 'complete', data: outputData })
+      }
+    }
+  } catch {
+    // ignore and return pending
+  }
+  return NextResponse.json({ status: 'pending' }, { status: 202 })
 
   return NextResponse.json({ status: 'pending' }, { status: 202 })
 }
