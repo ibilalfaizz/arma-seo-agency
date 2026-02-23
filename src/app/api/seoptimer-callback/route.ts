@@ -20,8 +20,30 @@ export async function POST(request: NextRequest) {
       try {
         payload = JSON.parse(raw)
       } catch {
-        const params = new URLSearchParams(raw)
-        payload = Object.fromEntries(params.entries())
+        if (contentType.includes('multipart/form-data')) {
+          const boundaryMatch = contentType.match(/boundary=(.+)$/)
+          const boundary = boundaryMatch ? `--${boundaryMatch[1]}` : null
+          if (boundary) {
+            const parts = raw.split(boundary)
+            const formData: Record<string, string> = {}
+            for (const part of parts) {
+              const nameMatch = part.match(/name="([^"]+)"/)
+              if (!nameMatch) continue
+              const name = nameMatch[1]
+              const valueMatch = part.split('\r\n\r\n')
+              if (valueMatch.length < 2) continue
+              const value = valueMatch[1].replace(/\r\n--?$/, '').trim()
+              if (value) formData[name] = value
+            }
+            payload = formData
+          } else {
+            const params = new URLSearchParams(raw)
+            payload = Object.fromEntries(params.entries())
+          }
+        } else {
+          const params = new URLSearchParams(raw)
+          payload = Object.fromEntries(params.entries())
+        }
       }
     }
     const url = new URL(request.url)
