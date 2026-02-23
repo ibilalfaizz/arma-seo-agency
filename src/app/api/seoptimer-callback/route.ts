@@ -3,6 +3,25 @@ import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import { markReportComplete, markReportError } from '@/lib/reportStore'
 
+const isValidOutput = (output: any) => {
+  if (!output || typeof output !== 'object') return false
+  const hasAnyKey = Object.keys(output).length > 0
+  if (!hasAnyKey) return false
+  return Boolean(
+    output.scores ||
+    output.score ||
+    output.recommendations ||
+    output.title ||
+    output.description ||
+    output.finalUrl ||
+    output.pdf ||
+    output.seo ||
+    output.links ||
+    output.ui ||
+    output.performance
+  )
+}
+
 export async function POST(request: NextRequest) {
   try {
     let payload: any = null
@@ -73,9 +92,9 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Invalid output JSON' }, { status: 400 })
       }
     }
-    if (!outputData || (typeof outputData === 'object' && Object.keys(outputData).length === 0)) {
-      markReportError(reportId, 'Empty output data')
-      return NextResponse.json({ error: 'Empty output data' }, { status: 400 })
+    if (!isValidOutput(outputData)) {
+      console.warn('Callback output not ready:', { reportId })
+      return NextResponse.json({ ok: true })
     }
 
     const responseData = {

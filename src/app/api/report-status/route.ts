@@ -3,6 +3,25 @@ import { getReportStatus, markReportComplete } from '@/lib/reportStore'
 
 const SEOPTIMER_API_BASE = 'https://api.seoptimer.com'
 
+const isValidOutput = (output: any) => {
+  if (!output || typeof output !== 'object') return false
+  const hasAnyKey = Object.keys(output).length > 0
+  if (!hasAnyKey) return false
+  return Boolean(
+    output.scores ||
+    output.score ||
+    output.recommendations ||
+    output.title ||
+    output.description ||
+    output.finalUrl ||
+    output.pdf ||
+    output.seo ||
+    output.links ||
+    output.ui ||
+    output.performance
+  )
+}
+
 const extractOutputData = (reportData: any) => {
   let outputData = reportData?.data?.output || reportData?.output || reportData?.data
   if (!outputData || outputData === false) return null
@@ -13,7 +32,7 @@ const extractOutputData = (reportData: any) => {
       return null
     }
   }
-  if (typeof outputData === 'object' && Object.keys(outputData).length === 0) {
+  if (!isValidOutput(outputData)) {
     return null
   }
   const responseData = {
