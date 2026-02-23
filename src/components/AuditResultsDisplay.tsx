@@ -23,7 +23,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
   const recommendations = (data as any).recommendations || []
   const url = data.url || ''
   const desktopScreenshot = (data as any).screenshot
-  const mobileScreenshot = (data as any).deviceRendering.data?.mobile
+  const mobileScreenshot = (data as any).deviceRendering?.data?.mobile
   // Helper functions - display scores exactly as they come from API (numeric only)
   const formatGrade = (grade: string | number | undefined): string => {
     if (grade === undefined || grade === null || grade === '') return 'N/A'
