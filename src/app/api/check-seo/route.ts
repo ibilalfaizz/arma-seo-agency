@@ -73,9 +73,42 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const createReportData = await createReportResponse.json()
-    
-    if (!createReportData.success || !createReportData.data || !createReportData.data.id) {
+    const createReportText = await createReportResponse.text()
+    let createReportData: any = null
+    try {
+      createReportData = JSON.parse(createReportText)
+    } catch {
+      createReportData = null
+    }
+
+    if (!createReportData?.success || !createReportData?.data?.id) {
+      // Retry once without callback in case callback URL is rejected
+      if (callbackUrl) {
+        const retryResponse = await fetch(`${SEOPTIMER_API_BASE}/v1/report/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'x-api-key': apiKey,
+          },
+          body: JSON.stringify({ url, pdf: 1 }),
+        })
+        const retryText = await retryResponse.text()
+        try {
+          const retryData = JSON.parse(retryText)
+          if (retryData?.success && retryData?.data?.id) {
+            createReportData = retryData
+          } else {
+            console.error('SEOptimer Create Report Error (retry):', retryText)
+          }
+        } catch {
+          console.error('SEOptimer Create Report Error (retry):', retryText)
+        }
+      }
+    }
+
+    if (!createReportData?.success || !createReportData?.data?.id) {
+      console.error('SEOptimer Create Report Error (raw):', createReportText)
       return NextResponse.json(
         { error: 'Failed to create report: Invalid response from API' },
         { status: 500 }
