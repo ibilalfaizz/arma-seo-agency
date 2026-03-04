@@ -1,5 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { markReportPending } from '@/lib/reportStore'
+import {
+  checkRateLimit,
+  finishAnalysisForReport,
+  getClientIp,
+  hasActiveAnalysisForIp,
+  startAnalysisForIp,
+} from '@/lib/analysisRateLimit'
 
 const SEOPTIMER_API_BASE = 'https://api.seoptimer.com'
 
@@ -14,6 +21,40 @@ const getBaseUrl = (request: NextRequest) => {
 export async function POST(request: NextRequest) {
   try {
     const { url } = await request.json()
+
+    const ip = getClientIp(request)
+    console.log(ip,'ip')
+
+    const existingAnalysis = hasActiveAnalysisForIp(ip)
+    if (existingAnalysis.active) {
+      return NextResponse.json(
+        {
+          error:
+            'An analysis is already running for your IP. Please wait for it to complete before starting a new one.',
+          reportId: existingAnalysis.reportId,
+        },
+        { status: 429 }
+      )
+    }
+
+    const startLimitKey = `start:${ip}`
+    const startLimit = checkRateLimit(startLimitKey, 5, 60 * 1000)
+    if (!startLimit.allowed) {
+      const response = NextResponse.json(
+        {
+          error: 'Too many analyses started from this IP. Please wait and try again.',
+          retryAfterMs: startLimit.retryAfterMs,
+        },
+        { status: 429 }
+      )
+      if (startLimit.retryAfterMs > 0) {
+        response.headers.set(
+          'Retry-After',
+          Math.ceil(startLimit.retryAfterMs / 1000).toString()
+        )
+      }
+      return response
+    }
 
     if (!url) {
       return NextResponse.json(
@@ -125,13 +166,21 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Mark pending so the status endpoint can respond immediately
     markReportPending(reportId, { url })
+    startAnalysisForIp(ip, reportId)
 
-    // Return pending status; client will poll our status endpoint
     return NextResponse.json({ status: 'pending', reportId })
   } catch (error) {
     console.error('Error checking SEO:', error)
+    try {
+      const { url } = await request.json()
+      const ip = getClientIp(request)
+      const existing = hasActiveAnalysisForIp(ip)
+      if (existing.active && existing.reportId) {
+        finishAnalysisForReport(existing.reportId)
+      }
+    } catch {
+    }
     return NextResponse.json(
       { error: error instanceof Error ? error.message : 'Internal server error' },
       { status: 500 }

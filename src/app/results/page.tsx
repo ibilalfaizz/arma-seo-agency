@@ -134,6 +134,16 @@ function ResultsContent() {
       }, 800) // Update every 800ms (slower)
 
       try {
+        if (typeof window !== 'undefined') {
+          try {
+            window.localStorage.setItem(
+              'seo-analysis-lock',
+              JSON.stringify({ startedAt: Date.now(), url })
+            )
+          } catch {
+          }
+        }
+
         const response = await fetch('/api/check-seo', {
           method: 'POST',
           headers: {
@@ -154,8 +164,17 @@ function ResultsContent() {
         const waitForCallbackResult = async (reportId: number) => {
           const start = Date.now()
           const timeoutMs = 3 * 60 * 1000
+          let attempt = 0
+
+          const getDelayMs = (attemptNumber: number) => {
+            if (attemptNumber < 3) return 3000
+            if (attemptNumber < 6) return 5000
+            return 8000
+          }
+
           while (Date.now() - start < timeoutMs) {
             const statusRes = await fetch(`/api/report-status?id=${reportId}`)
+
             if (statusRes.ok) {
               const statusData = await statusRes.json()
               if (statusData.status === 'complete') {
@@ -164,9 +183,36 @@ function ResultsContent() {
               if (statusData.status === 'error') {
                 throw new Error(statusData.error || 'Report generation failed')
               }
+            } else if (statusRes.status === 429) {
+              let retryDelayMs = 5000
+              const retryAfterHeader = statusRes.headers.get('Retry-After')
+              if (retryAfterHeader) {
+                const retryAfterSeconds = parseInt(retryAfterHeader, 10)
+                if (!Number.isNaN(retryAfterSeconds) && retryAfterSeconds > 0) {
+                  retryDelayMs = retryAfterSeconds * 1000
+                }
+              } else {
+                try {
+                  const body = await statusRes.json()
+                  if (typeof body.retryAfterMs === 'number' && body.retryAfterMs > 0) {
+                    retryDelayMs = body.retryAfterMs
+                  }
+                } catch {
+                  // ignore JSON parse errors here
+                }
+              }
+              await new Promise(resolve => setTimeout(resolve, retryDelayMs))
+              continue
             }
-            await new Promise(resolve => setTimeout(resolve, 3000))
+
+            const visibilityDelayMultiplier =
+              typeof document !== 'undefined' && document.visibilityState === 'hidden' ? 2 : 1
+
+            const delayMs = getDelayMs(attempt) * visibilityDelayMultiplier
+            attempt += 1
+            await new Promise(resolve => setTimeout(resolve, delayMs))
           }
+
           throw new Error('Report generation timed out. Please try again.')
         }
         
@@ -238,6 +284,12 @@ function ResultsContent() {
         if (progressInterval) clearInterval(progressInterval)
         setError(err instanceof Error ? err.message : 'An unexpected error occurred')
       } finally {
+        if (typeof window !== 'undefined') {
+          try {
+            window.localStorage.removeItem('seo-analysis-lock')
+          } catch {
+          }
+        }
         setLoading(false)
       }
     }

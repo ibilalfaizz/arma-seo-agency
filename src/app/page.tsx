@@ -1,12 +1,53 @@
 'use client'
 
+import { useState } from 'react'
 import Image from 'next/image'
 import CheckerForm from '@/components/CheckerForm'
 import shapeSvg from '@/assets/images/shape.svg'
 
+const ANALYSIS_LOCK_KEY = 'seo-analysis-lock'
+const ANALYSIS_LOCK_TTL_MS = 10 * 60 * 1000
+
+const hasRecentClientLock = () => {
+  if (typeof window === 'undefined') return false
+  try {
+    const raw = window.localStorage.getItem(ANALYSIS_LOCK_KEY)
+    if (!raw) return false
+    const data = JSON.parse(raw) as { startedAt?: number }
+    if (!data?.startedAt) return false
+    return Date.now() - data.startedAt < ANALYSIS_LOCK_TTL_MS
+  } catch {
+    return false
+  }
+}
+
+const setClientLock = (url: string) => {
+  if (typeof window === 'undefined') return
+  try {
+    window.localStorage.setItem(
+      ANALYSIS_LOCK_KEY,
+      JSON.stringify({ startedAt: Date.now(), url })
+    )
+  } catch {
+  }
+}
+
 export default function Home() {
+  const [loading, setLoading] = useState(false)
+  const [lockMessage, setLockMessage] = useState<string | null>(null)
+
   const handleCheck = (url: string) => {
-    // Navigate to results page with URL as query parameter
+    if (hasRecentClientLock()) {
+      setLockMessage(
+        'An analysis is already running for this device. Please wait for the current report to finish before starting a new one.'
+      )
+      return
+    }
+
+    setLockMessage(null)
+    setClientLock(url)
+    setLoading(true)
+
     window.location.href = `/results?url=${encodeURIComponent(url)}`
   }
 
@@ -68,8 +109,14 @@ export default function Home() {
           </div>
         </div>
 
+        {lockMessage && (
+          <div className="mb-6 max-w-2xl mx-auto rounded-lg border border-yellow-400/40 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-100">
+            {lockMessage}
+          </div>
+        )}
+
         {/* Checker Form */}
-        <CheckerForm onCheck={handleCheck} loading={false} />
+        <CheckerForm onCheck={handleCheck} loading={loading} />
       </div>
 
       {/* Minimal Footer */}

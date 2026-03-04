@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { writeFile, mkdir } from 'fs/promises'
 import { join } from 'path'
 import { markReportComplete, markReportError } from '@/lib/reportStore'
+import { finishAnalysisForReport } from '@/lib/analysisRateLimit'
 
 const isValidOutput = (output: any) => {
   if (!output || typeof output !== 'object') return false
@@ -89,6 +90,7 @@ export async function POST(request: NextRequest) {
         outputData = JSON.parse(outputData)
       } catch (e) {
         markReportError(reportId, 'Failed to parse output JSON')
+        finishAnalysisForReport(reportId)
         return NextResponse.json({ error: 'Invalid output JSON' }, { status: 400 })
       }
     }
@@ -104,6 +106,7 @@ export async function POST(request: NextRequest) {
     }
 
     markReportComplete(reportId, responseData)
+    finishAnalysisForReport(reportId)
 
     if (process.env.SAVE_API_RESPONSES === 'true') {
       try {
@@ -121,6 +124,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ ok: true })
   } catch (error) {
     console.error('Callback error:', error)
+    try {
+      const url = new URL(request.url)
+      const idParam = url.searchParams.get('id')
+      const reportId = idParam ? Number(idParam) : undefined
+      if (reportId) {
+        finishAnalysisForReport(reportId)
+      }
+    } catch {
+    }
     return NextResponse.json({ error: 'Callback processing failed' }, { status: 500 })
   }
 }
