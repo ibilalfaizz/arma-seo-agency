@@ -32,7 +32,6 @@ export const getClientIp = (request: NextRequest): string => {
   const xRealIp = request.headers.get('x-real-ip')
   if (xRealIp) return xRealIp
 
-  // @ts-expect-error - NextRequest may have ip depending on runtime
   if (request.ip) return request.ip as string
 
   return 'unknown'
