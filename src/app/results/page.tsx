@@ -302,36 +302,36 @@ function ResultsContent() {
   }, [url])
 
   return (
-    <main className="min-h-screen from-gray-900 via-gray-800 to-gray-900">
+    <main className="min-h-screen from-gray-900 via-gray-800 to-gray-900 overflow-x-hidden">
       {/* Minimal Header - Standalone Report Design */}
       <header className="border-b border-gray-700/50 bg-gray-900/50 backdrop-blur-sm sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4 max-w-7xl">
-          <div className="flex items-center justify-between">
+        <div className="container mx-auto px-3 sm:px-4 py-3 sm:py-4 max-w-7xl">
+          <div className="flex items-center justify-between gap-2 min-w-0">
             <button
               onClick={() => router.push('/')}
-              className="text-gray-300 hover:text-white transition-colors text-sm font-medium flex items-center gap-2"
+              className="text-gray-300 hover:text-white transition-colors text-sm font-medium flex items-center gap-2 flex-shrink-0 min-w-0"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              Back to Checker
+              <span className="truncate">Back to Checker</span>
             </button>
-            <h1 className="text-lg font-bold text-white">SEO Report</h1>
-            <div className="w-24"></div> {/* Spacer for centering */}
+            <h1 className="text-[20px] sm:text-lg font-bold text-white truncate flex-shrink-0">SEO Report</h1>
+            <div className="w-16 sm:w-24 flex-shrink-0" aria-hidden />
           </div>
         </div>
       </header>
 
-      <div className="container mx-auto px-4 py-12 max-w-7xl">
+      <div className="container mx-auto px-3 sm:px-4 py-6 sm:py-12 max-w-7xl min-w-0">
         {/* Loading State */}
         {loading && (
-          <div className="text-center py-20">
-            <div className="inline-block animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-accent mb-2"></div>
-            <h2 className="text-3xl font-bold mb-4">Analyzing Your Website</h2>
-            <p className="text-gray-400 text-lg mb-2">Please wait while we check your SEO performance...</p>
+          <div className="text-center py-12 sm:py-20 px-2">
+            <div className="inline-block animate-spin rounded-full h-14 w-14 sm:h-16 sm:w-16 border-t-4 border-b-4 border-accent mb-2"></div>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Analyzing Your Website</h2>
+            <p className="text-gray-400 text-base sm:text-lg mb-2">Please wait while we check your SEO performance...</p>
             
             {/* Progress Bar */}
-            <div className="max-w-md mx-auto mb-4">
+            <div className="max-w-md mx-auto mb-4 px-2">
               <div className="w-full bg-gray-700 rounded-full h-3 overflow-hidden">
                 <div 
                   className="bg-accent h-3 rounded-full transition-all duration-300 ease-out"
@@ -349,12 +349,12 @@ function ResultsContent() {
 
         {/* Error Display */}
         {error && !loading && (
-          <div className="mt-8 p-6 bg-accent/20 border border-accent rounded-lg max-w-2xl mx-auto">
+          <div className="mt-6 sm:mt-8 p-4 sm:p-6 bg-accent/20 border border-accent rounded-lg max-w-2xl mx-auto">
             <div className="flex items-center gap-3 mb-4">
               <svg className="w-6 h-6 text-accent" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
               </svg>
-              <h3 className="text-xl font-bold text-accent">Error</h3>
+              <h3 className="text-[18px] sm:text-xl font-bold text-accent">Error</h3>
             </div>
             <p className="text-gray-300 mb-4">{error}</p>
             <button

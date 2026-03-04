@@ -10,7 +10,7 @@ export default function StrategistSection() {
         <div className="grid md:grid-cols-[2fr_1fr] gap-0 items-stretch">
         {/* Left Side - Content (2/3 width) */}
         <div className="bg-primary-light rounded-t-lg md:rounded-l-lg md:rounded-tr-none p-6 md:p-8 relative z-10 flex flex-col justify-center">
-          <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-4 leading-tight text-white uppercase">
+          <h3 className="text-[18px] md:text-3xl lg:text-4xl font-bold mb-4 leading-tight text-white uppercase">
             LET&apos;S BUILD A MARKETING PLAN THAT WORKS ALL YEAR LONG
           </h3>
           <p className="text-gray-300 text-base md:text-lg mb-2 leading-relaxed">

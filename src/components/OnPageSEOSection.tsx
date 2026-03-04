@@ -56,11 +56,11 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
   const gradeColor = getGradeColor(seoScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2  pdf-new-page">
-      <h2 className="text-3xl font-bold text-white mb-2">On-Page SEO Results</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-4 sm:p-6 md:p-8 mb-2 pdf-new-page overflow-x-hidden">
+      <h2 className="text-[20px] md:text-3xl font-bold text-white mb-2">On-Page SEO Results</h2>
       
       {/* Header Section with Grade */}
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-2">
+      <div className="flex flex-row-reverse md:flex-row items-start md:items-center gap-4 md:gap-8 mb-2">
         {/* Circular Gauge */}
         <div className="relative w-24 h-24 flex-shrink-0">
           <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
@@ -95,8 +95,8 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
 
         {/* Title and Description */}
         <div className="flex-1">
-          <h3 className="text-2xl font-bold text-white mb-3">{seoTitle}</h3>
-          <p className="text-gray-300 leading-relaxed">{seoDescription}</p>
+          <h3 className="text-[18px] md:text-2xl font-bold text-white mb-3">{seoTitle}</h3>
+          <p className="text-gray-300 text-sm md:text-base leading-relaxed">{seoDescription}</p>
         </div>
       </div>
 
@@ -106,7 +106,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
             <div className="flex items-start justify-between gap-4 mb-4">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-2">
-                  <h4 className="text-xl font-bold text-white">SERP Snippet Preview</h4>
+                  <h4 className="text-[16px] md:text-xl font-bold text-white">SERP Snippet Preview</h4>
                
               </div>
               <p className="text-gray-400 text-sm mb-4">
@@ -135,7 +135,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
       {(titleTag || metaDescription) && (
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 ">
           <div className="flex items-start justify-between gap-4 mb-2">
-            <h4 className="text-xl font-bold text-white">Title Tag & Meta Description</h4>
+            <h4 className="text-[16px] md:text-xl font-bold text-white">Title Tag & Meta Description</h4>
             <div className="flex items-center gap-2 flex-shrink-0">
               {titleTag && !titleTag.passed && (
                 <div className="w-8 h-8 rounded-full bg-red-500 flex items-center justify-center" title="Title Tag issue">
@@ -201,8 +201,8 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 ">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Header Tags</h4>
-              <p className="text-gray-300 mb-4">{data.headers.shortAnswer || "Header tags information"}</p>
+              <h4 className="text-[16px] md:text-xl font-bold text-white mb-3">Header Tags</h4>
+              <p className="text-gray-300 text-sm md:text-base mb-4">{data.headers.shortAnswer || "Header tags information"}</p>
               <div className="bg-primary rounded-lg p-4 mb-3">
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                   {data.headers.data.h1 && data.headers.data.h1.length > 0 && (
@@ -244,8 +244,8 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Content Length</h4>
-              <p className="text-gray-300 mb-4">{data.contentLength.shortAnswer || "Content length information"}</p>
+              <h4 className="text-[16px] md:text-xl font-bold text-white mb-3">Content Length</h4>
+              <p className="text-gray-300 text-sm md:text-base mb-4">{data.contentLength.shortAnswer || "Content length information"}</p>
               {data.contentLength.recommendation && (
                 <p className="text-gray-400 text-sm mt-2">
                   Recommendation: {data.contentLength.recommendation}
@@ -270,8 +270,8 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 ">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Image Alt Attributes</h4>
-              <p className="text-gray-300 mb-4">{data.imageAlt.shortAnswer || "Image alt attributes information"}</p>
+              <h4 className="text-[16px] md:text-xl font-bold text-white mb-3">Image Alt Attributes</h4>
+              <p className="text-gray-300 text-sm md:text-base mb-4">{data.imageAlt.shortAnswer || "Image alt attributes information"}</p>
               <div className="bg-primary rounded-lg p-4 mb-3">
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   <div>
@@ -314,13 +314,13 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
       {keywords && keywords !== false && keywords.data && keywords.data.keywords && (
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 ">
           {/* Section Title */}
-          <h4 className="text-xl font-bold text-accent mb-4">1. Individual Keywords</h4>
+          <h4 className="text-[16px] md:text-xl font-bold text-accent mb-4">1. Individual Keywords</h4>
           
           {/* Keyword Consistency Header */}
           <div className="flex items-start gap-3 mb-2">
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
-                <h5 className="text-lg font-semibold text-white">Keyword Consistency</h5>
+                <h5 className="text-[14px] md:text-lg font-semibold text-white">Keyword Consistency</h5>
                 {keywords.passed !== false && (
                   <svg className="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
@@ -412,7 +412,7 @@ export default function OnPageSEOSection({ data }: OnPageSEOSectionProps) {
           {/* Phrases Section (if available) */}
           {keywords.data.phrases && Array.isArray(keywords.data.phrases) && keywords.data.phrases.filter((p: any) => p && typeof p === 'object' && p.word).length > 0 && (
             <div className="mt-8 pt-6 border-t border-gray-700">
-              <h5 className="text-xl font-bold text-white mb-4">Phrases</h5>
+              <h5 className="text-[14px] md:text-xl font-bold text-white mb-4">Phrases</h5>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>

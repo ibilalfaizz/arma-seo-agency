@@ -496,20 +496,20 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
   }
 
   return (
-    <div className=" pdf-avoid-break report-root  rounded-lg">
-      <div className="container mx-auto  max-w-7xl">
+    <div className="pdf-avoid-break report-root rounded-lg overflow-x-hidden">
+      <div className="container mx-auto max-w-7xl px-3 sm:px-4">
         {/* Header with Explanatory Text */}
-        <div className="bg-primary p-8 rounded-lg">
+        <div className="bg-primary p-4 sm:p-6 lg:p-8 rounded-lg">
         <div className="mb-2">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Website Report for <span className="text-accent">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+          <h1 className="text-[20px] sm:text-3xl md:text-4xl font-bold text-white mb-3 md:mb-4">
+            Website Report for <span className="text-accent break-all">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
           </h1>
-          <p className="text-gray-300 text-base leading-relaxed max-w-4xl mb-2">
+          <p className="text-gray-300 text-sm sm:text-base leading-relaxed max-w-4xl mb-2">
             This report grades your website on the strength of a range of important factors such as on-page SEO optimization, off-page backlinks, social, performance, security and more. The overall grade is on a A+ to F- scale, with most major industry leading websites in the A range. Improving a website&apos;s grade is recommended to ensure a better website experience for your users and improved ranking and visibility by search engines.
           </p>
-          <div className="flex items-center justify-between flex-wrap gap-4">
-            <h2 className="text-2xl md:text-3xl font-bold text-white">
-              Audit Results for <span className="text-accent">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+            <h2 className="text-[20px] sm:text-2xl md:text-3xl font-bold text-white">
+              Audit Results for <span className="text-accent break-all">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
             </h2>
             <button
               type="button"
@@ -539,12 +539,12 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
         </div>
        
         {/* Main Content Grid - Score card (40%) + Website Preview (60%) */}
-        <div className="grid lg:grid-cols-2 gap-6 mb-2 report-top-grid">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-2 report-top-grid">
           {/* Left - Score card with circular gauge and recommendations */}
-          <div className="flex items-center h-full">
-            <div className="rounded-lg p-8 text-center w-full">
+          <div className="flex items-center h-full min-w-0">
+            <div className="rounded-lg p-4 sm:p-6 lg:p-8 text-center w-full min-w-0">
               {/* Circular Progress */}
-              <div className="relative w-36 h-36 mx-auto mb-4">
+              <div className="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 mx-auto mb-4">
                 <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
                   <circle cx="100" cy="100" r="90" fill="none" stroke="#374151" strokeWidth="12" />
                   <circle
@@ -562,14 +562,14 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
                 </svg>
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <span
-                    className={`prog-text text-4xl font-bold tabular-nums ${getGradeColor(overallGrade) === '#10B981' ? 'text-green-400' : getGradeColor(overallGrade) === '#F59E0B' ? 'text-yellow-400' : 'text-red-400'}`}
+                    className={`prog-text text-2xl sm:text-3xl lg:text-4xl font-bold tabular-nums ${getGradeColor(overallGrade) === '#10B981' ? 'text-green-400' : getGradeColor(overallGrade) === '#F59E0B' ? 'text-yellow-400' : 'text-red-400'}`}
                     style={{ lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '0.05em' }}
                   >
                     {formatGrade(overallGrade)}
                   </span>
                 </div>
               </div>
-              <p className="text-gray-300 text-base mb-4">
+              <p className="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4">
                 {getStatusMessage(overallScore)}
               </p>
               <button
@@ -579,58 +579,70 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
                     recommendationsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
                   }
                 }}
-             
-
-                className="pdf-report-button bg-accent text-white font-semibold px-4 rounded-lg w-full text-center d-block" style={{height:'48px',lineHeight:'48px'}}
+                className="pdf-report-button bg-accent text-white font-semibold px-4 py-3 sm:py-0 rounded-lg w-full text-center d-block min-h-[48px] flex items-center justify-center"
+                style={{ lineHeight: 1 }}
               >
-            <span className='prog-text' style={{display:'inline-block'}}>   Recommendations: {recommendations.length}</span>  
+                <span className="prog-text">Recommendations: {recommendations.length}</span>
               </button>
             </div>
           </div>
 
-          {/* Right - Website Preview */}
-          <div>
-            <div className=" rounded-lg  p-6 h-full flex flex-col justify-center items-center">
-              <h2 className="text-xl font-bold text-white mb-4 hide-on-pdf">Website Preview</h2>
-              <div className="relative website-preview-frame" style={{width:'28rem',height:'23rem'}}>
+          {/* Right - Website Preview: tablet with phone overlapping bottom-left corner */}
+          <div className="min-w-0">
+            <div className="rounded-lg p-4 sm:p-6 h-full flex flex-col justify-center items-center">
+              <h2 className="text-[20px] sm:text-xl font-bold text-white mb-3 sm:mb-4 hide-on-pdf">Website Preview</h2>
+              <div className="relative w-full max-w-[32rem] mx-auto website-preview-frame overflow-x-auto overflow-y-hidden pb-1 flex justify-center">
+                {/* Tablet/Desktop: landscape frame */}
                 {desktopScreenshot ? (
-                  <div className=" rounded-lg p-4 mb-4 shadow-lg overflow-hidden" data-website-preview-img data-pdf-src={desktopScreenshot} style={{width:'100%',height:'100%'}}>
-                    <div className="bg-slate-300 border-2 border-slate-400 rounded-xl p-2 shadow-2xl relative pdf-device-frame" style={{width:'100%',height:'100%',boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
-                      <div className="relative w-full rounded overflow-hidden bg-gray-100 pdf-device-screen" style={{width:'100%',height:'100%'}}>
+                  <div className="relative flex-shrink-0 w-[200px] sm:w-[280px] lg:w-[360px]" data-website-preview-img data-pdf-src={desktopScreenshot}>
+                    <div className="bg-slate-200 border-2 border-slate-400 rounded-md p-2 sm:p-3 shadow-2xl pdf-device-frame overflow-hidden" style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
+                      <div className="relative w-full aspect-[4/3] rounded overflow-hidden bg-gray-100 pdf-device-screen min-h-0">
                         <Image
                           src={desktopScreenshot}
                           alt="Website desktop preview"
                           fill
-                          className="object-contain object-top"
+                          className="object-cover object-top"
+                          sizes="(max-width: 640px) 200px, (max-width: 1024px) 280px, 360px"
                         />
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="bg-white rounded-lg p-4 mb-4 shadow-lg">
-                    <div className="bg-gray-100 rounded p-4 min-h-[300px] flex items-center justify-center text-gray-400">
-                      Screenshot not available
-                    </div>
-                  </div>
-                )}
-                {mobileScreenshot ? (
-                  <div className="absolute bottom-0 right-0 w-32 rounded-lg p-2 shadow-xl overflow-hidden website-preview-mobile" data-website-preview-img data-pdf-src={mobileScreenshot}>
-                    <div className="bg-slate-300 border-2 border-slate-400 rounded-[2rem] p-2 shadow-2xl relative w-full pdf-device-frame" style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
-                      <div className="relative w-full aspect-[9/16] rounded-[1.6rem] overflow-hidden bg-gray-100 pdf-device-screen">
-                        <Image
-                          src={mobileScreenshot}
-                          alt="Website mobile preview"
-                          fill
-                          className="object-contain object-top"
-                        />
+                    {/* Mobile phone: overlaps bottom-right corner of tablet */}
+                    {mobileScreenshot ? (
+                      <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 w-[80px] sm:w-[100px] lg:w-[120px] z-10 website-preview-mobile" data-website-preview-img data-pdf-src={mobileScreenshot}>
+                        <div className="bg-slate-200 border-2 border-slate-400 rounded-lg p-1.5 sm:p-2 shadow-2xl pdf-device-frame overflow-hidden" style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
+                          <div className="relative w-full aspect-[9/16] rounded-md overflow-hidden bg-gray-100 pdf-device-screen min-h-0">
+                            <Image
+                              src={mobileScreenshot}
+                              alt="Website mobile preview"
+                              fill
+                              className="object-cover object-top"
+                              sizes="(max-width: 640px) 80px, (max-width: 1024px) 100px, 120px"
+                            />
+                          </div>
+                        </div>
                       </div>
-                    </div>
+                    ) : (
+                      <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 w-[80px] sm:w-[100px] z-10 bg-white rounded-lg p-2 shadow-xl border-2 border-gray-300">
+                        <div className="aspect-[9/16] rounded-md bg-gray-100 flex items-center justify-center">
+                          <span className="text-gray-400 text-xs">No preview</span>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ) : (
-                  <div className="absolute bottom-0 right-0 w-32 bg-white rounded-lg p-2 shadow-xl border-2 border-gray-300">
-                    <div className="bg-gray-100 rounded p-2 min-h-[200px] flex items-center justify-center text-gray-400 text-xs">
-                      No preview
+                  <div className="relative flex-shrink-0 w-[200px] sm:w-[280px]">
+                    <div className="aspect-[4/3] bg-white rounded-md p-4 shadow-lg border-2 border-slate-300 flex items-center justify-center">
+                      <span className="text-gray-400 text-sm">Screenshot not available</span>
                     </div>
+                    {mobileScreenshot ? (
+                      <div className="absolute -bottom-2 -right-2 w-[80px] sm:w-[100px] z-10" data-website-preview-img data-pdf-src={mobileScreenshot}>
+                        <div className="bg-slate-200 border-2 border-slate-400 rounded-lg p-2 shadow-2xl">
+                          <div className="relative w-full aspect-[9/16] rounded-md overflow-hidden bg-gray-100">
+                            <Image src={mobileScreenshot} alt="Mobile preview" fill className="object-cover object-top" sizes="100px" />
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
                   </div>
                 )}
               </div>
@@ -639,11 +651,11 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
         </div>
         </div>
         {/* Performance Overview: category scores + radar chart in one line */}
-        <div className="mb-2 bg-primary p-8 rounded-lg mt-2">
-          <h2 className="text-xl font-bold text-white mb-4">Performance Overview</h2>
-          <div className="flex flex-col lg:flex-row items-start gap-4">
-            {/* Left - 4 category score cards in a single row on large screens */}
-            <div className="flex flex-wrap lg:flex-nowrap items-center gap-3 w-full lg:basis-[80%] lg:justify-start perf-cards-row">
+        <div className="mb-2 bg-primary p-4 sm:p-6 lg:p-8 rounded-lg mt-2 overflow-x-hidden">
+          <h2 className="text-[20px] sm:text-xl font-bold text-white mb-3 sm:mb-4">Performance Overview</h2>
+          <div className="flex flex-col lg:flex-row items-start gap-4 min-w-0">
+            {/* Category score cards + radar: wrap on small screens */}
+            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 w-full min-w-0 lg:basis-[80%] perf-cards-row">
               {categories.map((category) => {
                 const score = getScoreFromGrade(category.grade)
                 const gradeStr = formatGrade(category.grade)
@@ -652,7 +664,7 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
                 const catOffset = catCircumference - (score / 100) * catCircumference
 
                 return (
-                  <div key={category.key} className=" rounded-lg border border-gray-800 p-3 w-[120px] flex flex-col items-center justify-center perf-card">
+                  <div key={category.key} className="rounded-lg border border-gray-800 p-2 sm:p-3 min-w-[90px] w-[100px] sm:w-[120px] flex flex-col items-center justify-center perf-card flex-shrink-0">
                     <div className="relative w-20 h-20 mb-3">
                       <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 100 100">
                         <circle cx="50" cy="50" r="40" fill="none" stroke="#374151" strokeWidth="6" />
@@ -686,8 +698,8 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
                   </div>
                 )
               })}
-               <div className="ms-9 rounded-lg  p-2 flex items-center justify-center min-h-[130px] w-full lg:basis-[35%] radar-chart-area" data-radar-chart-area>
-              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="max-w-[200px] max-h-[200px]" xmlns="http://www.w3.org/2000/svg">
+               <div className="mt-4 lg:mt-0 lg:ms-6 rounded-lg p-2 flex items-center justify-center min-h-[130px] w-full max-w-[200px] mx-auto lg:mx-0 lg:basis-[35%] radar-chart-area flex-shrink-0" data-radar-chart-area>
+              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="w-full max-w-[180px] sm:max-w-[200px] max-h-[200px]" xmlns="http://www.w3.org/2000/svg">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <circle
                     key={i}

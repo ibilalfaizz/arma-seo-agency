@@ -44,13 +44,13 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
     width: 150,
   }
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 pdf-new-page">
-      <h2 className="text-3xl font-bold text-white mb-2">Usability</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-4 sm:p-6 md:p-8 mb-2 pdf-new-page overflow-x-hidden">
+      <h2 className="text-[20px] md:text-3xl font-bold text-white mb-2">Usability</h2>
       
       {/* Header Section with Grade */}
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-2">
+      <div className="flex flex-row-reverse md:flex-row items-start md:items-center gap-4 md:gap-8 mb-2">
         {/* Circular Gauge */}
-        <div className="relative w-32 h-32 flex-shrink-0">
+        <div className="relative w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 flex-shrink-0">
           <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
             <circle
               cx="100"
@@ -76,7 +76,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
           {/* Grade Text */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="text-center">
-              <div className={`prog-text text-3xl font-bold ${
+              <div className={`prog-text text-2xl md:text-3xl font-bold ${
                 gradeColor === '#10B981' ? 'text-green-400' : 
                 gradeColor === '#F59E0B' ? 'text-yellow-400' : 
                 'text-red-400'
@@ -89,8 +89,8 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
         
         {/* Title and Description */}
         <div className="flex-1">
-          <h3 className="text-2xl font-bold text-white mb-3">{uiTitle}</h3>
-          <p className="text-gray-300 leading-relaxed">{uiDescription}</p>
+          <h3 className="text-[18px] md:text-2xl font-bold text-white mb-3">{uiTitle}</h3>
+          <p className="text-gray-300 text-sm md:text-base leading-relaxed">{uiDescription}</p>
         </div>
       </div>
 
@@ -98,9 +98,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
       {deviceRendering && deviceRendering.data && (
         <>
           <div  style={{ height: 0, margin: 0, padding: 0, border: 'none', overflow: 'hidden', minHeight: 0 }} aria-hidden="true" />
-          <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4">
-            <h4 className="text-xl font-bold text-white mb-3">Device Rendering</h4>
-          <p className="text-gray-300 mb-2">{deviceRendering.shortAnswer}</p>
+          <div className="bg-primary-dark rounded-lg border border-gray-700 p-4 md:p-6 mb-2 mt-4">
+            <h4 className="text-[16px] md:text-xl font-bold text-white mb-3">Device Rendering</h4>
+          <p className="text-gray-300 text-sm md:text-base mb-2">{deviceRendering.shortAnswer}</p>
           <div className="flex flex-wrap justify-center items-start gap-4 md:gap-6 mt-5">
             {/* Mobile Screenshot - data-pdf-src used by PDF export to load image via proxy */}
             {deviceRendering.data.mobile && (
@@ -148,11 +148,11 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Google's Core Web Vitals */}
       {coreWebVitals && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-2">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-4 md:p-6 mb-2 mt-2">
           <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Google&apos;s Core Web Vitals</h4>
-              <p className="text-gray-300">{coreWebVitals.shortAnswer}</p>
+              <h4 className="text-[16px] md:text-xl font-bold text-white mb-3">Google&apos;s Core Web Vitals</h4>
+              <p className="text-gray-300 text-sm md:text-base">{coreWebVitals.shortAnswer}</p>
             </div>
             {coreWebVitals.passed && (
               <div className="ml-4 flex-shrink-0">
@@ -169,7 +169,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
               {/* Largest Contentful Paint (LCP) */}
               {coreWebVitals.data['largest-contentful-paint'] !== null && coreWebVitals.data['largest-contentful-paint'] !== undefined && (
                 <div className="flex flex-col items-center">
-                  <h5 className="text-lg font-semibold text-white mb-4 w-full text-center">Largest Contentful Paint (LCP)</h5>
+                  <h5 className="text-[14px] md:text-lg font-semibold text-white mb-4 w-full text-center">Largest Contentful Paint (LCP)</h5>
                   <div className="relative  flex flex-col items-center" style={{width:"60%"}}>
                     {/* Gauge Chart - No Needle */}
                     {(() => {
@@ -222,7 +222,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
               {/* Cumulative Layout Shift (CLS) */}
               {coreWebVitals.data['cumulative-layout-shift'] !== null && coreWebVitals.data['cumulative-layout-shift'] !== undefined && (
                 <div className="flex flex-col items-center">
-                  <h5 className="text-lg font-semibold text-white mb-4 w-full text-center">Cumulative Layout Shift (CLS)</h5>
+                  <h5 className="text-[14px] md:text-lg font-semibold text-white mb-4 w-full text-center">Cumulative Layout Shift (CLS)</h5>
                   <div className="relative flex flex-col items-center" style={{width:"60%"}}>
                     {/* Gauge Chart - No Needle */}
                     {(() => {
@@ -278,11 +278,11 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Use of Mobile Viewports */}
       {mobileViewport && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 mt-4 ">
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-4 md:p-6 mb-2 mt-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Use of Mobile Viewports</h4>
-              <p className="text-gray-300">{mobileViewport.shortAnswer}</p>
+              <h4 className="text-[16px] md:text-xl font-bold text-white mb-3">Use of Mobile Viewports</h4>
+              <p className="text-gray-300 text-sm md:text-base">{mobileViewport.shortAnswer}</p>
             </div>
             {mobileViewport.passed ? (
               <div className="flex-shrink-0">
@@ -299,9 +299,9 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
       {/* Google's PageSpeed Insights - Mobile */}
       {mobilePageInsights && mobilePageInsights.data && (
-        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2 pdf-new-page">
-          <h4 className="text-xl font-bold text-white mb-3">Google&apos;s PageSpeed Insights - Mobile</h4>
-          <p className="text-gray-300 mb-4">{mobilePageInsights.shortAnswer}</p>
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-4 md:p-6 mb-2 pdf-new-page">
+          <h4 className="text-[16px] md:text-xl font-bold text-white mb-3">Google&apos;s PageSpeed Insights - Mobile</h4>
+          <p className="text-gray-300 text-sm md:text-base mb-4">{mobilePageInsights.shortAnswer}</p>
           
           {/* Additional descriptive text */}
           <p className="text-gray-400 text-sm mb-4">
@@ -359,7 +359,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                 {/* Lab Data Section */}
                 {mobilePageInsights.data.labdata && mobilePageInsights.data.labdata.length > 0 && (
                   <div className="mb-2 mt-2">
-                    <h5 className="text-lg font-semibold text-white mb-4">LAB DATA</h5>
+                    <h5 className="text-[14px] md:text-lg font-semibold text-white mb-4">LAB DATA</h5>
                     <div className="overflow-x-auto">
                       <table className="w-full">
                         <thead>
@@ -407,7 +407,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                 {/* Opportunities Section */}
                 {mobilePageInsights.data.opportunities && mobilePageInsights.data.opportunities.length > 0 && (
                   <div className='mb-2 mt-2'>
-                    <h5 className="text-lg font-semibold text-white mb-4">OPPORTUNITIES</h5>
+                    <h5 className="text-[14px] md:text-lg font-semibold text-white mb-4">OPPORTUNITIES</h5>
                     <div className="overflow-x-auto">
                       <table className="w-full">
                         <thead>
@@ -439,12 +439,12 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
       {/* Legible Font Sizes + Tap Target Sizing */}
       {(legibleFonts || tapTargetSizing) && (
         <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2">
-          <h4 className="text-xl font-bold text-white mb-4">Legible Font Sizes &amp; Tap Target Sizing</h4>
+          <h4 className="text-[16px] md:text-xl font-bold text-white mb-4">Legible Font Sizes &amp; Tap Target Sizing</h4>
           <div className="space-y-4">
             {legibleFonts && (
               <div className="flex items-start justify-between gap-4">
                 <div className="flex-1">
-                  <h5 className="text-lg font-semibold text-white mb-2">Legible Font Sizes</h5>
+                  <h5 className="text-[14px] md:text-lg font-semibold text-white mb-2">Legible Font Sizes</h5>
                   <p className="text-gray-300">{legibleFonts.shortAnswer}</p>
                 </div>
                 {legibleFonts.passed ? (
@@ -461,7 +461,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
             {tapTargetSizing && (
               <div className={`flex items-start justify-between gap-4 ${legibleFonts ? 'pt-4 border-t border-gray-700' : ''}`}>
                 <div className="flex-1">
-                  <h5 className="text-lg font-semibold text-white mb-2">Tap Target Sizing</h5>
+                  <h5 className="text-[14px] md:text-lg font-semibold text-white mb-2">Tap Target Sizing</h5>
                   <p className="text-gray-300">{tapTargetSizing.shortAnswer}</p>
                 </div>
                 {tapTargetSizing.passed ? (

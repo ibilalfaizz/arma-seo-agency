@@ -37,11 +37,11 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
   const gradeColor = getGradeColor(performanceScore)
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2  mt-4 ">
-      <h2 className="text-3xl font-bold text-white">Performance Results</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-4 sm:p-6 md:p-8 mb-2 mt-4 overflow-x-hidden">
+      <h2 className="text-[20px] md:text-3xl font-bold text-white">Performance Results</h2>
       
       {/* Header Section with Score Gauge */}
-      <div className="flex flex-col md:flex-row items-start md:items-center gap-8 mb-2">
+      <div className="flex flex-row-reverse md:flex-row items-start md:items-center gap-4 md:gap-8 mb-2">
         {/* Circular Gauge */}
         <div className="relative w-20 h-20 flex-shrink-0">
           <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
@@ -82,8 +82,8 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
         
         {/* Title and Description */}
         <div className="flex-1">
-          <h3 className="text-2xl font-bold text-white mb-3">{performanceTitle}</h3>
-          <p className="text-gray-300 leading-relaxed">{performanceDescription}</p>
+          <h3 className="text-[18px] md:text-2xl font-bold text-white mb-3">{performanceTitle}</h3>
+          <p className="text-gray-300 text-sm md:text-base leading-relaxed">{performanceDescription}</p>
         </div>
       </div>
 
@@ -95,8 +95,8 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
         <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 md:p-8 mb-2 overflow-visible ">
           <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Website Load Speed</h4>
-              <p className="text-gray-300">{serverResponseTime.shortAnswer}</p>
+              <h4 className="text-[16px] md:text-xl font-bold text-white mb-3">Website Load Speed</h4>
+              <p className="text-gray-300 text-sm md:text-base">{serverResponseTime.shortAnswer}</p>
             </div>
             {serverResponseTime.passed && (
               <div className="ml-4 flex-shrink-0">
@@ -237,8 +237,8 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
         <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h4 className="text-xl font-bold text-white mb-3">Optimize Images</h4>
-              <p className="text-gray-300">{optimizedImages.shortAnswer}</p>
+              <h4 className="text-[16px] md:text-xl font-bold text-white mb-3">Optimize Images</h4>
+              <p className="text-gray-300 text-sm md:text-base">{optimizedImages.shortAnswer}</p>
             </div>
             {optimizedImages.passed && (
               <div className="ml-4 flex-shrink-0">

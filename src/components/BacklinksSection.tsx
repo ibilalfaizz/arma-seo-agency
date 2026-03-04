@@ -40,14 +40,14 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
   const referringDomains = blData?.referring_domains != null ? Number(blData.referring_domains) : null
 
   return (
-    <div className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 pdf-new-page">
-      <h2 className="text-3xl font-bold text-white mb-2">Backlinks Summary and Top backlinks</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-4 sm:p-6 md:p-8 mb-2 pdf-new-page overflow-x-hidden">
+      <h2 className="text-[20px] md:text-3xl font-bold text-white mb-2">Backlinks Summary and Top backlinks</h2>
 
       {/* Backlink Summary */}
       {hasBacklinksSummary && (
         <>
-          <h3 className="text-xl font-bold text-white mb-4">Backlink Summary</h3>
-          <p className="text-gray-300 mb-2">{backlinks.shortAnswer}</p>
+          <h3 className="text-[18px] md:text-xl font-bold text-white mb-4">Backlink Summary</h3>
+          <p className="text-gray-300 text-sm md:text-base mb-2">{backlinks.shortAnswer}</p>
 
           {/* All four metrics in one row */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-2">
@@ -123,18 +123,19 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
 
       {/* Top Backlinks list */}
       {hasTopBacklinks && (
-        <div className="mt-8 pt-8 border-t border-gray-700 ">
-          <h3 className="text-xl font-bold text-white mb-2">Top backlinks</h3>
+        <div className="mt-6 md:mt-8 pt-6 md:pt-8 border-t border-gray-700">
+          <h3 className="text-[18px] md:text-xl font-bold text-white mb-2">Top backlinks</h3>
           {backlinksList.shortAnswer && (
             <p className="text-gray-300 text-sm mb-4">{backlinksList.shortAnswer}</p>
           )}
-          <div className="overflow-x-auto">
-            <table className="w-full">
+
+          <div className="overflow-x-auto -mx-1 px-1">
+            <table className="w-full min-w-[500px]">
               <thead>
                 <tr className="border-b border-gray-700">
-                  <th className="text-left py-3 px-4 text-gray-300 font-semibold">Source</th>
-                  <th className="text-left py-3 px-4 text-gray-300 font-semibold">Anchor text</th>
-                  <th className="text-left py-3 px-4 text-gray-300 font-semibold">Domain strength</th>
+                  <th className="text-left py-3 px-4 text-gray-300 font-semibold whitespace-nowrap">Source</th>
+                  <th className="text-left py-3 px-4 text-gray-300 font-semibold whitespace-nowrap">Anchor text</th>
+                  <th className="text-left py-3 px-4 text-gray-300 font-semibold whitespace-nowrap">Domain strength</th>
                 </tr>
               </thead>
               <tbody>
@@ -147,13 +148,13 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
                           href={item.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-accent hover:underline break-all"
+                          className="text-accent hover:underline break-words"
                         >
                           {item.title || item.url || '—'}
                         </a>
                       </td>
-                      <td className="py-3 px-4 text-white">{item.anchor_text ?? '—'}</td>
-                      <td className="py-3 px-4 text-gray-300">
+                      <td className="py-3 px-4 text-white break-words">{item.anchor_text ?? '—'}</td>
+                      <td className="py-3 px-4 text-gray-300 whitespace-nowrap">
                         {item.domain_strength != null ? item.domain_strength : '—'}
                       </td>
                     </tr>

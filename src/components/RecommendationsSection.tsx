@@ -40,10 +40,33 @@ export default function RecommendationsSection({ recommendations }: Recommendati
   }
 
   return (
-    <div id="recommendations-section" className="bg-primary rounded-lg border border-gray-800 p-8 mb-2 scroll-mt-20  mt-3">
-      <h2 className="text-3xl font-bold text-white mb-2">Recommendations</h2>
-      
-      <div className="overflow-x-auto">
+    <div id="recommendations-section" className="bg-primary rounded-lg border border-gray-800 p-4 sm:p-6 md:p-8 mb-2 scroll-mt-20 mt-3 overflow-x-hidden">
+      <h2 className="text-[20px] md:text-3xl font-bold text-white mb-4">Recommendations</h2>
+
+      {/* Mobile: card layout */}
+      <div className="md:hidden space-y-4">
+        {recommendations.map((rec, index) => (
+          <div
+            key={index}
+            className="rounded-lg border border-gray-700 p-4 space-y-3"
+          >
+            <p className="text-white text-sm leading-snug">{rec.recommendation}</p>
+            <div className="flex flex-wrap items-center gap-2">
+              <span className={`text-sm font-medium ${getCategoryColor(rec.category)}`}>
+                {rec.category}
+              </span>
+              <span
+                className={`priority-badge inline-flex items-center px-3 py-1 rounded text-xs font-semibold ${getPriorityColor(rec.priority)}`}
+              >
+                {rec.priority.charAt(0).toUpperCase() + rec.priority.slice(1)} Priority
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop: table */}
+      <div className="hidden md:block overflow-x-auto">
         <table className="w-full table-fixed">
           <thead>
             <tr className="border-b border-gray-700">

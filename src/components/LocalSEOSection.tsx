@@ -23,37 +23,37 @@ export default function LocalSEOSection({ data }: LocalSEOSectionProps) {
   const totalReviews = getTotalReviews()
 
   return (
-    <div className=" bg-primary rounded-lg border border-gray-800 p-8 mb-2  pdf-report-last " >
-      <h2 className="text-3xl font-bold text-white mb-2">Local SEO</h2>
+    <div className="bg-primary rounded-lg border border-gray-800 p-4 sm:p-6 md:p-8 mb-2 pdf-report-last overflow-x-hidden">
+      <h2 className="text-[20px] md:text-3xl font-bold text-white mb-2">Local SEO</h2>
 
       {/* Google Business Profile Completeness + Google Reviews */}
       {(gbpCompleteness || gbpReviews) && (
-        <div className="bg-primary-dark rounded-lg border border-gray-700 p-6 mb-2">
-          <h4 className="text-xl font-bold text-white mb-4">Google Business Profile</h4>
+        <div className="bg-primary-dark rounded-lg border border-gray-700 p-4 sm:p-6 mb-2">
+          <h4 className="text-[16px] md:text-xl font-bold text-white mb-4">Google Business Profile</h4>
           <div className="space-y-6">
             {gbpCompleteness && (
               <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <h5 className="text-lg font-semibold text-white mb-2">Completeness</h5>
-                  <p className="text-gray-300">{gbpCompleteness.shortAnswer}</p>
+                <div className="flex-1 min-w-0">
+                  <h5 className="text-[14px] md:text-lg font-semibold text-white mb-2">Completeness</h5>
+                  <p className="text-gray-300 text-sm sm:text-base">{gbpCompleteness.shortAnswer}</p>
                   {gbpCompleteness.data && (
                     <div className="mt-4 space-y-3">
                       {gbpCompleteness.data.gbpSite && (
-                        <div className="flex">
-                          <span className="text-gray-400 font-medium w-24 flex-shrink-0">Address:</span>
-                          <span className="text-white">{gbpCompleteness.data.gbpSite}</span>
+                        <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
+                          <span className="text-gray-400 font-medium flex-shrink-0 sm:w-24">Address:</span>
+                          <span className="text-white text-sm sm:text-base break-words min-w-0">{gbpCompleteness.data.gbpSite}</span>
                         </div>
                       )}
                       {gbpCompleteness.data.gbpPhone && (
-                        <div className="flex">
-                          <span className="text-gray-400 font-medium w-24 flex-shrink-0">Phone:</span>
-                          <span className="text-white">{gbpCompleteness.data.gbpPhone}</span>
+                        <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
+                          <span className="text-gray-400 font-medium flex-shrink-0 sm:w-24">Phone:</span>
+                          <span className="text-white text-sm sm:text-base break-words">{gbpCompleteness.data.gbpPhone}</span>
                         </div>
                       )}
                       {gbpCompleteness.data.gbpUrl && (
-                        <div className="flex">
-                          <span className="text-gray-400 font-medium w-24 flex-shrink-0">Site:</span>
-                          <a href={gbpCompleteness.data.gbpUrl} target="_blank" rel="noopener noreferrer" className="text-accent hover:text-accent-light">
+                        <div className="flex flex-col sm:flex-row sm:items-start gap-1 sm:gap-2">
+                          <span className="text-gray-400 font-medium flex-shrink-0 sm:w-24">Site:</span>
+                          <a href={gbpCompleteness.data.gbpUrl} target="_blank" rel="noopener noreferrer" className="text-accent hover:text-accent-light text-sm sm:text-base break-words min-w-0">
                             {gbpCompleteness.data.gbpUrl}
                           </a>
                         </div>
@@ -73,9 +73,9 @@ export default function LocalSEOSection({ data }: LocalSEOSectionProps) {
             {gbpReviews && (
               <div className={gbpCompleteness ? 'pt-6 border-t border-gray-700' : ''}>
                 <div className="flex items-start justify-between gap-4 mb-4">
-                  <div className="flex-1">
-                    <h5 className="text-lg font-semibold text-white mb-2">Reviews</h5>
-                    <p className="text-gray-300">{gbpReviews.shortAnswer}</p>
+                  <div className="flex-1 min-w-0">
+                    <h5 className="text-[14px] md:text-lg font-semibold text-white mb-2">Reviews</h5>
+                    <p className="text-gray-300 text-sm sm:text-base">{gbpReviews.shortAnswer}</p>
                   </div>
                   {gbpReviews.passed && (
                     <div className="flex-shrink-0">
@@ -89,8 +89,8 @@ export default function LocalSEOSection({ data }: LocalSEOSectionProps) {
                 {/* Rating Display */}
                 {gbpReviews.data && (
                   <div className="mt-2">
-                    <div className="flex items-center gap-3 mb-2">
-                      <span className="text-3xl font-bold text-white">{gbpReviews.data.reviewScore}</span>
+                    <div className="flex items-center gap-3 mb-2 flex-wrap">
+                      <span className="text-2xl sm:text-3xl font-bold text-white">{gbpReviews.data.reviewScore}</span>
                       <div className="flex items-center gap-1">
                         {[1, 2, 3, 4, 5].map((star) => (
                           <svg
