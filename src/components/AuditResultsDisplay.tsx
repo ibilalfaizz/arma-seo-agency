@@ -597,10 +597,10 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
                   <div className="relative flex-shrink-0 w-[200px] sm:w-[280px] lg:w-[360px]" data-website-preview-img data-pdf-src={desktopScreenshot}>
                     <div className="bg-slate-200 border-2 border-slate-400 rounded-md p-2 sm:p-3 shadow-2xl pdf-device-frame overflow-hidden" style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
                       <div className="relative w-full aspect-[4/3] rounded overflow-hidden bg-gray-100 pdf-device-screen min-h-0">
-                        <Image
+                        <img
                           src={desktopScreenshot}
                           alt="Website desktop preview"
-                          fill
+                          
                           className="object-cover object-top"
                           sizes="(max-width: 640px) 200px, (max-width: 1024px) 280px, 360px"
                         />
@@ -611,10 +611,10 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
                       <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 w-[80px] sm:w-[100px] lg:w-[120px] z-10 website-preview-mobile" data-website-preview-img data-pdf-src={mobileScreenshot}>
                         <div className="bg-slate-200 border-2 border-slate-400 rounded-lg p-1.5 sm:p-2 shadow-2xl pdf-device-frame overflow-hidden" style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
                           <div className="relative w-full aspect-[9/16] rounded-md overflow-hidden bg-gray-100 pdf-device-screen min-h-0">
-                            <Image
+                            <img
                               src={mobileScreenshot}
                               alt="Website mobile preview"
-                              fill
+                              
                               className="object-cover object-top"
                               sizes="(max-width: 640px) 80px, (max-width: 1024px) 100px, 120px"
                             />
