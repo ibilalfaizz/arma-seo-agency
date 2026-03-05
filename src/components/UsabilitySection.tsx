@@ -165,7 +165,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
 
           {/* Core Web Vitals Gauges */}
           {coreWebVitals.data && (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6 core-web-vitals-grid">
               {/* Largest Contentful Paint (LCP) */}
               {coreWebVitals.data['largest-contentful-paint'] !== null && coreWebVitals.data['largest-contentful-paint'] !== undefined && (
                 <div className="flex flex-col items-center">
@@ -351,11 +351,11 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
                         {mobilePageInsights.data.score}
                       </div>
                     </div>
-                  </div>
-                </div>
               </div>
+              </div>
+            </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lab-opps-grid">
                 {/* Lab Data Section */}
                 {mobilePageInsights.data.labdata && mobilePageInsights.data.labdata.length > 0 && (
                   <div className="mb-2 mt-2">

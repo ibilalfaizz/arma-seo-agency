@@ -17,7 +17,7 @@ interface AuditResultsDisplayProps {
 
 export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) {
   const [pdfDownloading, setPdfDownloading] = useState(false)
-  
+
   // Extract data
   const scores = (data as any).scores || {}
   const recommendations = (data as any).recommendations || []
@@ -36,10 +36,10 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
 
   const getGradeColor = (grade: string | number | undefined): string => {
     if (grade === undefined || grade === null || grade === '') return '#6B7280'
-    
+
     // Use numeric score directly to determine color
     const score = typeof grade === 'number' ? grade : 0
-    
+
     if (score >= 80) return '#10B981' // green
     if (score >= 60) return '#F59E0B' // yellow
     return '#EF4444' // red
@@ -114,12 +114,12 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
 
   const dataPolygonPoints = categories.length > 0
     ? categories
-        .map((cat, i) => {
-          const score = getScoreFromGrade(cat.grade)
-          const p = getRadarPoint(i, score / 100)
-          return `${p.x},${p.y}`
-        })
-        .join(' ')
+      .map((cat, i) => {
+        const score = getScoreFromGrade(cat.grade)
+        const p = getRadarPoint(i, score / 100)
+        return `${p.x},${p.y}`
+      })
+      .join(' ')
     : ''
 
   // Calculate circular progress
@@ -138,7 +138,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
       clone.querySelectorAll('[data-pdf-exclude]').forEach((el) => el.remove())
 
       const pdfStyle = document.createElement('style')
-pdfStyle.innerHTML = `
+      pdfStyle.innerHTML = `
   .pdf-export {
     overflow: hidden !important;
     scrollbar-width: none !important;
@@ -216,31 +216,36 @@ pdfStyle.innerHTML = `
   .pdf-export .mb-6 { margin-bottom: 10px !important; }
   .pdf-export .mt-6 { margin-top: 10px !important; }
 
-  .pdf-export svg[data-radar-chart] {
-    width: 80px !important;
-    height: 80px !important;
-    max-width: 80px !important;
-    max-height: 80px !important;
+ .pdf-export svg[data-radar-chart] {
+  width: 150px !important;
+  height: 150px !important;
+  max-width: 150px !important;
+  max-height: 150px !important;
+}
+  .pdf-export [data-radar-chart-area] {
+    min-height: 50px !important;
   }
   .pdf-export [data-radar-chart-area] {
-    min-height: 80px !important;
-  }
-      .pdf-export [data-radar-chart-area] {
-    width: 80px !important;
-    height: 80px !important;
+    width: 30px !important;
+    height: 30px !important;
     min-height: 0 !important;
     padding: 0 !important;
+    margin-left: 0.5rem !important;
+  }
+  @media (max-width: 768px) {
+    .pdf-export [data-radar-chart-area] {
+      margin-left: 6.5rem !important;
+    }
   }
   .pdf-export .report-top-grid {
     grid-template-columns: 2fr 3fr !important;
   }
   .pdf-export .website-preview-frame {
-    width: 20rem !important;
-    height: 16rem !important;
+    width: 25rem !important;
+    height: 18rem !important;
   }
   .pdf-export .website-preview-mobile {
-    bottom: -36px !important;
-    right: -54px !important;
+    position: absolute;
   }
   .pdf-export svg[data-radar-chart] text {
     font-size: 9px !important;
@@ -255,19 +260,62 @@ pdfStyle.innerHTML = `
   .pdf-export .perf-card {
     padding: 0 !important;
   }
-  .pdf-export .perf-cards-row {
-    gap: 0.5rem !important;
+
+
+  /* Keep Performance Overview gauges + radar on one line in PDF */
+  .pdf-export .perf-overview-layout {
+    flex-direction: row !important;
+    align-items: flex-start !important;
+    justify-content: flex-start !important;
+  }
+
+  /* Use desktop recommendations table in PDF regardless of viewport */
+  .pdf-export .recs-table-wrapper {
+    display: block !important;
+    overflow-x: visible !important;
+  }
+  .pdf-export .recs-table {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+  }
+
+  /* Force Backlink Summary four boxes into a single row in PDF */
+  .pdf-export .backlinks-summary-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    column-gap: 0.75rem !important;
+  }
+
+  /* Force Core Web Vitals gauges into one row (two columns) in PDF */
+  .pdf-export .core-web-vitals-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 0.75rem !important;
+    row-gap: 0.75rem !important;
+  }
+
+  /* Force Website Load Speed gauges into one row (three columns) in PDF */
+  .pdf-export .website-load-speed-gauges {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    column-gap: 0.75rem !important;
+    row-gap: 0.75rem !important;
+  }
+
+  /* Force Lab Data and Opportunities tables into one row (two columns) in PDF */
+  .pdf-export .lab-opps-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    column-gap: 0.75rem !important;
+    row-gap: 0.75rem !important;
   }
 `
-clone.prepend(pdfStyle)
+      clone.prepend(pdfStyle)
 
       // Force radar SVG size in PDF export (html2canvas ignores some CSS)
-      // clone.querySelectorAll('svg[data-radar-chart]').forEach((svg) => {
-      //   svg.setAttribute('width', '80')
-      //   svg.setAttribute('height', '80')
-      //   ;(svg as HTMLElement).style.width = '80px'
-      //   ;(svg as HTMLElement).style.height = '80px'
-      // })
+      clone.querySelectorAll('svg[data-radar-chart]').forEach((svg) => {
+        svg.setAttribute('width', '80')
+        svg.setAttribute('height', '80')
+          ; (svg as HTMLElement).style.width = '80px'
+          ; (svg as HTMLElement).style.height = '80px'
+      })
 
       // Website Preview: load desktop/mobile screenshots via proxy so they render in PDF
       const websitePreviewContainers = clone.querySelectorAll('[data-website-preview-img][data-pdf-src]')
@@ -311,15 +359,15 @@ clone.prepend(pdfStyle)
           img.src = dataUrl
           img.alt = 'Performance radar chart'
           img.style.width = '100%'
-          img.style.maxWidth = '180px'
+          img.style.maxWidth = '80px'
           img.style.height = 'auto'
           // cloneRadarSvg.parentNode?.replaceChild(img, cloneRadarSvg)
           // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuditResultsDisplay.tsx:afterRadarReplace',message:'Radar replaced with img',data:{replaced:true,dataUrlLen:dataUrl?.length},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H2'})}).catch(()=>{});
+          fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'AuditResultsDisplay.tsx:afterRadarReplace', message: 'Radar replaced with img', data: { replaced: true, dataUrlLen: dataUrl?.length }, timestamp: Date.now(), sessionId: 'debug-session', hypothesisId: 'H2' }) }).catch(() => { });
           // #endregion
         } catch (e) {
           // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuditResultsDisplay.tsx:radarReplaceCatch',message:'Radar replace failed',data:{err:String(e)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H2'})}).catch(()=>{});
+          fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'AuditResultsDisplay.tsx:radarReplaceCatch', message: 'Radar replace failed', data: { err: String(e) }, timestamp: Date.now(), sessionId: 'debug-session', hypothesisId: 'H2' }) }).catch(() => { });
           // #endregion
           // Keep SVG if conversion fails
         }
@@ -407,13 +455,13 @@ clone.prepend(pdfStyle)
         })
       )
 
-    
+
       const radarArea = clone.querySelector('[data-radar-chart-area]')
       const imgsInRadarArea = radarArea?.querySelectorAll('img')?.length ?? 0
       const websitePreviewContainersFinal = clone.querySelectorAll('[data-website-preview-img]').length
       const allImgs = clone.querySelectorAll('img')
       const imgSources = Array.from(allImgs).slice(0, 8).map((i) => ({ src: (i.getAttribute('src') || '').substring(0, 50), alt: i.alt, inRadar: !!i.closest('[data-radar-chart-area]'), inWebsitePreview: !!i.closest('[data-website-preview-img]') }))
-      fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'AuditResultsDisplay.tsx:beforeHtml2pdf',message:'Clone state before html2pdf',data:{imgsInRadarArea,websitePreviewContainersFinal,totalImgs:allImgs.length,imgSources},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H3,H4,H5'})}).catch(()=>{});
+      fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'AuditResultsDisplay.tsx:beforeHtml2pdf', message: 'Clone state before html2pdf', data: { imgsInRadarArea, websitePreviewContainersFinal, totalImgs: allImgs.length, imgSources }, timestamp: Date.now(), sessionId: 'debug-session', hypothesisId: 'H3,H4,H5' }) }).catch(() => { });
       // #endregion
 
       // Force darker background and no white margin; mark clone for PDF-specific CSS
@@ -449,45 +497,45 @@ clone.prepend(pdfStyle)
       let canvasRef: HTMLCanvasElement | null = null
 
       await html2pdf()
-      .set(opts)
-      .from(clone)
-      .toPdf()
-      .get('pdf')
-      .then((pdf: any) => {
-        
-// Add a red background on the last page only
-const totalPages = pdf.internal.getNumberOfPages()
-for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
-  pdf.setPage(pageIndex)
+        .set(opts)
+        .from(clone)
+        .toPdf()
+        .get('pdf')
+        .then((pdf: any) => {
 
-  const page = pdf.internal.pages[pageIndex] || pdf.internal.pages[pageIndex - 1]
-  if (!page) continue
+          // Add a red background on the last page only
+          const totalPages = pdf.internal.getNumberOfPages()
+          for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
+            pdf.setPage(pageIndex)
 
-  const w = typeof pdf.internal.pageSize.getWidth === 'function'
-    ? pdf.internal.pageSize.getWidth()
-    : pdf.internal.pageSize.width
-  const h = typeof pdf.internal.pageSize.getHeight === 'function'
-    ? pdf.internal.pageSize.getHeight()
-    : pdf.internal.pageSize.height
-  const scale = typeof pdf.internal.scaleFactor === 'number' ? pdf.internal.scaleFactor : 1
-  const wPts = w * scale
-  const hPts = h * scale
-  const darkBgCmd = `q\n` +
-    `-2 -2 ${wPts + 4} ${hPts + 4} re\n` +
-    `0.051 0.051 0.051 rg\n` + // #0d0d0d
-    `f\n` +
-    `Q\n`
-  if (Array.isArray(page)) {
-    page.unshift(darkBgCmd)
-  } else if (Array.isArray(page.content)) {
-    page.content.unshift(darkBgCmd)
-  } else if (typeof page.content === 'string') {
-    page.content = darkBgCmd + page.content
-  }
-}
+            const page = pdf.internal.pages[pageIndex] || pdf.internal.pages[pageIndex - 1]
+            if (!page) continue
+
+            const w = typeof pdf.internal.pageSize.getWidth === 'function'
+              ? pdf.internal.pageSize.getWidth()
+              : pdf.internal.pageSize.width
+            const h = typeof pdf.internal.pageSize.getHeight === 'function'
+              ? pdf.internal.pageSize.getHeight()
+              : pdf.internal.pageSize.height
+            const scale = typeof pdf.internal.scaleFactor === 'number' ? pdf.internal.scaleFactor : 1
+            const wPts = w * scale
+            const hPts = h * scale
+            const darkBgCmd = `q\n` +
+              `-2 -2 ${wPts + 4} ${hPts + 4} re\n` +
+              `0.051 0.051 0.051 rg\n` + // #0d0d0d
+              `f\n` +
+              `Q\n`
+            if (Array.isArray(page)) {
+              page.unshift(darkBgCmd)
+            } else if (Array.isArray(page.content)) {
+              page.content.unshift(darkBgCmd)
+            } else if (typeof page.content === 'string') {
+              page.content = darkBgCmd + page.content
+            }
+          }
           pdf.save('SEO-Report.pdf')
         })
-    
+
     } catch (err) {
       console.error('PDF download error:', err)
     } finally {
@@ -496,166 +544,171 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
   }
 
   return (
-    <div className="pdf-avoid-break report-root rounded-lg overflow-x-hidden">
-      <div className="container mx-auto max-w-7xl px-3 sm:px-4">
+    <div className="pdf-avoid-break report-root rounded-lg overflow-x-hidden ">
+      <div className="container mx-auto max-w-7xl ">
         {/* Header with Explanatory Text */}
         <div className="bg-primary p-4 sm:p-6 lg:p-8 rounded-lg">
-        <div className="mb-2">
-          <h1 className="text-[20px] sm:text-3xl md:text-4xl font-bold text-white mb-3 md:mb-4">
-            Website Report for <span className="text-accent break-all">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
-          </h1>
-          <p className="text-gray-300 text-sm sm:text-base leading-relaxed max-w-4xl mb-2">
-            This report grades your website on the strength of a range of important factors such as on-page SEO optimization, off-page backlinks, social, performance, security and more. The overall grade is on a A+ to F- scale, with most major industry leading websites in the A range. Improving a website&apos;s grade is recommended to ensure a better website experience for your users and improved ranking and visibility by search engines.
-          </p>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
-            <h2 className="text-[20px] sm:text-2xl md:text-3xl font-bold text-white">
-              Audit Results for <span className="text-accent break-all">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
-            </h2>
-            <button
-              type="button"
-              data-pdf-exclude
-              onClick={handlePdfDownload}
-              disabled={pdfDownloading}
-              className="bg-accent hover:bg-accent-dark disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
-            >
-              {pdfDownloading ? (
-                <>
-                  <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                  </svg>
-                  Downloading...
-                </>
-              ) : (
-                <>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Download PDF Report
-                </>
-              )}
-            </button>
-          </div>
-        </div>
-       
-        {/* Main Content Grid - Score card (40%) + Website Preview (60%) */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-2 report-top-grid">
-          {/* Left - Score card with circular gauge and recommendations */}
-          <div className="flex items-center h-full min-w-0">
-            <div className="rounded-lg p-4 sm:p-6 lg:p-8 text-center w-full min-w-0">
-              {/* Circular Progress */}
-              <div className="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 mx-auto mb-4">
-                <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
-                  <circle cx="100" cy="100" r="90" fill="none" stroke="#374151" strokeWidth="12" />
-                  <circle
-                    cx="100"
-                    cy="100"
-                    r="90"
-                    fill="none"
-                    stroke={getGradeColor(overallGrade)}
-                    strokeWidth="12"
-                    strokeDasharray={circumference}
-                    strokeDashoffset={offset}
-                    strokeLinecap="round"
-                    className="transition-all duration-1000"
-                  />
-                </svg>
-                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                  <span
-                    className={`prog-text text-2xl sm:text-3xl lg:text-4xl font-bold tabular-nums ${getGradeColor(overallGrade) === '#10B981' ? 'text-green-400' : getGradeColor(overallGrade) === '#F59E0B' ? 'text-yellow-400' : 'text-red-400'}`}
-                    style={{ lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '0.05em' }}
-                  >
-                    {formatGrade(overallGrade)}
-                  </span>
-                </div>
-              </div>
-              <p className="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4">
-                {getStatusMessage(overallScore)}
-              </p>
+          <div className="mb-2">
+            <h1 className="text-[20px] sm:text-3xl md:text-4xl font-bold text-white mb-3 md:mb-4">
+              Website Report for <span className="text-accent break-all">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+            </h1>
+            <p className="text-gray-300 text-sm sm:text-base leading-relaxed max-w-4xl mb-2">
+              This report grades your website on the strength of a range of important factors such as on-page SEO optimization, off-page backlinks, social, performance, security and more. The overall grade is on a A+ to F- scale, with most major industry leading websites in the A range. Improving a website&apos;s grade is recommended to ensure a better website experience for your users and improved ranking and visibility by search engines.
+            </p>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4">
+              <h2 className="text-[20px] sm:text-2xl md:text-3xl font-bold text-white">
+                Audit Results for <span className="text-accent break-all">{url.replace(/^https?:\/\//, '').replace(/\/$/, '')}</span>
+              </h2>
               <button
-                onClick={() => {
-                  const recommendationsSection = document.getElementById('recommendations-section')
-                  if (recommendationsSection) {
-                    recommendationsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                  }
-                }}
-                className="pdf-report-button bg-accent text-white font-semibold px-4 py-3 sm:py-0 rounded-lg w-full text-center d-block min-h-[48px] flex items-center justify-center"
-                style={{ lineHeight: 1 }}
+                type="button"
+                data-pdf-exclude
+                onClick={handlePdfDownload}
+                disabled={pdfDownloading}
+                className="bg-accent hover:bg-accent-dark disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
               >
-                <span className="prog-text">Recommendations: {recommendations.length}</span>
+                {pdfDownloading ? (
+                  <>
+                    <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    </svg>
+                    Downloading...
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Download PDF Report
+                  </>
+                )}
               </button>
             </div>
           </div>
 
-          {/* Right - Website Preview: tablet with phone overlapping bottom-left corner */}
-          <div className="min-w-0">
-            <div className="rounded-lg p-4 sm:p-6 h-full flex flex-col justify-center items-center">
-              <h2 className="text-[20px] sm:text-xl font-bold text-white mb-3 sm:mb-4 hide-on-pdf">Website Preview</h2>
-              <div className="relative w-full max-w-[32rem] mx-auto website-preview-frame overflow-x-auto overflow-y-hidden pb-1 flex justify-center">
-                {/* Tablet/Desktop: landscape frame */}
-                {desktopScreenshot ? (
-                  <div className="relative flex-shrink-0 w-[200px] sm:w-[280px] lg:w-[360px]" data-website-preview-img data-pdf-src={desktopScreenshot}>
-                    <div className="bg-slate-200 border-2 border-slate-400 rounded-md p-2 sm:p-3 shadow-2xl pdf-device-frame overflow-hidden" style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
-                      <div className="relative w-full aspect-[4/3] rounded overflow-hidden bg-gray-100 pdf-device-screen min-h-0">
-                        <img
-                          src={desktopScreenshot}
-                          alt="Website desktop preview"
-                          
-                          className="object-cover object-top"
-                          sizes="(max-width: 640px) 200px, (max-width: 1024px) 280px, 360px"
-                        />
+          {/* Main Content Grid - Score card (40%) + Website Preview (60%) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-2 report-top-grid">
+            {/* Left - Score card with circular gauge and recommendations */}
+            <div className="flex items-center h-full min-w-0">
+              <div className="rounded-lg p-4 sm:p-6 lg:p-8 text-center w-full min-w-0">
+                {/* Circular Progress */}
+                <div className="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 mx-auto mb-4">
+                  <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r="90" fill="none" stroke="#374151" strokeWidth="12" />
+                    <circle
+                      cx="100"
+                      cy="100"
+                      r="90"
+                      fill="none"
+                      stroke={getGradeColor(overallGrade)}
+                      strokeWidth="12"
+                      strokeDasharray={circumference}
+                      strokeDashoffset={offset}
+                      strokeLinecap="round"
+                      className="transition-all duration-1000"
+                    />
+                  </svg>
+                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                    <span
+                      className={`prog-text text-2xl sm:text-3xl lg:text-4xl font-bold tabular-nums ${getGradeColor(overallGrade) === '#10B981' ? 'text-green-400' : getGradeColor(overallGrade) === '#F59E0B' ? 'text-yellow-400' : 'text-red-400'}`}
+                      style={{ lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '0.05em' }}
+                    >
+                      {formatGrade(overallGrade)}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm sm:text-base mb-3 sm:mb-4">
+                  {getStatusMessage(overallScore)}
+                </p>
+                <button
+                  onClick={() => {
+                    const recommendationsSection = document.getElementById('recommendations-section')
+                    if (recommendationsSection) {
+                      recommendationsSection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    }
+                  }}
+                  className="pdf-report-button bg-accent text-white font-semibold px-4 py-3 sm:py-0 rounded-lg w-full text-center d-block min-h-[48px] flex items-center justify-center"
+                  style={{ lineHeight: 1 }}
+                >
+                  <span className="prog-text">Recommendations: {recommendations.length}</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Right - Website Preview: tablet with phone overlapping bottom-left corner */}
+            <div className="min-w-0">
+              <div className="rounded-lg p-4 sm:p-6 h-full flex flex-col justify-center items-center">
+                <h2 className="text-[20px] sm:text-xl font-bold text-white mb-3 sm:mb-4 hide-on-pdf">Website Preview</h2>
+                <div className="relative w-full max-w-[32rem] mx-auto website-preview-frame overflow-x-auto overflow-y-hidden pb-1 flex justify-center">
+                  {/* Tablet/Desktop: landscape frame */}
+                  {desktopScreenshot ? (
+                    <div className="relative flex-shrink-0 w-[200px] sm:w-[280px] lg:w-[360px]" data-website-preview-img data-pdf-src={desktopScreenshot}>
+                      <div className="bg-slate-200 border-2 border-slate-400 rounded-md p-2 sm:p-3 shadow-2xl pdf-device-frame overflow-hidden" style={{ boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }}>
+                        <div className="relative w-full aspect-[4/3] rounded overflow-hidden bg-gray-100 pdf-device-screen min-h-0">
+                          <img
+                            src={desktopScreenshot}
+                            alt="Website desktop preview"
+
+                            className="object-cover object-top"
+                            sizes="(max-width: 640px) 200px, (max-width: 1024px) 280px, 360px"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    {/* Mobile phone: overlaps bottom-right corner of tablet */}
-                    {mobileScreenshot ? (
-                      <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 w-[80px] sm:w-[100px] lg:w-[120px] z-10 website-preview-mobile" data-website-preview-img data-pdf-src={mobileScreenshot}>
-                        <div className="bg-slate-200 border-2 border-slate-400 rounded-lg p-1.5 sm:p-2 shadow-2xl pdf-device-frame overflow-hidden" style={{boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'}}>
-                          <div className="relative w-full aspect-[9/16] rounded-md overflow-hidden bg-gray-100 pdf-device-screen min-h-0">
-                            <img
-                              src={mobileScreenshot}
-                              alt="Website mobile preview"
-                              
-                              className="object-cover object-top"
-                              sizes="(max-width: 640px) 80px, (max-width: 1024px) 100px, 120px"
-                            />
+                      {/* Mobile phone: overlaps bottom-right corner of tablet */}
+                      {mobileScreenshot ? (
+                        <div
+                          className="absolute w-[80px] sm:w-[100px] lg:w-[120px] z-10 website-preview-mobile"
+                          style={{ bottom: '8%', right: '-4%' }}
+                          data-website-preview-img
+                          data-pdf-src={mobileScreenshot}
+                        >
+                          <div className="bg-slate-200 border-2 border-slate-400 rounded-lg p-1.5 sm:p-2 shadow-2xl pdf-device-frame overflow-hidden" style={{ boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }}>
+                            <div className="relative w-full aspect-[9/16] rounded-md overflow-hidden bg-gray-100 pdf-device-screen min-h-0">
+                              <img
+                                src={mobileScreenshot}
+                                alt="Website mobile preview"
+
+                                className="object-cover object-top"
+                                sizes="(max-width: 640px) 80px, (max-width: 1024px) 100px, 120px"
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 w-[80px] sm:w-[100px] z-10 bg-white rounded-lg p-2 shadow-xl border-2 border-gray-300">
-                        <div className="aspect-[9/16] rounded-md bg-gray-100 flex items-center justify-center">
-                          <span className="text-gray-400 text-xs">No preview</span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="relative flex-shrink-0 w-[200px] sm:w-[280px]">
-                    <div className="aspect-[4/3] bg-white rounded-md p-4 shadow-lg border-2 border-slate-300 flex items-center justify-center">
-                      <span className="text-gray-400 text-sm">Screenshot not available</span>
-                    </div>
-                    {mobileScreenshot ? (
-                      <div className="absolute -bottom-2 -right-2 w-[80px] sm:w-[100px] z-10" data-website-preview-img data-pdf-src={mobileScreenshot}>
-                        <div className="bg-slate-200 border-2 border-slate-400 rounded-lg p-2 shadow-2xl">
-                          <div className="relative w-full aspect-[9/16] rounded-md overflow-hidden bg-gray-100">
-                            <Image src={mobileScreenshot} alt="Mobile preview" fill className="object-cover object-top" sizes="100px" />
+                      ) : (
+                        <div className="absolute -bottom-2 -right-2 sm:-bottom-3 sm:-right-3 w-[80px] sm:w-[100px] z-10 bg-white rounded-lg p-2 shadow-xl border-2 border-gray-300">
+                          <div className="aspect-[9/16] rounded-md bg-gray-100 flex items-center justify-center">
+                            <span className="text-gray-400 text-xs">No preview</span>
                           </div>
                         </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="relative flex-shrink-0 w-[200px] sm:w-[280px]">
+                      <div className="aspect-[4/3] bg-white rounded-md p-4 shadow-lg border-2 border-slate-300 flex items-center justify-center">
+                        <span className="text-gray-400 text-sm">Screenshot not available</span>
                       </div>
-                    ) : null}
-                  </div>
-                )}
+                      {mobileScreenshot ? (
+                        <div className="absolute -bottom-2 -right-2 w-[80px] sm:w-[100px] z-10" data-website-preview-img data-pdf-src={mobileScreenshot}>
+                          <div className="bg-slate-200 border-2 border-slate-400 rounded-lg p-2 shadow-2xl">
+                            <div className="relative w-full aspect-[9/16] rounded-md overflow-hidden bg-gray-100">
+                              <Image src={mobileScreenshot} alt="Mobile preview" fill className="object-cover object-top" sizes="100px" />
+                            </div>
+                          </div>
+                        </div>
+                      ) : null}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           </div>
         </div>
-        </div>
         {/* Performance Overview: category scores + radar chart in one line */}
         <div className="mb-2 bg-primary p-4 sm:p-6 lg:p-8 rounded-lg mt-2 overflow-x-hidden">
           <h2 className="text-[20px] sm:text-xl font-bold text-white mb-3 sm:mb-4">Performance Overview</h2>
-          <div className="flex flex-col lg:flex-row items-start gap-4 min-w-0">
-            {/* Category score cards + radar: wrap on small screens */}
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3 w-full min-w-0 lg:basis-[80%] perf-cards-row">
+          <div className="flex flex-row flex-wrap lg:flex-row items-start gap-4 min-w-0 perf-overview-layout">
+            {/* Category score cards */}
+            <div className="flex flex-wrap items-center justify-start  gap-3 w-full min-w-0  perf-cards-row">
               {categories.map((category) => {
                 const score = getScoreFromGrade(category.grade)
                 const gradeStr = formatGrade(category.grade)
@@ -683,11 +736,10 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
                       </svg>
                       <div className="absolute inset-0 flex items-center justify-center">
                         <span
-                          className={`prog-text text-xl font-bold tabular-nums ${
-                            color === '#10B981' ? 'text-green-400' :
-                            color === '#F59E0B' ? 'text-yellow-400' :
-                            'text-red-400'
-                          }`}
+                          className={`prog-text text-xl font-bold tabular-nums ${color === '#10B981' ? 'text-green-400' :
+                              color === '#F59E0B' ? 'text-yellow-400' :
+                                'text-red-400'
+                            }`}
                           style={{ lineHeight: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', paddingTop: '0.05em' }}
                         >
                           {gradeStr}
@@ -698,63 +750,61 @@ for (let pageIndex = 1; pageIndex <= totalPages; pageIndex++) {
                   </div>
                 )
               })}
-               <div className="mt-4 lg:mt-0 lg:ms-6 rounded-lg p-2 flex items-center justify-center min-h-[130px] w-full max-w-[200px] mx-auto lg:mx-0 lg:basis-[35%] radar-chart-area flex-shrink-0" data-radar-chart-area>
-              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="w-full max-w-[180px] sm:max-w-[200px] max-h-[200px]" xmlns="http://www.w3.org/2000/svg">
-                {[1, 2, 3, 4, 5].map((i) => (
-                  <circle
-                    key={i}
-                    cx={centerX}
-                    cy={centerY}
-                    r={(radius * i) / 5}
-                    fill="none"
-                    stroke="#374151"
-                    strokeWidth="1"
-                  />
-                ))}
-                {categories.map((_, index) => {
-                  const p = getRadarPoint(index, 1)
-                  return (
-                    <line
-                      key={index}
-                      x1={centerX}
-                      y1={centerY}
-                      x2={p.x}
-                      y2={p.y}
-                      stroke="#4B5563"
+              <div className="mt-4 lg:mt-0 ms-6 rounded-lg p-2 flex items-center justify-center min-h-[130px] w-full max-w-[200px] mx-auto lg:mx-0 lg:basis-[35%] radar-chart-area " data-radar-chart-area>
+                <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="w-full max-w-[180px] sm:max-w-[200px] max-h-[200px]" xmlns="http://www.w3.org/2000/svg">
+                  {[1, 2, 3, 4, 5].map((i) => (
+                    <circle
+                      key={i}
+                      cx={centerX}
+                      cy={centerY}
+                      r={(radius * i) / 5}
+                      fill="none"
+                      stroke="#374151"
                       strokeWidth="1"
                     />
-                  )
-                })}
-                {dataPolygonPoints && (
-                  <polygon
-                    points={dataPolygonPoints}
-                    fill="rgba(59, 130, 246, 0.3)"
-                    stroke="#3B82F6"
-                    strokeWidth="2"
-                  />
-                )}
-                {categories.map((cat, index) => {
-                  const { x, y } = getLabelPoint(index)
-                  return (
-                    <text
-                      key={index}
-                      x={x}
-                      y={y}
-                      fill="#E5E7EB"
-                      fontSize="13"
-                      textAnchor="middle"
-                      dominantBaseline="middle"
-                      className="font-sans"
-                    >
-                      {cat.label}
-                    </text>
-                  )
-                })}
-              </svg>
-            </div>
-            </div>
+                  ))}
+                  {categories.map((_, index) => {
+                    const p = getRadarPoint(index, 1)
+                    return (
+                      <line
+                        key={index}
+                        x1={centerX}
+                        y1={centerY}
+                        x2={p.x}
+                        y2={p.y}
+                        stroke="#4B5563"
+                        strokeWidth="1"
+                      />
+                    )
+                  })}
+                  {dataPolygonPoints && (
+                    <polygon
+                      points={dataPolygonPoints}
+                      fill="rgba(59, 130, 246, 0.3)"
+                      stroke="#3B82F6"
+                      strokeWidth="2"
+                    />
+                  )}
+                  {categories.map((cat, index) => {
+                    const { x, y } = getLabelPoint(index)
+                    return (
+                      <text
+                        key={index}
+                        x={x}
+                        y={y}
+                        fill="#E5E7EB"
+                        fontSize="13"
+                        textAnchor="middle"
+                        dominantBaseline="middle"
+                        className="font-sans"
+                      >
+                        {cat.label}
+                      </text>
+                    )
+                  })}
+                </svg>
+              </div>            </div>
 
-            {/* Right - radar chart */}
            
           </div>
         </div>

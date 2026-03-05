@@ -84,6 +84,9 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
         <div className="flex-1">
           <h3 className="text-[18px] md:text-2xl font-bold text-white mb-3">{performanceTitle}</h3>
           <p className="text-gray-300 text-sm md:text-base leading-relaxed">{performanceDescription}</p>
+          <br/>
+          <br/>
+          <br/>
         </div>
       </div>
 
@@ -92,7 +95,7 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
 
       {/* Website Load Speed / Server Response Time */}
       {serverResponseTime && (
-        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 md:p-8 mb-2 overflow-visible ">
+        <div className=" bg-primary-dark rounded-lg border border-gray-700 p-6 md:p-8 mb-2 overflow-visible  ">
           <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
               <h4 className="text-[16px] md:text-xl font-bold text-white mb-3">Website Load Speed</h4>

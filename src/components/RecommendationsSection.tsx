@@ -43,8 +43,8 @@ export default function RecommendationsSection({ recommendations }: Recommendati
     <div id="recommendations-section" className="bg-primary rounded-lg border border-gray-800 p-4 sm:p-6 md:p-8 mb-2 scroll-mt-20 mt-3 overflow-x-hidden">
       <h2 className="text-[20px] md:text-3xl font-bold text-white mb-4">Recommendations</h2>
 
-      {/* Mobile: card layout */}
-      <div className="md:hidden space-y-4">
+      {/* Mobile: card layout (excluded from PDF) */}
+      <div className="md:hidden space-y-4" data-pdf-exclude>
         {recommendations.map((rec, index) => (
           <div
             key={index}
@@ -65,9 +65,9 @@ export default function RecommendationsSection({ recommendations }: Recommendati
         ))}
       </div>
 
-      {/* Desktop: table */}
-      <div className="hidden md:block overflow-x-auto">
-        <table className="w-full table-fixed">
+      {/* Desktop: table (also used for PDF) */}
+      <div className="hidden md:block overflow-x-auto recs-table-wrapper">
+        <table className="w-full table-fixed recs-table">
           <thead>
             <tr className="border-b border-gray-700">
               <th className="text-left py-4 px-4 text-gray-300 font-semibold w-[50%]">Recommendation</th>

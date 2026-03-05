@@ -50,7 +50,7 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
           <p className="text-gray-300 text-sm md:text-base mb-2">{backlinks.shortAnswer}</p>
 
           {/* All four metrics in one row */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-2 backlinks-summary-grid">
             {domainStrength != null && (
               <div className="flex flex-col items-center bg-primary-dark rounded-lg border border-gray-700 py-4 px-3">
                 <div
