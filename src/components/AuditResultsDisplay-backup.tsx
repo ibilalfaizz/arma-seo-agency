@@ -533,7 +533,7 @@ for (let pageIndex = 1; pageIndex <= pdf.internal.getNumberOfPages(); pageIndex+
               data-pdf-exclude
               onClick={handlePdfDownload}
               disabled={pdfDownloading}
-              className="bg-accent hover:bg-accent-dark disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
+              className="bg-accent hover:bg-accent-dark disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
               {pdfDownloading ? (
                 <>
@@ -704,7 +704,7 @@ for (let pageIndex = 1; pageIndex <= pdf.internal.getNumberOfPages(); pageIndex+
                 )
               })}
                <div className="ms-9 rounded-lg  p-2 flex items-center justify-center min-h-[130px] w-full lg:basis-[35%] radar-chart-area" data-radar-chart-area>
-              <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="max-w-[200px] max-h-[200px]" xmlns="http://www.w3.org/2000/svg">
+              <svg data-radar-chart  className="max-w-[200px] h-[180px]" xmlns="http://www.w3.org/2000/svg">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <circle
                     key={i}

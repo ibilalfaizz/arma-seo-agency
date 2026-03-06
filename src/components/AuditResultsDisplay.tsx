@@ -361,6 +361,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
           img.style.width = '100%'
           img.style.maxWidth = '80px'
           img.style.height = 'auto'
+          img.style.marginTop = '7rem'
           // cloneRadarSvg.parentNode?.replaceChild(img, cloneRadarSvg)
           // #region agent log
           fetch('http://127.0.0.1:7242/ingest/bdf1e8ee-0229-4634-b6d3-39ed0ebc0748', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ location: 'AuditResultsDisplay.tsx:afterRadarReplace', message: 'Radar replaced with img', data: { replaced: true, dataUrlLen: dataUrl?.length }, timestamp: Date.now(), sessionId: 'debug-session', hypothesisId: 'H2' }) }).catch(() => { });
@@ -564,7 +565,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                 data-pdf-exclude
                 onClick={handlePdfDownload}
                 disabled={pdfDownloading}
-                className="bg-accent hover:bg-accent-dark disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2"
+                className="bg-accent hover:bg-accent-dark disabled:opacity-70 disabled:cursor-not-allowed text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
               >
                 {pdfDownloading ? (
                   <>
@@ -642,7 +643,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                 <div className="relative w-full max-w-[32rem] mx-auto website-preview-frame overflow-x-auto overflow-y-hidden pb-1 flex justify-center">
                   {/* Tablet/Desktop: landscape frame */}
                   {desktopScreenshot ? (
-                    <div className="relative flex-shrink-0 w-[200px] sm:w-[280px] lg:w-[360px]" data-website-preview-img data-pdf-src={desktopScreenshot}>
+                    <div className="relative flex-shrink-0 w-[300px] sm:w-[280px] lg:w-[360px]" data-website-preview-img data-pdf-src={desktopScreenshot}>
                       <div className="bg-slate-200 border-2 border-slate-400 rounded-md p-2 sm:p-3 shadow-2xl pdf-device-frame overflow-hidden" style={{ boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }}>
                         <div className="relative w-full aspect-[4/3] rounded overflow-hidden bg-gray-100 pdf-device-screen min-h-0">
                           <img
@@ -751,7 +752,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                 )
               })}
               <div className="mt-4 lg:mt-0 ms-6 rounded-lg p-2 flex items-center justify-center min-h-[130px] w-full max-w-[200px] mx-auto lg:mx-0 lg:basis-[35%] radar-chart-area " data-radar-chart-area>
-                <svg data-radar-chart viewBox={`0 0 ${radarSize} ${radarSize}`} className="w-full max-w-[180px] sm:max-w-[200px] max-h-[200px]" xmlns="http://www.w3.org/2000/svg">
+                <svg data-radar-chart   className="w-full max-w-[180px] sm:max-w-[200px] h-[180px]" xmlns="http://www.w3.org/2000/svg">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <circle
                       key={i}
