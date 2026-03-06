@@ -643,7 +643,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                 <div className="relative w-full max-w-[32rem] mx-auto website-preview-frame overflow-x-auto overflow-y-hidden pb-1 flex justify-center">
                   {/* Tablet/Desktop: landscape frame */}
                   {desktopScreenshot ? (
-                    <div className="relative flex-shrink-0 w-[300px] sm:w-[280px] lg:w-[360px]" data-website-preview-img data-pdf-src={desktopScreenshot}>
+                    <div className="relative flex-shrink-0   w-[230px] md:w-[360px] " data-website-preview-img data-pdf-src={desktopScreenshot}>
                       <div className="bg-slate-200 border-2 border-slate-400 rounded-md p-2 sm:p-3 shadow-2xl pdf-device-frame overflow-hidden" style={{ boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)' }}>
                         <div className="relative w-full aspect-[4/3] rounded overflow-hidden bg-gray-100 pdf-device-screen min-h-0">
                           <img
