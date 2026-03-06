@@ -458,6 +458,9 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
 
 
       const radarArea = clone.querySelector('[data-radar-chart-area]')
+      // Remove viewBox from radar SVG in clone so PDF doesn't scale it too large; screen keeps viewBox for mobile
+      const cloneRadarSvgForViewBox = radarArea?.querySelector('svg[data-radar-chart]')
+      if (cloneRadarSvgForViewBox) cloneRadarSvgForViewBox.removeAttribute('viewBox')
       const imgsInRadarArea = radarArea?.querySelectorAll('img')?.length ?? 0
       const websitePreviewContainersFinal = clone.querySelectorAll('[data-website-preview-img]').length
       const allImgs = clone.querySelectorAll('img')
@@ -752,7 +755,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                 )
               })}
               <div className=" lg:mt-0  p-2 flex items-center justify-center min-h-[130px]   radar-chart-area " data-radar-chart-area>
-                <svg data-radar-chart viewBox="0 0 250 250" className="w-full max-w-[180px] sm:max-w-[200px] h-[180px]" xmlns="http://www.w3.org/2000/svg">
+                <svg data-radar-chart viewBox="0 0 200 200" className="w-full max-w-[180px] sm:max-w-[200px] h-[180px]" xmlns="http://www.w3.org/2000/svg">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <circle
                       key={i}
