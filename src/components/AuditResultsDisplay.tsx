@@ -229,6 +229,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
   .pdf-export [data-radar-chart-area] {
     width: 30px !important;
     height: 30px !important;
+     margin-left: 6.5rem !important;
   
   }
   @media (max-width: 768px) {
@@ -750,7 +751,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                   </div>
                 )
               })}
-              <div className=" lg:mt-0 ms-6 rounded-lg p-2 flex items-center justify-center min-h-[130px] w-full max-w-[200px] mx-auto lg:mx-0 lg:basis-[35%] radar-chart-area " data-radar-chart-area>
+              <div className=" lg:mt-0  p-2 flex items-center justify-center min-h-[130px]   radar-chart-area " data-radar-chart-area>
                 <svg data-radar-chart   className="w-full max-w-[180px] sm:max-w-[200px] h-[180px]" xmlns="http://www.w3.org/2000/svg">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <circle
