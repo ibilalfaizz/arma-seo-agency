@@ -752,7 +752,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
                 )
               })}
               <div className=" lg:mt-0  p-2 flex items-center justify-center min-h-[130px]   radar-chart-area " data-radar-chart-area>
-                <svg data-radar-chart   className="w-full max-w-[180px] sm:max-w-[200px] h-[180px]" xmlns="http://www.w3.org/2000/svg">
+                <svg data-radar-chart viewBox="0 0 200 200" className="w-full max-w-[180px] sm:max-w-[200px] h-[180px]" xmlns="http://www.w3.org/2000/svg">
                   {[1, 2, 3, 4, 5].map((i) => (
                     <circle
                       key={i}
