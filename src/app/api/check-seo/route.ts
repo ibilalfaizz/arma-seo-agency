@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { markReportPending } from '@/lib/reportStore'
+import { normalizeWebsiteUrl } from '@/lib/normalizeWebsiteUrl'
 import {
   checkRateLimit,
   finishAnalysisForReport,
@@ -56,9 +57,20 @@ export async function POST(request: NextRequest) {
       return response
     }
 
-    if (!url) {
+    if (url == null || typeof url !== 'string' || url.trim() === '') {
       return NextResponse.json(
         { error: 'URL is required' },
+        { status: 400 }
+      )
+    }
+
+    const normalizedUrl = normalizeWebsiteUrl(url)
+    if (!normalizedUrl) {
+      return NextResponse.json(
+        {
+          error:
+            'Invalid URL. Use a format like example.com, www.example.com, or https://example.com.',
+        },
         { status: 400 }
       )
     }
@@ -85,7 +97,7 @@ export async function POST(request: NextRequest) {
         'x-api-key': apiKey,
       },
       body: JSON.stringify({ 
-        url: url,
+        url: normalizedUrl,
         pdf: 1, // Enable PDF generation
         ...(callbackUrl ? { callback: callbackUrl } : {}),
       }),
@@ -166,7 +178,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    markReportPending(reportId, { url })
+    markReportPending(reportId, { url: normalizedUrl })
     startAnalysisForIp(ip, reportId)
 
     return NextResponse.json({ status: 'pending', reportId })

@@ -10,6 +10,7 @@ import BacklinksSection from '../../components/BacklinksSection'
 import PerformanceSection from '@/components/PerformanceSection'
 import UsabilitySection from '@/components/UsabilitySection'
 import LocalSEOSection from '@/components/LocalSEOSection'
+import { normalizeWebsiteUrl } from '@/lib/normalizeWebsiteUrl'
 
 export interface SEOData {
   url?: string
@@ -22,7 +23,11 @@ export interface SEOData {
 function ResultsContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
-  const url = searchParams.get('url')
+  const rawUrlParam = searchParams.get('url')
+  const url =
+    rawUrlParam != null && rawUrlParam.trim() !== ''
+      ? normalizeWebsiteUrl(rawUrlParam) ?? null
+      : null
   
   const [seoData, setSeoData] = useState<SEOData | null>(null)
   const [loading, setLoading] = useState(true)
@@ -98,8 +103,15 @@ function ResultsContent() {
 
     // Fetch results from API
     const fetchResults = async () => {
-      if (!url) {
+      if (rawUrlParam == null || rawUrlParam.trim() === '') {
         setError('No URL provided')
+        setLoading(false)
+        return
+      }
+      if (!url) {
+        setError(
+          'Invalid URL. Use a format like example.com, www.example.com, or https://example.com.'
+        )
         setLoading(false)
         return
       }
@@ -299,7 +311,7 @@ function ResultsContent() {
     } else {
       fetchResults()
     }
-  }, [url])
+  }, [rawUrlParam])
 
   return (
     <main className="min-h-screen from-gray-900 via-gray-800 to-gray-900 overflow-x-hidden">

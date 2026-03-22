@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
+import { normalizeWebsiteUrl } from '@/lib/normalizeWebsiteUrl'
 
 interface CheckerFormProps {
   onCheck: (url: string) => void
@@ -9,12 +10,18 @@ interface CheckerFormProps {
 
 export default function CheckerForm({ onCheck, loading }: CheckerFormProps) {
   const [url, setUrl] = useState('')
+  const [urlError, setUrlError] = useState<string | null>(null)
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
-    if (url.trim()) {
-      onCheck(url.trim())
+    setUrlError(null)
+    if (!url.trim()) return
+    const normalized = normalizeWebsiteUrl(url)
+    if (!normalized) {
+      setUrlError('Enter a valid website (e.g. example.com or https://example.com).')
+      return
     }
+    onCheck(normalized)
   }
 
   return (
@@ -26,16 +33,26 @@ export default function CheckerForm({ onCheck, loading }: CheckerFormProps) {
           </label>
           <div className="relative">
             <input
-              type="url"
+              type="text"
               id="url"
               value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://example.com"
+              onChange={(e) => {
+                setUrl(e.target.value)
+                if (urlError) setUrlError(null)
+              }}
+              placeholder="example.com or https://example.com"
+              autoComplete="url"
+              inputMode="url"
               className="w-full px-4 py-4 bg-gray-900 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent text-white placeholder-gray-500 text-lg"
               required
               disabled={loading}
             />
           </div>
+          {urlError && (
+            <p className="mt-2 text-sm text-red-400" role="alert">
+              {urlError}
+            </p>
+          )}
         </div>
         <button
           type="submit"
