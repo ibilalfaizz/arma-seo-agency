@@ -130,7 +130,7 @@ export default function BacklinksSection({ data }: BacklinksSectionProps) {
           )}
 
           <div className="overflow-x-auto -mx-1 px-1">
-            <table className="w-full min-w-[500px]">
+            <table data-backlinks-top-table className="w-full min-w-[500px]">
               <thead>
                 <tr className="border-b border-gray-700">
                   <th className="text-left py-3 px-4 text-gray-300 font-semibold whitespace-nowrap">Source</th>

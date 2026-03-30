@@ -168,10 +168,12 @@ function ResultsContent() {
           isComplete = true
           if (progressInterval) clearInterval(progressInterval)
           const errorData = await response.json()
+          console.log('Main /api/check-seo error response:', errorData)
           throw new Error(errorData.error || 'Failed to check SEO')
         }
 
         const apiResponse = await response.json()
+        console.log('Main /api/check-seo response:', apiResponse)
 
         const waitForCallbackResult = async (reportId: number) => {
           const start = Date.now()

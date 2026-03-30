@@ -170,7 +170,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
               {coreWebVitals.data['largest-contentful-paint'] !== null && coreWebVitals.data['largest-contentful-paint'] !== undefined && (
                 <div className="flex flex-col items-center">
                   <h5 className="text-[14px] md:text-lg font-semibold text-white mb-4 w-full text-center">Largest Contentful Paint (LCP)</h5>
-                  <div className="relative  flex flex-col items-center" style={{width:"60%"}}>
+                  <div className="relative flex flex-col items-center w-[90%] sm:w-[60%]">
                     {/* Gauge Chart - No Needle */}
                     {(() => {
                       const lcp = coreWebVitals.data['largest-contentful-paint']
@@ -223,7 +223,7 @@ export default function UsabilitySection({ data }: UsabilitySectionProps) {
               {coreWebVitals.data['cumulative-layout-shift'] !== null && coreWebVitals.data['cumulative-layout-shift'] !== undefined && (
                 <div className="flex flex-col items-center">
                   <h5 className="text-[14px] md:text-lg font-semibold text-white mb-4 w-full text-center">Cumulative Layout Shift (CLS)</h5>
-                  <div className="relative flex flex-col items-center" style={{width:"60%"}}>
+                  <div className="relative flex flex-col items-center w-[90%] sm:w-[60%]">
                     {/* Gauge Chart - No Needle */}
                     {(() => {
                       const cls = coreWebVitals.data['cumulative-layout-shift']

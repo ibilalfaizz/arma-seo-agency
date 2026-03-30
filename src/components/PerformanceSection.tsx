@@ -38,10 +38,10 @@ export default function PerformanceSection({ data }: PerformanceSectionProps) {
 
   return (
     <div className="bg-primary rounded-lg border border-gray-800 p-4 sm:p-6 md:p-8 mb-2 mt-4 overflow-x-hidden">
-      <h2 className="text-[20px] md:text-3xl font-bold text-white">Performance Results</h2>
+      <h2 className="text-[20px] md:text-3xl font-bold text-white mb-3">Performance Results</h2>
       
       {/* Header Section with Score Gauge */}
-      <div className="flex flex-row-reverse md:flex-row items-start md:items-center gap-4 md:gap-8 mb-2">
+      <div className="flex flex-row-reverse md:flex-row items-start md:items-start gap-4 md:gap-8 mb-2">
         {/* Circular Gauge */}
         <div className="relative w-20 h-20 flex-shrink-0">
           <svg className="transform -rotate-90 w-full h-full" viewBox="0 0 200 200">

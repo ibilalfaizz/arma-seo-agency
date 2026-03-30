@@ -306,6 +306,14 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     column-gap: 0.75rem !important;
     row-gap: 0.75rem !important;
   }
+
+  /* Tighten row spacing for Backlinks "Source" items in PDF */
+  .pdf-export table[data-backlinks-top-table] th,
+  .pdf-export table[data-backlinks-top-table] td {
+    padding-top: 6px !important;
+    padding-bottom: 6px !important;
+    line-height: 1.2 !important;
+  }
 `
       clone.prepend(pdfStyle)
 
