@@ -192,6 +192,8 @@ function ResultsContent() {
             if (statusRes.ok) {
               const statusData = await statusRes.json()
               if (statusData.status === 'complete') {
+                console.log('[report-status] actual response (complete):', statusData)
+                console.log('[report-status] result data:', statusData.data)
                 return statusData.data
               }
               if (statusData.status === 'error') {
@@ -235,6 +237,8 @@ function ResultsContent() {
         const apiData = apiResponse?.status === 'pending' && apiResponse?.reportId
           ? await waitForCallbackResult(apiResponse.reportId)
           : apiResponse
+
+        console.log('[report] final result (processed apiData):', apiData)
 
         const elapsed = Date.now() - startTime
         if (elapsed < minLoadingMs) {

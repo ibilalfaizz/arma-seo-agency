@@ -278,6 +278,28 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     display: table !important;
     width: 100% !important;
     table-layout: fixed !important;
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+  }
+  /* Tighten Recommendations list row spacing in PDF (table uses py-4 on screen) */
+  .pdf-export .recs-table th,
+  .pdf-export .recs-table td {
+    padding-top: 3px !important;
+    padding-bottom: 3px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    line-height: 1.2 !important;
+    vertical-align: top !important;
+  }
+  .pdf-export .recs-table .priority-badge {
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+  }
+  .pdf-export .recs-table thead th {
+    padding-bottom: 12px !important;
+  }
+  .pdf-export .recs-table tbody tr:first-child td {
+    padding-top: 8px !important;
   }
 
   /* Force Backlink Summary four boxes into a single row in PDF */
@@ -308,11 +330,21 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
   }
 
   /* Tighten row spacing for Backlinks "Source" items in PDF */
+  .pdf-export table[data-backlinks-top-table] {
+    border-collapse: collapse !important;
+    border-spacing: 0 !important;
+  }
   .pdf-export table[data-backlinks-top-table] th,
   .pdf-export table[data-backlinks-top-table] td {
-    padding-top: 6px !important;
-    padding-bottom: 6px !important;
-    line-height: 1.2 !important;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    line-height: 1.3 !important;
+    vertical-align: top !important;
+  }
+  .pdf-export table[data-backlinks-top-table] tbody tr {
+    border-bottom-width: 1px !important;
   }
 `
       clone.prepend(pdfStyle)
