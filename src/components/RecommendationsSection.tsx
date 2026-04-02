@@ -14,13 +14,13 @@ export default function RecommendationsSection({ recommendations }: Recommendati
   const getPriorityColor = (priority: string) => {
     switch (priority.toLowerCase()) {
       case 'high':
-        return 'bg-pink-500 text-white'
+        return 'text-pink-400'
       case 'medium':
-        return 'bg-yellow-500 text-black'
+        return 'text-yellow-400'
       case 'low':
-        return 'bg-green-500 text-white'
+        return 'text-green-400'
       default:
-        return 'bg-gray-500 text-white'
+        return 'text-gray-400'
     }
   }
 
@@ -56,7 +56,7 @@ export default function RecommendationsSection({ recommendations }: Recommendati
                 {rec.category}
               </span>
               <span
-                className={`priority-badge inline-flex items-center px-3 py-1 rounded text-xs font-semibold ${getPriorityColor(rec.priority)}`}
+                className={`priority-badge text-xs font-semibold ${getPriorityColor(rec.priority)}`}
               >
                 {rec.priority.charAt(0).toUpperCase() + rec.priority.slice(1)} Priority
               </span>
@@ -82,8 +82,10 @@ export default function RecommendationsSection({ recommendations }: Recommendati
                 <td className={`py-4 px-4 font-medium whitespace-nowrap ${getCategoryColor(rec.category)}`}>
                   {rec.category}
                 </td>
-                <td className="priority-cell py-4 px-4 text-center align-top">
-                  <span className={`priority-badge flex items-center justify-center px-3 py-1.5 rounded text-xs font-semibold text-center w-full min-w-0 ${getPriorityColor(rec.priority)}`}>
+                <td className="priority-cell py-4 px-4 text-center align-middle">
+                  <span
+                    className={`priority-badge inline-block text-xs font-semibold ${getPriorityColor(rec.priority)}`}
+                  >
                     {rec.priority.charAt(0).toUpperCase() + rec.priority.slice(1)} Priority
                   </span>
                 </td>

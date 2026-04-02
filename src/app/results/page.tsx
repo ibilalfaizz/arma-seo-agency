@@ -35,16 +35,33 @@ function ResultsContent() {
   const [progress, setProgress] = useState(0)
 
   useEffect(() => {
-    // Default: use live API. Use test data when ?test=true
-    const useTestData = new URLSearchParams(window.location.search).get('test') === 'true'
+    // Test mode: NEXT_PUBLIC_RESULTS_TEST_MODE=true in .env, or ?test=true in the URL
+    const useTestData =
+      process.env.NEXT_PUBLIC_RESULTS_TEST_MODE === 'true' ||
+      new URLSearchParams(window.location.search).get('test') === 'true'
     
     // Load test data from JSON file
     const loadTestData = async () => {
       try {
+        setError(null)
+        setLoading(true)
         const response = await fetch('/data.json')
+        if (!response.ok) {
+          throw new Error(`Failed to fetch data.json (${response.status})`)
+        }
         const jsonData = await response.json()
-        // Extract the output data structure
-        const outputData = jsonData.data?.output || {}
+        // Support: { data: { output: {...} } }, { output: {...} }, or report body at root (public/data.json)
+        let outputData = jsonData?.data?.output ?? jsonData?.output ?? null
+        if (outputData == null && jsonData && typeof jsonData === 'object') {
+          const looksLikeReport =
+            jsonData.scores != null ||
+            jsonData.finalUrl != null ||
+            (jsonData.title != null && typeof jsonData.title === 'object')
+          if (looksLikeReport) outputData = jsonData
+        }
+        if (outputData == null || typeof outputData !== 'object') {
+          outputData = {}
+        }
         
         // Add pdfUrl for consistency with API response (API uses output.pdf)
         if (!outputData.pdfUrl && outputData.pdf) {

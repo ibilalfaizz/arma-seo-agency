@@ -156,7 +156,7 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     line-height: 1.2 !important;
   }
 
-  .pdf-export .priority-badge,
+  /* prog-text only — do not restyle .priority-badge here or badge text shifts off-center in PDF */
   .pdf-export .prog-text {
     display: block;
     padding-bottom: 18px;
@@ -292,8 +292,17 @@ export default function AuditResultsDisplay({ data }: AuditResultsDisplayProps) 
     vertical-align: top !important;
   }
   .pdf-export .recs-table .priority-badge {
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
+    display: inline !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    line-height: 1.35 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  .pdf-export .recs-table td.priority-cell {
+    vertical-align: middle !important;
   }
   .pdf-export .recs-table thead th {
     padding-bottom: 12px !important;

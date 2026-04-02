@@ -182,12 +182,14 @@
 }
 
 #report-content-for-pdf.pdf-export .priority-badge {
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  line-height: 1 !important;
-  height: 24px !important;
-  min-height: 24px !important;
+  display: inline !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+  line-height: 1.35 !important;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
 
 @media print {
@@ -196,12 +198,14 @@
     vertical-align: middle !important;
   }
   .priority-badge {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    line-height: 1 !important;
-    height: 24px !important;
-    min-height: 24px !important;
+    display: inline !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 0 !important;
+    line-height: 1.35 !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
   }
 }
 
