@@ -408,7 +408,7 @@ function ResultsContent() {
             <div data-pdf-exclude className="mt-12 mb-2 text-center">
               <a
                 href=
-                'https://arma-agency.us'
+                'https://arma-agency.us/contacts/'
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-accent hover:bg-accent-dark text-white font-semibold py-4 px-8 rounded-lg transition-colors text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
