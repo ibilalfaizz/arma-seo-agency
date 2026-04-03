@@ -10,6 +10,10 @@ import BacklinksSection from '../../components/BacklinksSection'
 import PerformanceSection from '@/components/PerformanceSection'
 import UsabilitySection from '@/components/UsabilitySection'
 import LocalSEOSection from '@/components/LocalSEOSection'
+import {
+  BLOCKED_DOMAIN_ANALYSIS_MESSAGE,
+  isAnalysisBlockedForNormalizedUrl,
+} from '@/lib/blockedAnalysisDomains'
 import { normalizeWebsiteUrl } from '@/lib/normalizeWebsiteUrl'
 
 export interface SEOData {
@@ -129,6 +133,12 @@ function ResultsContent() {
         setError(
           'Invalid URL. Use a format like example.com, www.example.com, or https://example.com.'
         )
+        setLoading(false)
+        return
+      }
+
+      if (isAnalysisBlockedForNormalizedUrl(url)) {
+        setError(BLOCKED_DOMAIN_ANALYSIS_MESSAGE)
         setLoading(false)
         return
       }
@@ -391,7 +401,7 @@ function ResultsContent() {
               </svg>
               <h3 className="text-[18px] sm:text-xl font-bold text-accent">Error</h3>
             </div>
-            <p className="text-gray-300 mb-4">{error}</p>
+            <p className="text-gray-300 mb-4 whitespace-pre-line">{error}</p>
             <button
               onClick={() => router.push('/')}
               className="bg-accent hover:bg-accent-dark text-white font-semibold py-2 px-6 rounded-lg transition-colors"

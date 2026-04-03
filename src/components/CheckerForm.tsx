@@ -1,6 +1,10 @@
 'use client'
 
 import { useState, FormEvent } from 'react'
+import {
+  BLOCKED_DOMAIN_ANALYSIS_MESSAGE,
+  isAnalysisBlockedForNormalizedUrl,
+} from '@/lib/blockedAnalysisDomains'
 import { normalizeWebsiteUrl } from '@/lib/normalizeWebsiteUrl'
 
 interface CheckerFormProps {
@@ -19,6 +23,10 @@ export default function CheckerForm({ onCheck, loading }: CheckerFormProps) {
     const normalized = normalizeWebsiteUrl(url)
     if (!normalized) {
       setUrlError('Enter a valid website (e.g. example.com or https://example.com).')
+      return
+    }
+    if (isAnalysisBlockedForNormalizedUrl(normalized)) {
+      setUrlError(BLOCKED_DOMAIN_ANALYSIS_MESSAGE)
       return
     }
     onCheck(normalized)
@@ -49,7 +57,7 @@ export default function CheckerForm({ onCheck, loading }: CheckerFormProps) {
             />
           </div>
           {urlError && (
-            <p className="mt-2 text-sm text-red-400" role="alert">
+            <p className="mt-2 text-sm text-red-400 whitespace-pre-line" role="alert">
               {urlError}
             </p>
           )}

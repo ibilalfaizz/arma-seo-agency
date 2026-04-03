@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { markReportPending } from '@/lib/reportStore'
+import {
+  BLOCKED_DOMAIN_ANALYSIS_MESSAGE,
+  isAnalysisBlockedForNormalizedUrl,
+} from '@/lib/blockedAnalysisDomains'
 import { normalizeWebsiteUrl } from '@/lib/normalizeWebsiteUrl'
 import {
   checkRateLimit,
@@ -73,6 +77,10 @@ export async function POST(request: NextRequest) {
         },
         { status: 400 }
       )
+    }
+
+    if (isAnalysisBlockedForNormalizedUrl(normalizedUrl)) {
+      return NextResponse.json({ error: BLOCKED_DOMAIN_ANALYSIS_MESSAGE }, { status: 403 })
     }
 
     // Get API key from environment variables

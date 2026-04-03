@@ -3,6 +3,10 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import CheckerForm from '@/components/CheckerForm'
+import {
+  BLOCKED_DOMAIN_ANALYSIS_MESSAGE,
+  isAnalysisBlockedForNormalizedUrl,
+} from '@/lib/blockedAnalysisDomains'
 import shapeSvg from '@/assets/images/shape.svg'
 
 const ANALYSIS_LOCK_KEY = 'seo-analysis-lock'
@@ -41,6 +45,12 @@ export default function Home() {
       setLockMessage(
         'An analysis is already running for this device. Please wait for the current report to finish before starting a new one.'
       )
+      return
+    }
+
+    if (isAnalysisBlockedForNormalizedUrl(url)) {
+      setLockMessage(BLOCKED_DOMAIN_ANALYSIS_MESSAGE)
+      setLoading(false)
       return
     }
 
@@ -110,7 +120,7 @@ export default function Home() {
         </div>
 
         {lockMessage && (
-          <div className="mb-6 max-w-2xl mx-auto rounded-lg border border-yellow-400/40 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-100">
+          <div className="mb-6 max-w-2xl mx-auto rounded-lg border border-yellow-400/40 bg-yellow-500/10 px-4 py-3 text-sm text-yellow-100 whitespace-pre-line">
             {lockMessage}
           </div>
         )}
